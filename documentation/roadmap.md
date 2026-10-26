@@ -16,9 +16,9 @@ Progress is unassessed: compare this list with the existing game before starting
 
 ### 1. Display the starting tiles
 
-- [ ] Create a dataset of all the alphabet letters.
-- [ ] Store each tile’s identity, letter and point value.
-- [ ] Display all tiles and their values.
+- [x] Create a dataset of all the alphabet letters.
+- [x] Store each tile’s identity, letter and point value.
+- [x] Display all tiles and their values.
 
 **Done when:** 15 tiles appear, including separately identifiable copies of repeated letters.
 

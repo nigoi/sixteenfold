@@ -1,8 +1,6 @@
-### 1. Display the starting tiles
+### 2. Select tiles to build a word
 
-- [ ] Create a dataset of all the alphabet letters.
-- [ ] Store each tile’s identity, letter and point value.
-- [ ] Display all tiles and their values.
-
-- An object is a list of keys and their data
-- An id identifies individuals (for example for repeated letters)
+- [ ] Track selected tiles in order.
+- [ ] Append a clicked tile to the current word.
+- [ ] Make selected tiles unavailable in the pool.
+- [ ] Prevent the same tile being selected twice.

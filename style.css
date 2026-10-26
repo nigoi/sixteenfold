@@ -52,3 +52,7 @@ button{
     border-radius: 5px;
     cursor: pointer;
 }
+
+body{
+    font-family: "Nunito Sans", sans-serif;
+}

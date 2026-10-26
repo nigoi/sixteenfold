@@ -1,5 +1,3 @@
-const puzzleLength = 15;
-
 const letterDictionary = {
     A: 1,
     B: 3,
@@ -29,6 +27,13 @@ const letterDictionary = {
     Z: 10
 }
 
+const puzzleLength = 15;
+const displayedLetters = document.querySelectorAll(".letter")
+const displayedScore = document.querySelectorAll(".score")
+const displayedTiles = document.querySelectorAll(".tile")
+const activeWordContainer = document.querySelector("#word1")
+const activeWord = []
+
 function chooseRandomTiles () {
     const letters = Object.keys(letterDictionary);
     const randomLetters = [];
@@ -46,6 +51,9 @@ function chooseRandomTiles () {
 
 function tileClicked(i) {
     if (chosenTiles[i].selected === false) {
+        activeWord.push(i);
+        const tileCopy = displayedTiles[i].cloneNode(true);
+        activeWordContainer.appendChild(tileCopy);
         chosenTiles[i].selected = true;
         displayedTiles[i].style.opacity = 0.5;
     }
@@ -53,10 +61,6 @@ function tileClicked(i) {
 
 const chosenTiles = chooseRandomTiles();
 console.log(chosenTiles)
-
-const displayedLetters = document.querySelectorAll(".letter")
-const displayedScore = document.querySelectorAll(".score")
-const displayedTiles = document.querySelectorAll(".tile")
 
 for (let i = 0; i < displayedLetters.length; i++) {
     displayedLetters[i].textContent = chosenTiles[i].letter;

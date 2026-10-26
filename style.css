@@ -7,6 +7,12 @@
     margin-bottom: 20px;
 }
 
+.word{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .tile{
     position: relative;
     background-color: #faede1;

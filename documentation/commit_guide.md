@@ -20,3 +20,5 @@ test: automated tests
 Once a complete element is changed, commit it. Features can be broken down into small elements.
 
 ## New branch for each new feature being worked on
+
+When selecting a ticket, open a branch to work on that feature.

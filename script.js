@@ -29,26 +29,19 @@ const letterDictionary = {
     Z: 10
 }
 
-function generateLetters() {
-    let randomLetters = [];
+function chooseRandomTiles () {
+    const letters = Object.keys(letterDictionary);
+    const randomLetters = [];
+    const chosenTiles = {};
     let x = 0;
     while (x < puzzleLength) {
-        randomLetters.push(letters[Math.floor(Math.random() * letters.length)]);
-        x++;
+        randomLetters.push(letters[(Math.floor(Math.random() * letters.length))])
+        x++
     }
-    return randomLetters;
+    for (tile in randomLetters) {
+        chosenTiles[tile] = {letter: randomLetters[tile], score: letterDictionary[randomLetters[tile]]}
+    }
+    return chosenTiles
 }
 
-function fillTiles() {
-    const tiles = document.querySelectorAll(".tile");
-    let x = 0;
-    while (x < tiles.length) {
-        tiles[x].textContent = puzzle[x];
-        x++;
-    }
-}
-
-const puzzle = generateLetters();
-fillTiles();
-
-addEventListener()
+console.log(chooseRandomTiles())

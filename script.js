@@ -38,10 +38,18 @@ function chooseRandomTiles () {
         randomLetters.push(letters[(Math.floor(Math.random() * letters.length))])
         x++
     }
-    for (tile in randomLetters) {
+    for (const tile in randomLetters) {
         chosenTiles[tile] = {letter: randomLetters[tile], score: letterDictionary[randomLetters[tile]]}
     }
     return chosenTiles
 }
 
-console.log(chooseRandomTiles())
+const chosenTiles = chooseRandomTiles();
+console.log(chosenTiles)
+
+const displayedTiles = document.querySelectorAll(".tile")
+console.log(displayedTiles)
+
+for (const tile in displayedTiles) {
+    displayedTiles[tile].textContent = chosenTiles[tile].letter;
+}

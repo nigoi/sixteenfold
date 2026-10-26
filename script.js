@@ -50,7 +50,7 @@ console.log(chosenTiles)
 const displayedLetters = document.querySelectorAll(".letter")
 const displayedScore = document.querySelectorAll(".score")
 
-for (const tile in displayedLetters) {
-    displayedLetters[tile].textContent = chosenTiles[tile].letter;
-    displayedScore[tile].textContent = chosenTiles[tile].score;
+for (let i = 0; i < displayedLetters.length; i++) {
+    displayedLetters[i].textContent = chosenTiles[i].letter;
+    displayedScore[i].textContent = chosenTiles[i].score;
 }

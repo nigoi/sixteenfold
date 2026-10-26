@@ -39,9 +39,16 @@ function chooseRandomTiles () {
         x++
     }
     for (const tile in randomLetters) {
-        chosenTiles[tile] = {letter: randomLetters[tile], score: letterDictionary[randomLetters[tile]]}
+        chosenTiles[tile] = {letter: randomLetters[tile], score: letterDictionary[randomLetters[tile]], selected: false}
     }
     return chosenTiles
+}
+
+function tileClicked(i) {
+    if (chosenTiles[i].selected === false) {
+        chosenTiles[i].selected = true;
+        displayedTiles[i].style.opacity = 0.5;
+    }
 }
 
 const chosenTiles = chooseRandomTiles();
@@ -49,8 +56,15 @@ console.log(chosenTiles)
 
 const displayedLetters = document.querySelectorAll(".letter")
 const displayedScore = document.querySelectorAll(".score")
+const displayedTiles = document.querySelectorAll(".tile")
 
 for (let i = 0; i < displayedLetters.length; i++) {
     displayedLetters[i].textContent = chosenTiles[i].letter;
     displayedScore[i].textContent = chosenTiles[i].score;
+}
+
+for (let i = 0; i < displayedTiles.length; i++) {
+    displayedTiles[i].addEventListener("click", function () {
+    tileClicked(i);
+    });
 }

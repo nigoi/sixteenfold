@@ -1,10 +1,10 @@
 # Terminal commands
 
-diff: review your changes.
-add: select changes for the snapshot.
-commit: save the snapshot locally.
-push: upload saved commits to GitHub.
--m: add message to commit
+git diff: review your changes.
+git add: select changes for the snapshot.
+git commit: save the snapshot locally.
+git push: upload saved commits to GitHub.
+git -m: add message to commit
 
 # Commit message guide
 
@@ -15,9 +15,13 @@ refactor: code refactor
 docs: documentation changes
 test: automated tests
 
-## One commit for each coherant change. 
+## One commit for each coherent change. 
 
 Once a complete element is changed, commit it. Features can be broken down into small elements.
+
+E.g.
+
+git commit -m "feat: allow selected tiles to return to the pool"
 
 ## New branch for each new feature being worked on
 

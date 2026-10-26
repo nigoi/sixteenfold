@@ -47,9 +47,10 @@ function chooseRandomTiles () {
 const chosenTiles = chooseRandomTiles();
 console.log(chosenTiles)
 
-const displayedTiles = document.querySelectorAll(".tile")
-console.log(displayedTiles)
+const displayedLetters = document.querySelectorAll(".letter")
+const displayedScore = document.querySelectorAll(".score")
 
-for (const tile in displayedTiles) {
-    displayedTiles[tile].textContent = chosenTiles[tile].letter;
+for (const tile in displayedLetters) {
+    displayedLetters[tile].textContent = chosenTiles[tile].letter;
+    displayedScore[tile].textContent = chosenTiles[tile].score;
 }

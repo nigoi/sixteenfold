@@ -8,16 +8,27 @@
 }
 
 .tile{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
     background-color: #ecd8c4;
     box-sizing: border-box;
     width: 60px;
     height: 60px;
-    font-size: 30px;
     border-radius: 8px;
     border: 2px solid #333333;
+}
+
+.letter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+
+.score{
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    font-size: 15px;
 }
 
 h1{

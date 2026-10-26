@@ -1,0 +1,43 @@
+
+#letter-pool{
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ecd8c4;
+    box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    border-radius: 8px;
+    border: 2px solid #333333;
+}
+
+h1{
+    text-align: center;
+    color: #333333;
+}
+
+p{
+    text-align: center;
+    color: #666666;
+}
+
+button{
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

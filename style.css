@@ -9,12 +9,12 @@
 
 .tile{
     position: relative;
-    background-color: #ecd8c4;
+    background-color: #faede1;
     box-sizing: border-box;
     width: 60px;
     height: 60px;
     border-radius: 8px;
-    border: 2px solid #333333;
+    border: 1px solid #cecece;
 }
 
 .letter{
@@ -33,26 +33,14 @@
 
 h1{
     text-align: center;
-    color: #333333;
+    font-size: 40px;
 }
 
 p{
     text-align: center;
-    color: #666666;
-}
-
-button{
-    display: block;
-    margin: 0 auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #333333;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 body{
     font-family: "Nunito Sans", sans-serif;
+    color: #2D1E2F;
 }

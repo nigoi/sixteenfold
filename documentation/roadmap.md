@@ -24,10 +24,10 @@ Progress is unassessed: compare this list with the existing game before starting
 
 ### 2. Select tiles to build a word
 
-- [ ] Track selected tiles in order.
-- [ ] Append a clicked tile to the current word.
-- [ ] Make selected tiles unavailable in the pool.
-- [ ] Prevent the same tile being selected twice.
+- [x] Track selected tiles in order.
+- [x] Append a clicked tile to the current word.
+- [x] Make selected tiles unavailable in the pool.
+- [x] Prevent the same tile being selected twice.
 
 **Done when:** the displayed word follows selection order and each physical tile is used at most once.
 

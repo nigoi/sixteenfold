@@ -60,7 +60,6 @@ function tileClicked(i) {
 }
 
 const chosenTiles = chooseRandomTiles();
-console.log(chosenTiles)
 
 for (let i = 0; i < displayedLetters.length; i++) {
     displayedLetters[i].textContent = chosenTiles[i].letter;

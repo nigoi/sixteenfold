@@ -32,7 +32,7 @@ const displayedLetters = document.querySelectorAll(".letter")
 const displayedScore = document.querySelectorAll(".score")
 const displayedTiles = document.querySelectorAll(".tile")
 const activeWordContainer = document.querySelector("#word1")
-const activeWord = []
+const playerWords = []
 
 function chooseRandomTiles () {
     const letters = Object.keys(letterDictionary);
@@ -51,11 +51,32 @@ function chooseRandomTiles () {
 
 function tileClicked(i) {
     if (chosenTiles[i].selected === false) {
-        activeWord.push(i);
+        console.log("clicked tile ", i);
+
+        // Adds a key reference to the tile to the words array
+        playerWords.push(i);
+        
+        // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
         activeWordContainer.appendChild(tileCopy);
         chosenTiles[i].selected = true;
         displayedTiles[i].style.opacity = 0.5;
+        console.log("created words", activeWordContainer);
+
+        // Connect on click function that removes tile from active word
+        tileCopy.addEventListener("click", function () {
+            console.log("clicked word tile ", i);
+            chosenTiles[i].selected = false;
+            displayedTiles[i].style.opacity = 1;
+            tileCopy.remove();
+            const arrayPosition = playerWords.indexOf(i);
+            if (arrayPosition !== -1) {
+                playerWords.splice(arrayPosition, 1);
+            }
+            
+        });
+
+
     }
 }
 

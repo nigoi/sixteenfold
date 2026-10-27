@@ -28,11 +28,16 @@ const letterDictionary = {
 }
 
 const puzzleLength = 15;
-const displayedLetters = document.querySelectorAll(".letter")
-const displayedScore = document.querySelectorAll(".score")
-const displayedTiles = document.querySelectorAll(".tile")
-const activeWordContainer = document.querySelector("#word1")
-const playerWords = []
+const displayedLetters = document.querySelectorAll(".letter");
+const displayedScore = document.querySelectorAll(".score");
+const displayedTiles = document.querySelectorAll(".tile");
+const activeWordContainer = document.querySelector("#word1");
+const activeWord = "word1";
+const deleteWord = document.querySelector(".deleteWord");
+
+const playerWords = {
+    word1: []
+}
 
 function chooseRandomTiles () {
     const letters = Object.keys(letterDictionary);
@@ -54,7 +59,7 @@ function tileClicked(i) {
         console.log("clicked tile ", i);
 
         // Adds a key reference to the tile to the words array
-        playerWords.push(i);
+        playerWords[activeWord].push(i)
         
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
@@ -70,18 +75,29 @@ function tileClicked(i) {
             chosenTiles[i].selected = false;
             displayedTiles[i].style.opacity = 1;
             tileCopy.remove();
-            const arrayPosition = playerWords.indexOf(i);
+            const arrayPosition = playerWords[activeWord].indexOf(i);
             if (arrayPosition !== -1) {
-                playerWords.splice(arrayPosition, 1);
+                playerWords[activeWord].splice(arrayPosition, 1);
             }
             
         });
-
-
     }
 }
 
 const chosenTiles = chooseRandomTiles();
+
+deleteWord.addEventListener("click", function () {
+    while (activeWordContainer.firstChild) {
+        activeWordContainer.firstChild.remove();
+    }
+    for (let i = 0; i < playerWords[activeWord].length; i++) {
+        chosenTiles[playerWords[activeWord][i]].selected = false;
+        displayedTiles[playerWords[activeWord][i]].style.opacity = 1;
+    }
+    playerWords[activeWord].length = 0;
+    console.log(playerWords[activeWord])
+})
+
 
 for (let i = 0; i < displayedLetters.length; i++) {
     displayedLetters[i].textContent = chosenTiles[i].letter;

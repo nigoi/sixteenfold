@@ -1,4 +1,3 @@
-
 #letter-pool{
     display: grid;
     grid-template-columns: repeat(5, 60px);
@@ -15,12 +14,11 @@
 
 .tile{
     position: relative;
-    background-color: #faede1;
     box-sizing: border-box;
     width: 60px;
     height: 60px;
     border-radius: 8px;
-    border: 1px solid #cecece;
+    border: 1px solid #161aff;
 }
 
 .letter{
@@ -38,6 +36,9 @@
 }
 
 h1{
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
     text-align: center;
     font-size: 40px;
 }
@@ -51,6 +52,19 @@ p{
 }
 
 body{
-    font-family: "Nunito Sans", sans-serif;
-    color: #2D1E2F;
+    font-family: "Poppins", sans-serif;
+    font-weight: 450;
+    font-style: normal;
+    background-color: #e7e5e1;
+    color: #161aff;
+}
+
+.nunito-sans-<uniquifier> {
+  font-family: "Nunito Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100,
+    "YTLC" 500;
 }

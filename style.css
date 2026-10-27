@@ -1,3 +1,25 @@
+body{
+    display: flex;
+    font-family: "Poppins", sans-serif;
+    font-weight: 450;
+    font-style: normal;
+    background-color: #e7e5e1;
+    color: #161aff;
+}
+
+#boundingBox{
+    width: 340;
+    margin: auto;
+}
+
+h1{
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    text-align: left;
+    font-size: 40px;
+}
+
 #letter-pool{
     display: grid;
     grid-template-columns: repeat(5, 60px);
@@ -6,19 +28,15 @@
     margin-bottom: 20px;
 }
 
-.word{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .tile{
     position: relative;
     box-sizing: border-box;
     width: 60px;
     height: 60px;
     border-radius: 8px;
+
     border: 1px solid #161aff;
+    border-bottom: 2px solid #161aff;
 }
 
 .letter{
@@ -35,12 +53,29 @@
     font-size: 15px;
 }
 
-h1{
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    text-align: center;
-    font-size: 40px;
+#wordContainer{
+    margin-top: 30px;
+    height: 60px;
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.word{
+    display: flex;
+    justify-content: left;
+    align-content:  left;
+}
+
+.deleteWord{
+    color: #161aff;
+    border: none;
+    margin-left: 20px;
+    font-size: 30px;
+    background: none;
+    appearance: none;
+    
 }
 
 h2{
@@ -49,14 +84,6 @@ h2{
 
 p{
     text-align: center;
-}
-
-body{
-    font-family: "Poppins", sans-serif;
-    font-weight: 450;
-    font-style: normal;
-    background-color: #e7e5e1;
-    color: #161aff;
 }
 
 .nunito-sans-<uniquifier> {

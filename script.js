@@ -58,6 +58,7 @@ function tileClicked(i) {
         
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
+        tileCopy.style.marginRight = "2px";
         activeWordContainer.appendChild(tileCopy);
         chosenTiles[i].selected = true;
         displayedTiles[i].style.opacity = 0.5;

@@ -1,7 +1,7 @@
-### 3. Remove a selected letter
+### 4. Clear the current word
 
-- [x] Select an individual letter in the current word to remove.
-- [x] Return that exact tile to the available pool.
-- [x] Preserve the order of the remaining letters.
+- [x] Add a clear-word control.
+- [x] Return every tile in the current word to the pool.
+- [x] Handle an already empty word.
 
-**Done when:** either of two identical letters can be removed independently and selected again.
+**Done when:** clearing recovers all selected tiles without duplication.

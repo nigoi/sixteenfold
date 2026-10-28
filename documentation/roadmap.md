@@ -41,9 +41,9 @@ Progress is unassessed: compare this list with the existing game before starting
 
 ### 4. Clear the current word
 
-- [ ] Add a clear-word control.
-- [ ] Return every tile in the current word to the pool.
-- [ ] Handle an already empty word.
+- [x] Add a clear-word control.
+- [x] Return every tile in the current word to the pool.
+- [x] Handle an already empty word.
 
 **Done when:** clearing recovers all selected tiles without duplication.
 

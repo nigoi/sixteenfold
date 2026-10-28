@@ -8,7 +8,7 @@ body{
 }
 
 #boundingBox{
-    width: 340;
+    width: 340px;
     margin: auto;
 }
 
@@ -34,7 +34,6 @@ h1{
     width: 60px;
     height: 60px;
     border-radius: 8px;
-
     border: 1px solid #161aff;
     border-bottom: 2px solid #161aff;
 }
@@ -86,7 +85,7 @@ p{
     text-align: center;
 }
 
-.nunito-sans-<uniquifier> {
+.nunito-sans-<uniquifier>{
   font-family: "Nunito Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: <weight>;

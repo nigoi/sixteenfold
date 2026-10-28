@@ -32,14 +32,12 @@ const puzzleLength = 15;
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
-const wordLine = document.querySelector(".wordLine");
 const wordsBox = document.querySelector("#wordsBox");
 
-const activeWordContainer = document.querySelector("#word1");
 const deleteWord = document.querySelector(".deleteWord");
 const addWord = document.querySelector(".addWord");
 
-const activeWord = 0;
+let activeWord = 0;
 const playerWords = [
     []
 ]
@@ -76,10 +74,10 @@ function tileClicked(i) {
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
         tileCopy.style.marginRight = "2px";
-        activeWordContainer.appendChild(tileCopy);
+        const wordLines = document.querySelectorAll(".wordLine");
+        wordLines[activeWord].appendChild(tileCopy);
         chosenTiles[i].selected = true;
         displayedTiles[i].style.opacity = 0.5;
-        console.log("created words", activeWordContainer);
 
         // Connect on click function that removes tile from active word
         tileCopy.addEventListener("click", function () {
@@ -98,22 +96,13 @@ function tileClicked(i) {
 
 const chosenTiles = chooseRandomTiles();
 
-deleteWord.addEventListener("click", function () {
-    while (activeWordContainer.firstChild) {
-        activeWordContainer.firstChild.remove();
-    }
-    for (let i = 0; i < playerWords[activeWord].length; i++) {
-        chosenTiles[playerWords[activeWord][i]].selected = false;
-        displayedTiles[playerWords[activeWord][i]].style.opacity = 1;
-    }
-    playerWords[activeWord].length = 0;
-    console.log(playerWords[activeWord])
-})
-
 addWord.addEventListener("click", function () {
     if (playerWords[playerWords.length - 1].length != 0) {
-        const wordLineCopy = wordLine.cloneNode(true);
-        wordsBox.appendChild(wordLineCopy);
+        const nextWordLine = document.createElement("div");
+        nextWordLine.className = "wordLine";
+        wordsBox.appendChild(nextWordLine);
+        activeWord = playerWords.length;
+        console.log(activeWord)
     }
 })
 

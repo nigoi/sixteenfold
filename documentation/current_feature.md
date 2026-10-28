@@ -1,7 +1,8 @@
-### 4. Clear the current word
+### 5. Keep a word and start another
 
-- [x] Add a clear-word control.
-- [x] Return every tile in the current word to the pool.
-- [x] Handle an already empty word.
+- [ ] Add a control to keep the current word in the arrangement.
+- [ ] Display kept words separately from the current word.
+- [ ] Start a new empty word without releasing tiles in kept words.
+- [x] Prevent empty words from being added.
 
-**Done when:** clearing recovers all selected tiles without duplication.
+**Done when:** two words can coexist and share no tile identities.

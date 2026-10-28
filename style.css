@@ -52,7 +52,7 @@ h1{
     font-size: 15px;
 }
 
-#wordContainer{
+.wordLine{
     margin-top: 30px;
     height: 60px;
     display: flex;
@@ -83,14 +83,4 @@ h2{
 
 p{
     text-align: center;
-}
-
-.nunito-sans-<uniquifier>{
-  font-family: "Nunito Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100,
-    "YTLC" 500;
 }

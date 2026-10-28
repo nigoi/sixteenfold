@@ -32,12 +32,14 @@ const puzzleLength = 15;
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
-const wordLine = document.querySelector(".wordContainer");
+const wordLine = document.querySelector(".wordLine");
+const wordsBox = document.querySelector("#wordsBox");
+
 const activeWordContainer = document.querySelector("#word1");
 const deleteWord = document.querySelector(".deleteWord");
 const addWord = document.querySelector(".addWord");
 
-const activeWord = 1;
+const activeWord = 0;
 const playerWords = [
     []
 ]
@@ -109,7 +111,10 @@ deleteWord.addEventListener("click", function () {
 })
 
 addWord.addEventListener("click", function () {
-    console.log("ADD");
+    if (playerWords[playerWords.length - 1].length != 0) {
+        const wordLineCopy = wordLine.cloneNode(true);
+        wordsBox.appendChild(wordLineCopy);
+    }
 })
 
 for (let i = 0; i < displayedTiles.length; i++) {

@@ -28,16 +28,19 @@ const letterDictionary = {
 }
 
 const puzzleLength = 15;
+
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
+const wordLine = document.querySelector(".wordContainer");
 const activeWordContainer = document.querySelector("#word1");
-const activeWord = "word1";
 const deleteWord = document.querySelector(".deleteWord");
+const addWord = document.querySelector(".addWord");
 
-const playerWords = {
-    word1: []
-}
+const activeWord = 1;
+const playerWords = [
+    []
+]
 
 function chooseRandomTiles () {
     const letters = Object.keys(letterDictionary);
@@ -59,8 +62,15 @@ function tileClicked(i) {
         console.log("clicked tile ", i);
 
         // Adds a key reference to the tile to the words array
-        playerWords[activeWord].push(i)
+        if (playerWords[activeWord]) {
+            playerWords[activeWord].push(i);
+        }
+        else {
+            playerWords[activeWord] = [i];
+        }
         
+        console.log(playerWords)
+
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
         tileCopy.style.marginRight = "2px";
@@ -98,14 +108,17 @@ deleteWord.addEventListener("click", function () {
     console.log(playerWords[activeWord])
 })
 
-
-for (let i = 0; i < displayedLetters.length; i++) {
-    displayedLetters[i].textContent = chosenTiles[i].letter;
-    displayedScore[i].textContent = chosenTiles[i].score;
-}
+addWord.addEventListener("click", function () {
+    console.log("ADD");
+})
 
 for (let i = 0; i < displayedTiles.length; i++) {
     displayedTiles[i].addEventListener("click", function () {
     tileClicked(i);
     });
 }
+for (let i = 0; i < displayedLetters.length; i++) {
+    displayedLetters[i].textContent = chosenTiles[i].letter;
+    displayedScore[i].textContent = chosenTiles[i].score;
+}
+

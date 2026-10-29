@@ -6,6 +6,13 @@ git commit: save the snapshot locally.
 git push: upload saved commits to GitHub.
 git -m: add message to commit
 
+git switch -c *name*: Creates new branch under name
+git branch:	List local branches and show your current branch
+git switch main: Return to the main branch
+git switch *name*: Move to your named branch
+git push -u origin *name*: Push the new branch to GitHub and set its upstream
+git merge *name*: Merges named branch into current branch
+
 # Commit message guide
 
 feat: feature addition

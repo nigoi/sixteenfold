@@ -77,59 +77,66 @@ function populateGridTiles (chosenTiles) {
 }
 
 function addTileToPlayerWords (tileref) {
-    // First check if tile is already in use
-    if (!playerWords.flat().includes(tileref)) {
-        if (playerWords[activeWord]) {
-            playerWords[activeWord].push(tileref);
-        }
-        else {
-            playerWords[activeWord].push([tileref])
-        }
+    if (playerWords[activeWord]) {
+        playerWords[activeWord].push(tileref);
     }
-    console.log(playerWords.includes(tileref))
-    console.log(playerWords)
+    else {
+        playerWords.push(activeWord);
+        playerWords[activeWord].push([tileref]);
+    }
+
 }
 
-// Event listener registration
-
-for (i = 0; i < displayedTiles.length; i++) {
-    displayedTiles[i].addEventListener("click", function () {
-        addTileToPlayerWords(i);
+function addTileCopyToActiveWord(tileref) {
+    const tileClone = displayedTiles[tileref].cloneNode(true);
+    wordLines[activeWord].appendChild(tileClone);
+    tileClone.style.marginRight = "3px";
+    tileClone.addEventListener("click", function () {
+        removeTileFromPlayerWords(tileClone);
+        removeTileFromWordLine(tileClone);
+        restoreTileToActiveTiles(tileref);
     })
 }
 
-
-function tileClicked (i) {
-        
-
-        // Connect on click function that removes tile from active word
-        tileCopy.addEventListener("click", function () {
-            const parent = tileCopy.parentElement;
-            chosenTiles[i].selected = false;
-            displayedTiles[i].style.opacity = 1;
-            const wordIndex = Array.from(wordsBox.children).indexOf(parent.parentElement);
-            const tileIndex = Array.from(parent.children).indexOf(tileCopy);
-            if (wordIndex !== -1) {
-                playerWords[wordIndex].splice(tileIndex, 1);
-            }
-
-            tileCopy.remove();
-
-            if (parent.childNodes.length <= 0) {
-                if (Array.from(wordsBox.children).length > 1) {
-                    const parentPosition = Array.from(wordsBox.children).indexOf(parent.parentElement);
-                    playerWords.splice(parentPosition, 1);
-                    parent.parentElement.remove();
-                    activeWord = 0;
-                    const buttonList = document.querySelectorAll(".activeWord")
-                    buttonList[activeWord].style.opacity = 1;
-                }
-            }
-            
-            console.log(playerWords);
-        });
-    
+function removeTileFromActiveTiles(tile) {
+    displayedTiles[tile].style.opacity = 0.5;
 }
+
+function removeTileFromWordLine (tile) {
+    tile.remove();
+}
+
+function restoreTileToActiveTiles (tile) {
+    console.log(displayedTiles[tile])
+    displayedTiles[tile].style.opacity = 1;
+}
+
+function removeTileFromPlayerWords (tile) {
+    const tileIndexes = getWordIndexes(tile);
+    playerWords[tileIndexes["wordIndex"]].splice(tileIndexes["tileIndex"], 1);
+}
+
+function getWordIndexes (tile) {
+    const parent = tile.parentElement;
+    const indexes = {
+        wordIndex:  Array.from(wordLines).indexOf(parent),
+        tileIndex: Array.from(parent.children).indexOf(tile)
+    }
+    return indexes;
+}   
+
+// Event listener registration
+
+for (let i = 0; i < displayedTiles.length; i++) {
+    displayedTiles[i].addEventListener("click", function () {
+        if (!playerWords.flat().includes(i)) {
+            addTileToPlayerWords(i);
+            addTileCopyToActiveWord(i);
+            removeTileFromActiveTiles(i);
+        }
+    })
+}
+
 
 function updateActiveButton (button) {
     const parent = button.parentElement;

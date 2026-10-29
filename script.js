@@ -1,3 +1,5 @@
+// Set data
+
 const letterDictionary = {
     A: 1,
     B: 3,
@@ -38,25 +40,43 @@ const activeWordButton = document.querySelector(".activeWord");
 const deleteWord = document.querySelector(".deleteWord");
 const addWord = document.querySelector(".addWord");
 
+const chosenTiles = [];
+
 let activeWord = 0;
-const playerWords = [
-    []
-]
+
+const playerWords = [[]]
+
+// Functions 
 
 function chooseRandomTiles () {
+    // Create an array of 26 letters 
     const letters = Object.keys(letterDictionary);
-    const randomLetters = [];
-    const chosenTiles = {};
+
+    // Fills array with letter data
     let x = 0;
     while (x < puzzleLength) {
-        randomLetters.push(letters[(Math.floor(Math.random() * letters.length))])
+        let letter = letters[(Math.floor(Math.random() * letters.length))];
+
+        chosenTiles.push({
+            "letter": letter,
+            "score": letterDictionary[letter],
+        })
         x++
     }
-    for (const tile in randomLetters) {
-        chosenTiles[tile] = {letter: randomLetters[tile], score: letterDictionary[randomLetters[tile]], selected: false}
-    }
-    return chosenTiles
+    console.log(chosenTiles)
 }
+
+function populateTiles (chosenTiles) {
+    // Takes data from chosenTiles and fills DOM tiles
+    for (let i = 0; i < displayedLetters.length; i++) {
+    displayedLetters[i].textContent = chosenTiles[i]["letter"];
+    displayedScore[i].textContent = chosenTiles[i]["score"];
+}
+}
+
+// Event listener registration
+
+
 
 function tileClicked (i) {
     if (chosenTiles[i].selected === false) {
@@ -113,8 +133,6 @@ function updateActiveButton (button) {
     }
 }
 
-const chosenTiles = chooseRandomTiles();
-
 activeWordButton.addEventListener("click", function () {
     updateActiveButton(activeWordButton);
 })
@@ -149,13 +167,8 @@ addWord.addEventListener("click", function () {
     }
 })
 
-for (let i = 0; i < displayedTiles.length; i++) {
-    displayedTiles[i].addEventListener("click", function () {
-    tileClicked(i);
-    });
-}
-for (let i = 0; i < displayedLetters.length; i++) {
-    displayedLetters[i].textContent = chosenTiles[i].letter;
-    displayedScore[i].textContent = chosenTiles[i].score;
-}
 
+// JAVSCRIPT RUNTIME
+
+chooseRandomTiles();
+populateTiles(chosenTiles);

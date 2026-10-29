@@ -1,240 +1,131 @@
 # Fifteenfold — Feature Roadmap
 
-Work in order. Each numbered item is a feature; its checkboxes are the elements to implement.
-Tick elements as they work. A feature is complete when its “Done when” check passes.
-Progress is unassessed: compare this list with the existing game before starting.
+**Progress:** Features 1–5 implemented. Features 6–8 partly implemented. Random development tiles are already working (part of Feature 14).
 
-## Working rules
+**Working method:** Build one feature at a time, test it, then commit. `[x]` means implemented; `[ ]` means outstanding. Keep the interface minimal: removing a word's last letter deletes the word, so no separate clear or delete button is planned.
 
-- Work on one feature at a time.
-- Before starting, put its detailed tasks and completion checks in CURRENT_FEATURE.md.
-- Commit small, coherent changes; a checkbox does not have to equal a commit.
-- Record unrelated improvements under Later ideas rather than expanding the current feature.
-- Revise later tasks when you reach them. These are planning steps, not a fixed code structure.
+## Stage 1 — Build and edit a word
 
-## Stage 1 — Build and edit one word
+### 1. Display 15 tiles
+- [x] Store each tile's identity, letter and point value.
+- [x] Display 15 tiles, including distinct copies of repeated letters.
 
-### 1. Display the starting tiles
+### 2. Build a word
+- [x] Add selected tiles in order.
+- [x] Prevent a tile being used twice and visually distinguish used tiles.
 
-- [x] Create a dataset of all the alphabet letters.
-- [x] Store each tile’s identity, letter and point value.
-- [x] Display all tiles and their values.
-
-**Done when:** 15 tiles appear, including separately identifiable copies of repeated letters.
-
-### 2. Select tiles to build a word
-
-- [x] Track selected tiles in order.
-- [x] Append a clicked tile to the current word.
-- [x] Make selected tiles unavailable in the pool.
-- [x] Prevent the same tile being selected twice.
-
-**Done when:** the displayed word follows selection order and each physical tile is used at most once.
-
-### 3. Remove a selected letter
-
-- [x] Select an individual letter in the current word to remove.
-- [x] Return that exact tile to the available pool.
+### 3. Remove letters
+- [x] Click any letter in a word to return that exact tile to the pool.
 - [x] Preserve the order of the remaining letters.
 
-**Done when:** either of two identical letters can be removed independently and selected again.
-
-### 4. Clear the current word
-
-- [x] Add a clear-word control.
-- [x] Return every tile in the current word to the pool.
-- [x] Handle an already empty word.
-
-**Done when:** clearing recovers all selected tiles without duplication.
-
-**Scope:** use simple click/tap controls. Dictionary checks, scores, dragging and custom keyboard shortcuts come later.
+### 4. Clear a word without an extra button
+- [x] Allow all letters to be removed individually.
+- [x] Restore each tile to the pool without duplication.
+- [x] Keep the initial empty word available for play.
 
 ## Stage 2 — Arrange multiple words
 
-### 5. Keep a word and start another
+### 5. Create multiple words
+- [x] Use `+` to start another word without releasing existing tiles.
+- [x] Store each word separately and prevent adding consecutive empty words.
 
-- [x] Add a control to keep the current word in the arrangement.
-- [x] Display kept words separately from the current word.
-- [x] Start a new empty word without releasing tiles in kept words.
-- [x] Prevent empty words from being added.
+### 6. Remove an empty word automatically
+- [x] Remove a word's container and data when its last letter is removed (except the initial word).
+- [x] Return its letters to the pool as they are removed.
+- [ ] Do not change which *other* word is active when deleting an inactive word.
 
-**Done when:** two words can coexist and share no tile identities.
-
-### 6. Delete a kept word
-
-- [ ] Add a delete control for each kept word.
-- [ ] Remove the chosen word and release its tiles.
-- [ ] Leave other words and the current word unchanged.
-
-**Done when:** deleting one word recovers exactly its tiles.
-
-### 7. Edit a kept word
-
-- [ ] Choose a kept word for editing.
-- [ ] Define what happens if another word is currently being edited.
-- [ ] Reuse letter removal and selection to change the chosen word.
-- [ ] Save the edit back to the same word, or delete it if emptied.
-
-**Done when:** a word can be changed without losing tiles or creating a duplicate copy of itself.
+### 7. Edit an existing word
+- [x] Select any word using its asterisk button.
+- [x] Add and remove letters from that word without creating a duplicate.
+- [x] Find button positions dynamically, rather than relying on stored indices.
+- [ ] Keep the active-word index and button opacity correct after deleting an earlier word.
 
 ### 8. Rearrange letters
+- [x] Move letters between words by returning them to the pool and selecting them again.
+- [ ] Make reordering letters within a word straightforward without cluttering the interface.
+- [ ] Test that every tile stays unique through repeated edits and deletions.
 
-- [ ] Provide a simple control to move a letter within the current word.
-- [ ] Move letters between words by removing them to the pool and selecting them into another word.
-- [ ] Keep all word orders and tile ownership accurate.
+**Milestone:** Build, change and remove several words, then recover all 15 distinct tiles.
 
-**Done when:** letters can be reordered within and transferred between words without changing the total of 15 tiles.
+## Stage 3 — Validate, score and submit
 
-**Milestone:** build two words, edit them and recover all 15 tiles. Across the pool and all words, every tile exists exactly once.
+### 9. Check words
+- [ ] Load a small development dictionary.
+- [ ] Mark valid and invalid words, updating after every edit.
+- [ ] Handle dictionary loading failures separately from invalid words.
 
-## Stage 3 — Validate and score
+### 10. Score individual words
+- [ ] Sum letter values and apply the length multiplier (×0.7 for one letter, +0.1 per extra letter).
+- [ ] Give invalid words zero points and display scores to one decimal place.
 
-### 9. Check words against a development dictionary
+### 11. Calculate the total
+- [ ] Add valid word scores and subtract 2 points per unused letter.
+- [ ] Update the total whenever the arrangement changes.
 
-- [ ] Load a small temporary word list.
-- [ ] Match words consistently regardless of letter case.
-- [ ] Show valid and invalid states and recheck after edits.
-- [ ] Distinguish loading or failed loading from an invalid word.
+### 12. Submit a game
+- [ ] Add final submission and show the word, penalty and score breakdown.
+- [ ] Prevent changes or repeat submission if the result is final.
 
-**Done when:** known valid and invalid words are identified correctly, including after editing.
-
-### 10. Calculate individual word scores
-
-- [ ] Sum the tile values in a word.
-- [ ] Apply the multiplier: ×0.7 for one letter, increasing by 0.1 per additional letter.
-- [ ] Give invalid words zero points.
-- [ ] Show each word’s score to one decimal place and update it after edits.
-
-**Done when:** hand-calculated examples match the display for short and long words.
-
-### 11. Calculate the arrangement total
-
-- [ ] Sum valid word scores.
-- [ ] Count unused letters using the agreed invalid-word policy.
-- [ ] Subtract 2 points per unused letter; keep the penalty adjustable.
-- [ ] Show word total, penalty and final total, updating after every change.
-
-**Done when:** selecting, editing and deleting words always produces the expected score, including negative totals.
-
-### 12. Submit the final arrangement
-
-- [ ] Add a final submission control distinct from keeping an individual word.
-- [ ] Explain any irreversible submission behaviour before the player commits.
-- [ ] Capture the final words, unused tiles and score breakdown.
-- [ ] Show the result and prevent further edits if submission is final.
-
-**Done when:** the submitted result matches the last arrangement and repeated submission cannot alter it.
-
-**Milestone:** a complete local game using fixed letters and a temporary dictionary. Playtest the whole loop before continuing.
+**Milestone:** Finish a complete local game using a temporary dictionary.
 
 ## Stage 4 — Prepare real puzzles
 
 ### 13. Prepare the release dictionary
+- [ ] Build and document an openly reusable British/American word list (target: 150,000+ entries).
+- [ ] Remove duplicates, proper nouns and abbreviations; retain valid short words and inflections.
+- [ ] Version the dictionary and test representative words.
 
-- [ ] Select openly reusable sources and retain licences and attribution.
-- [ ] Combine British and American entries, normalise case and remove duplicates.
-- [ ] Apply the word policy: include listed short words and word forms; exclude proper nouns and abbreviations.
-- [ ] Aim for approximately 150,000+ entries and assign a dictionary version.
-- [ ] Replace the temporary list and check representative accepted and excluded entries.
+### 14. Generate playable letter sets
+- [x] Generate 15 random letters with repeats and point values for development.
+- [ ] Weight letters by frequency.
+- [ ] Enforce a playable vowel/consonant range.
 
-**Done when:** the game uses the versioned release word bank and its sources are documented.
+### 15. Tune gameplay
+- [ ] Playtest letter sets and adjust the generation rules, scoring and penalties.
+- [ ] Record the chosen settings as a version.
 
-### 14. Generate letter sets
+## Stage 5 — Daily play and saving
 
-- [ ] Generate exactly 15 letters, allowing repeats.
-- [ ] Weight selection by letter frequency.
-- [ ] Enforce a chosen vowel/consonant range.
-- [ ] Allow fresh development sets to be generated for testing.
+### 16. Shared daily puzzle
+- [ ] Give each date one puzzle ID, letter set, dictionary version and scoring version.
+- [ ] Set a daily rollover time and make the puzzle identical for all players.
 
-**Done when:** generated sets consistently satisfy the configured constraints.
+### 17. Save progress
+- [ ] Store the current arrangement locally in the browser.
+- [ ] Restore it safely after refresh or return visits.
 
-### 15. Tune puzzle quality and scoring
+### 18. Save completed results
+- [ ] Save the final result and completion state by puzzle ID.
+- [ ] Show the saved result instead of reopening a completed game for editing.
 
-- [ ] Playtest varied sets using the release dictionary.
-- [ ] Review letter weights, vowel limits, letter values and unused-letter penalties.
-- [ ] Record the chosen settings as a scoring/generation version.
-
-**Done when:** the settings are recorded and sampled puzzles have been reviewed for playability and variety.
-
-**Scope:** manual playtesting first. A solver is optional later work.
-
-## Stage 5 — Daily play and persistence
-
-### 16. Load a shared daily puzzle
-
-- [ ] Choose the daily timezone and rollover time.
-- [ ] Associate each date with a puzzle ID, letter set, dictionary version and scoring version.
-- [ ] Load that same puzzle for every player; a prepared puzzle schedule is sufficient initially.
-
-**Done when:** separate browsers opening the same date receive identical puzzle data and rules.
-
-### 17. Save and resume progress
-
-- [ ] Save tile arrangement and editing state in the browser, linked to the puzzle ID.
-- [ ] Restore progress after a refresh or return visit.
-- [ ] Recover sensibly from missing, incompatible or unreadable saved data.
-
-**Done when:** refreshing restores a valid arrangement without losing or duplicating tiles.
-
-### 18. Preserve submitted results
-
-- [ ] Save completion status and the final result against the puzzle ID.
-- [ ] Restore the submitted result instead of an editable game.
-- [ ] Keep its dictionary and scoring versions associated with it.
-
-**Done when:** returning to a completed puzzle shows the same final result.
-
-### 19. Handle the change of day
-
-- [ ] Detect that a different daily puzzle is available.
-- [ ] Define what happens to an unfinished game at rollover.
-- [ ] Start the new puzzle without applying the previous day’s progress.
-
-**Done when:** returning after rollover loads the appropriate puzzle and never mixes tile sets or rules.
+### 19. New-day rollover
+- [ ] Load the new puzzle without mixing it with previous progress.
+- [ ] Decide how unfinished puzzles are handled.
 
 ## Stage 6 — Release
 
-### 20. Make the game usable on different devices
+### 20. Make the interface usable
+- [ ] Fit the layout on mobile and desktop, including longer words.
+- [ ] Support touch, mouse and keyboard with clear selection and focus feedback.
 
-- [ ] Fit the layout to mobile and desktop screens.
-- [ ] Make all actions usable by touch, mouse and keyboard, with visible focus.
-- [ ] Communicate selection and validity without relying only on colour.
+### 21. Explain the rules
+- [ ] Write short instructions for tiles, words, scoring and submission.
+- [ ] Include dictionary rules and required attribution.
 
-**Done when:** the full game can be completed on a phone and with a keyboard alone.
+### 22. Test and publish
+- [ ] Test the full game, repeated letters, editing, scoring, saving and rollover.
+- [ ] Publish the site and check that a new player can complete a game.
+- [ ] Provide a simple way to report issues.
 
-### 21. Explain the game
+## Decisions to make when needed
+- [x] No separate clear-word or delete-word buttons: remove letters individually.
+- [x] Switching words keeps the others intact and selects the clicked word for editing.
+- [ ] Decide whether invalid words' tiles count as unused.
+- [ ] Decide how scores are rounded and whether duplicate words are allowed.
+- [ ] Decide whether submission is final, and define the daily timezone and rollover behaviour.
 
-- [ ] Add concise rules covering tile use, editing, validation and final submission.
-- [ ] Explain letter values, multipliers and unused-letter penalties.
-- [ ] Show dictionary policy and required source attribution.
+## Later ideas (not required for release)
 
-**Done when:** a new player can understand and finish a game without your help.
+Drag and drop, keyboard shortcuts, shareable results, statistics and streaks, a puzzle solver, leaderboards, accounts, timed play and a tactical board mode.
 
-### 22. Check and publish the first release
-
-- [ ] Check the full loop, repeated letters, scoring, saving and rollover.
-- [ ] Publish the game and check it at its public address.
-- [ ] Provide a way to report problems and record feedback for later prioritisation.
-
-**Done when:** a new player can open the public game, finish a puzzle and return to their saved result.
-
-## Decisions — resolve before the affected feature
-
-- [ ] Before feature 7: what happens to the current word when selecting another word to edit?
-- [ ] Before features 9–11: do letters in invalid words count as unused? Recommended: yes, to prevent penalty avoidance.
-- [ ] Before feature 10: when are scores rounded?
-- [ ] Before feature 9: can the same word appear twice using separate tiles?
-- [ ] Before feature 12: is final submission irreversible?
-- [ ] Before feature 16: which timezone and time define a new day?
-- [ ] Before feature 19: what happens to an unfinished game at rollover?
-
-## Later ideas — outside the first release
-
-- Drag and drop and direct dragging between words.
-- Custom typing shortcuts beyond standard keyboard access.
-- Shareable results.
-- Statistics and streaks.
-- A solver for assessing puzzles.
-- Leaderboards and accounts.
-- Timed play.
-- Tactical board mode.
+**Next task:** Fix active-word selection when deleting an inactive word, then finish Feature 8.

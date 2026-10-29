@@ -7,6 +7,7 @@ git push: upload saved commits to GitHub.
 git -m: add message to commit
 
 git switch -c *name*: Creates new branch under name
+git push -u origin *name*: Pushes new branch to github
 git branch:	List local branches and show your current branch
 git switch main: Return to the main branch
 git switch *name*: Move to your named branch

@@ -77,12 +77,13 @@ function tileClicked (i) {
             const parent = tileCopy.parentElement;
             chosenTiles[i].selected = false;
             displayedTiles[i].style.opacity = 1;
-            tileCopy.remove();
             const wordIndex = Array.from(wordsBox.children).indexOf(parent.parentElement);
             const tileIndex = Array.from(parent.children).indexOf(tileCopy);
             if (wordIndex !== -1) {
-                playerWords[activeWord].splice(tileIndex, 1);
+                playerWords[wordIndex].splice(tileIndex, 1);
             }
+
+            tileCopy.remove();
 
             if (parent.childNodes.length <= 0) {
                 if (Array.from(wordsBox.children).length > 1) {
@@ -95,6 +96,7 @@ function tileClicked (i) {
                 }
             }
             
+            console.log(playerWords);
         });
     }
 }

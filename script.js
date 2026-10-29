@@ -61,12 +61,8 @@ function chooseRandomTiles () {
 function tileClicked (i) {
     if (chosenTiles[i].selected === false) {
         // Adds a key reference to the tile to the words array
-        if (playerWords[activeWord]) {
-            playerWords[activeWord].push(i);
-        }
-        else {
-            playerWords[activeWord] = [i];
-        }
+  
+        playerWords[activeWord].push(i);
 
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
@@ -82,9 +78,10 @@ function tileClicked (i) {
             chosenTiles[i].selected = false;
             displayedTiles[i].style.opacity = 1;
             tileCopy.remove();
-            const arrayPosition = Array.from(wordsBox.children).indexOf(parent.parentElement);
-            if (arrayPosition !== -1) {
-                playerWords[activeWord].splice(arrayPosition, 1);
+            const wordIndex = Array.from(wordsBox.children).indexOf(parent.parentElement);
+            const tileIndex = Array.from(parent.children).indexOf(tileCopy);
+            if (wordIndex !== -1) {
+                playerWords[activeWord].splice(tileIndex, 1);
             }
 
             if (parent.childNodes.length <= 0) {
@@ -95,8 +92,6 @@ function tileClicked (i) {
                     activeWord = 0;
                     const buttonList = document.querySelectorAll(".activeWord")
                     buttonList[activeWord].style.opacity = 1;
-                    console.log(playerWords.length);
-                    console.log(document.querySelectorAll(".wordLineContainer").length)
                 }
             }
             
@@ -104,11 +99,14 @@ function tileClicked (i) {
     }
 }
 
-function updateActiveButton (buttonNumber) {
+function updateActiveButton (button) {
+    const parent = button.parentElement;
+    let position = Array.from(document.querySelectorAll(".wordLineContainer")).indexOf(parent);
+    console.log(position);
     const buttonList = document.querySelectorAll(".activeWord")
-    if (activeWord != buttonNumber) {
+    if (activeWord != position) {
         buttonList[activeWord].style.opacity = 0.25;
-        activeWord = buttonNumber;
+        activeWord = position;
         buttonList[activeWord].style.opacity = 1;
     }
 }
@@ -116,7 +114,7 @@ function updateActiveButton (buttonNumber) {
 const chosenTiles = chooseRandomTiles();
 
 activeWordButton.addEventListener("click", function () {
-    updateActiveButton(0);
+    updateActiveButton(activeWordButton);
 })
 
 addWord.addEventListener("click", function () {
@@ -133,17 +131,19 @@ addWord.addEventListener("click", function () {
         const buttonList = document.querySelectorAll(".activeWord");
         buttonList[activeWord].style.opacity = 0.25;
         activeWord = playerWords.length;
-        const buttonNumber = activeWord; 
         
         newActiveWordButton.addEventListener("click", function () {
-            updateActiveButton(buttonNumber);
+            updateActiveButton(newActiveWordButton);
         })
 
         const newWordLine = document.createElement("div");
         newWordLine.className = "wordLine";
         newWordLineContainer.appendChild(newWordLine);
         
-        console.log(activeWord)
+  
+        playerWords[activeWord] = [];
+
+        console.log(playerWords)
     }
 })
 

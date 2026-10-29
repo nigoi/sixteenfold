@@ -34,6 +34,7 @@ const puzzleLength = 15;
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
+const wordLines = document.querySelectorAll(".wordLine");
 const wordsBox = document.querySelector("#wordsBox");
 const activeWordButton = document.querySelector(".activeWord");
 
@@ -67,7 +68,7 @@ function chooseRandomTiles () {
     return randomTiles; 
 }
 
-function populateTiles (chosenTiles) {
+function populateGridTiles (chosenTiles) {
     // Takes data from chosenTiles and fills DOM tiles
     for (let i = 0; i < displayedLetters.length; i++) {
     displayedLetters[i].textContent = chosenTiles[i]["letter"];
@@ -75,26 +76,31 @@ function populateTiles (chosenTiles) {
 }
 }
 
-
+function addTileToPlayerWords (tileref) {
+    // First check if tile is already in use
+    if (!playerWords.flat().includes(tileref)) {
+        if (playerWords[activeWord]) {
+            playerWords[activeWord].push(tileref);
+        }
+        else {
+            playerWords[activeWord].push([tileref])
+        }
+    }
+    console.log(playerWords.includes(tileref))
+    console.log(playerWords)
+}
 
 // Event listener registration
 
-
+for (i = 0; i < displayedTiles.length; i++) {
+    displayedTiles[i].addEventListener("click", function () {
+        addTileToPlayerWords(i);
+    })
+}
 
 
 function tileClicked (i) {
-    if (chosenTiles[i].selected === false) {
-        // Adds a key reference to the tile to the words array
-  
-        playerWords[activeWord].push(i);
-
-        // Create a copy of the tile and add to the active word
-        const tileCopy = displayedTiles[i].cloneNode(true);
-        tileCopy.style.marginRight = "2px";
-        const wordLines = document.querySelectorAll(".wordLine");
-        wordLines[activeWord].appendChild(tileCopy);
-        chosenTiles[i].selected = true;
-        displayedTiles[i].style.opacity = 0.5;
+        
 
         // Connect on click function that removes tile from active word
         tileCopy.addEventListener("click", function () {
@@ -122,7 +128,7 @@ function tileClicked (i) {
             
             console.log(playerWords);
         });
-    }
+    
 }
 
 function updateActiveButton (button) {
@@ -174,4 +180,4 @@ addWord.addEventListener("click", function () {
 // JAVSCRIPT RUNTIME
 
 const chosenTiles = chooseRandomTiles();
-populateTiles(chosenTiles);
+populateGridTiles(chosenTiles);

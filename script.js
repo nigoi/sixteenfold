@@ -34,16 +34,43 @@ const puzzleLength = 15;
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
-const wordLines = document.querySelectorAll(".wordLine");
 const wordsBox = document.querySelector("#wordsBox");
 const activeWordButton = document.querySelector(".activeWord");
 
-const deleteWord = document.querySelector(".deleteWord");
-const addWord = document.querySelector(".addWord");
+const deleteWordButton = document.querySelector(".deleteWord");
+const addWordButton = document.querySelector(".addWord");
 
 let activeWord = 0;
 
 const playerWords = [[]]
+
+// Higher Functions
+
+function addLetter (ref) {
+    if (!playerWords.flat().includes(ref)) {
+        addTileToPlayerWords(ref);
+        addTileCopyToActiveWord(ref);
+        removeTileFromActiveTiles(ref);
+    }
+}
+
+function removeLetter (elemtentref, tileref) {
+        removeTileFromPlayerWords(elemtentref);
+        removeTileFromWordLine(elemtentref);
+        restoreTileToActiveTiles(tileref);
+}
+
+function addWord () {
+
+}
+
+function removeWord () {
+
+}
+
+function updateActiveWord () {
+
+}
 
 // Functions 
 
@@ -81,20 +108,19 @@ function addTileToPlayerWords (tileref) {
         playerWords[activeWord].push(tileref);
     }
     else {
-        playerWords.push(activeWord);
-        playerWords[activeWord].push([tileref]);
+        playerWords.push([activeWord]);
+        playerWords[activeWord].push(tileref);
     }
 
 }
 
 function addTileCopyToActiveWord(tileref) {
     const tileClone = displayedTiles[tileref].cloneNode(true);
+    const wordLines = document.querySelectorAll(".wordLine");
     wordLines[activeWord].appendChild(tileClone);
     tileClone.style.marginRight = "3px";
     tileClone.addEventListener("click", function () {
-        removeTileFromPlayerWords(tileClone);
-        removeTileFromWordLine(tileClone);
-        restoreTileToActiveTiles(tileref);
+        removeLetter(tileClone, tileref);
     })
 }
 
@@ -118,6 +144,7 @@ function removeTileFromPlayerWords (tile) {
 
 function getWordIndexes (tile) {
     const parent = tile.parentElement;
+    const wordLines = document.querySelectorAll(".wordLine");
     const indexes = {
         wordIndex:  Array.from(wordLines).indexOf(parent),
         tileIndex: Array.from(parent.children).indexOf(tile)
@@ -129,60 +156,9 @@ function getWordIndexes (tile) {
 
 for (let i = 0; i < displayedTiles.length; i++) {
     displayedTiles[i].addEventListener("click", function () {
-        if (!playerWords.flat().includes(i)) {
-            addTileToPlayerWords(i);
-            addTileCopyToActiveWord(i);
-            removeTileFromActiveTiles(i);
-        }
+        addLetter(i);
     })
 }
-
-
-function updateActiveButton (button) {
-    const parent = button.parentElement;
-    let position = Array.from(document.querySelectorAll(".wordLineContainer")).indexOf(parent);
-    console.log(position);
-    const buttonList = document.querySelectorAll(".activeWord")
-    if (activeWord != position) {
-        buttonList[activeWord].style.opacity = 0.25;
-        activeWord = position;
-        buttonList[activeWord].style.opacity = 1;
-    }
-}
-
-activeWordButton.addEventListener("click", function () {
-    updateActiveButton(activeWordButton);
-})
-
-addWord.addEventListener("click", function () {
-    if (playerWords[playerWords.length - 1].length != 0) {
-        const newWordLineContainer = document.createElement("div");
-        newWordLineContainer.className = "wordLineContainer";
-        wordsBox.appendChild(newWordLineContainer);
-
-        const newActiveWordButton = document.createElement("button");
-        newActiveWordButton.className = "activeWord";
-        newActiveWordButton.textContent = "*";
-        newWordLineContainer.appendChild(newActiveWordButton);
-        
-        const buttonList = document.querySelectorAll(".activeWord");
-        buttonList[activeWord].style.opacity = 0.25;
-        activeWord = playerWords.length;
-        
-        newActiveWordButton.addEventListener("click", function () {
-            updateActiveButton(newActiveWordButton);
-        })
-
-        const newWordLine = document.createElement("div");
-        newWordLine.className = "wordLine";
-        newWordLineContainer.appendChild(newWordLine);
-        
-  
-        playerWords[activeWord] = [];
-
-        console.log(playerWords)
-    }
-})
 
 // JAVSCRIPT RUNTIME
 

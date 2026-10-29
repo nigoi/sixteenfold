@@ -98,11 +98,21 @@ const chosenTiles = chooseRandomTiles();
 
 addWord.addEventListener("click", function () {
     if (playerWords[playerWords.length - 1].length != 0) {
-        const nextWordLine = document.createElement("div");
-        nextWordLine.className = "wordLine";
-        wordsBox.appendChild(nextWordLine);
+        const newWordLineContainer = document.createElement("div");
+        newWordLineContainer.className = "wordLineContainer";
+        wordsBox.appendChild(newWordLineContainer);
+
+        const newActiveWordButton = document.createElement("button");
+        newActiveWordButton.className = "activeWord";
+        newActiveWordButton.textContent = "*";
+        newWordLineContainer.appendChild(newActiveWordButton);
+
+        const newWordLine = document.createElement("div");
+        newWordLine.className = "wordLine";
+        newWordLineContainer.appendChild(newWordLine);
+
         activeWord = playerWords.length;
-        console.log(activeWord)
+        
     }
 })
 

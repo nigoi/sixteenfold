@@ -40,8 +40,6 @@ const activeWordButton = document.querySelector(".activeWord");
 const deleteWord = document.querySelector(".deleteWord");
 const addWord = document.querySelector(".addWord");
 
-const chosenTiles = [];
-
 let activeWord = 0;
 
 const playerWords = [[]]
@@ -52,18 +50,21 @@ function chooseRandomTiles () {
     // Create an array of 26 letters 
     const letters = Object.keys(letterDictionary);
 
+    const randomTiles = [];
+
     // Fills array with letter data
     let x = 0;
     while (x < puzzleLength) {
         let letter = letters[(Math.floor(Math.random() * letters.length))];
 
-        chosenTiles.push({
+        randomTiles.push({
             "letter": letter,
             "score": letterDictionary[letter],
         })
         x++
     }
-    console.log(chosenTiles)
+    console.log(randomTiles);
+    return randomTiles; 
 }
 
 function populateTiles (chosenTiles) {
@@ -74,7 +75,10 @@ function populateTiles (chosenTiles) {
 }
 }
 
+
+
 // Event listener registration
+
 
 
 
@@ -167,8 +171,7 @@ addWord.addEventListener("click", function () {
     }
 })
 
-
 // JAVSCRIPT RUNTIME
 
-chooseRandomTiles();
+const chosenTiles = chooseRandomTiles();
 populateTiles(chosenTiles);

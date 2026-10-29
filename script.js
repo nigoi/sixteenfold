@@ -60,8 +60,6 @@ function chooseRandomTiles () {
 
 function tileClicked (i) {
     if (chosenTiles[i].selected === false) {
-        console.log("clicked tile ", i);
-
         // Adds a key reference to the tile to the words array
         if (playerWords[activeWord]) {
             playerWords[activeWord].push(i);
@@ -69,8 +67,6 @@ function tileClicked (i) {
         else {
             playerWords[activeWord] = [i];
         }
-        
-        console.log(playerWords)
 
         // Create a copy of the tile and add to the active word
         const tileCopy = displayedTiles[i].cloneNode(true);
@@ -82,13 +78,26 @@ function tileClicked (i) {
 
         // Connect on click function that removes tile from active word
         tileCopy.addEventListener("click", function () {
-            console.log("clicked word tile ", i);
+            const parent = tileCopy.parentElement;
             chosenTiles[i].selected = false;
             displayedTiles[i].style.opacity = 1;
             tileCopy.remove();
-            const arrayPosition = playerWords[activeWord].indexOf(i);
+            const arrayPosition = Array.from(wordsBox.children).indexOf(parent.parentElement);
             if (arrayPosition !== -1) {
                 playerWords[activeWord].splice(arrayPosition, 1);
+            }
+
+            if (parent.childNodes.length <= 0) {
+                if (Array.from(wordsBox.children).length > 1) {
+                    const parentPosition = Array.from(wordsBox.children).indexOf(parent.parentElement);
+                    playerWords.splice(parentPosition, 1);
+                    parent.parentElement.remove();
+                    activeWord = 0;
+                    const buttonList = document.querySelectorAll(".activeWord")
+                    buttonList[activeWord].style.opacity = 1;
+                    console.log(playerWords.length);
+                    console.log(document.querySelectorAll(".wordLineContainer").length)
+                }
             }
             
         });
@@ -96,7 +105,6 @@ function tileClicked (i) {
 }
 
 function updateActiveButton (buttonNumber) {
-    console.log(buttonNumber)
     const buttonList = document.querySelectorAll(".activeWord")
     if (activeWord != buttonNumber) {
         buttonList[activeWord].style.opacity = 0.25;
@@ -135,6 +143,7 @@ addWord.addEventListener("click", function () {
         newWordLine.className = "wordLine";
         newWordLineContainer.appendChild(newWordLine);
         
+        console.log(activeWord)
     }
 })
 

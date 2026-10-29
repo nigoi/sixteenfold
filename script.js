@@ -33,6 +33,7 @@ const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
 const wordsBox = document.querySelector("#wordsBox");
+const activeWordButton = document.querySelector(".activeWord");
 
 const deleteWord = document.querySelector(".deleteWord");
 const addWord = document.querySelector(".addWord");
@@ -96,6 +97,15 @@ function tileClicked(i) {
 
 const chosenTiles = chooseRandomTiles();
 
+activeWordButton.addEventListener("click", function () {
+    const buttonList = document.querySelectorAll(".activeWord");
+    if (activeWord != 0) {
+        buttonList[activeWord].style.opacity = 0.25;
+        activeWord = 0;
+        buttonList[0].style.opacity = 1;
+    }
+})
+
 addWord.addEventListener("click", function () {
     if (playerWords[playerWords.length - 1].length != 0) {
         const newWordLineContainer = document.createElement("div");
@@ -106,12 +116,23 @@ addWord.addEventListener("click", function () {
         newActiveWordButton.className = "activeWord";
         newActiveWordButton.textContent = "*";
         newWordLineContainer.appendChild(newActiveWordButton);
+        
+        const buttonList = document.querySelectorAll(".activeWord");
+        buttonList[activeWord].style.opacity = 0.25;
+        activeWord = playerWords.length;
+        
+        const buttonNumber = playerWords.length;
+        newActiveWordButton.addEventListener("click", function () {
+            if (activeWord != buttonNumber) {
+                buttonList[activeWord].style.opacity = 0.25;
+                activeWord = buttonNumber;
+                buttonList[buttonNumber].style.opacity = 1;
+            }
+        })
 
         const newWordLine = document.createElement("div");
         newWordLine.className = "wordLine";
         newWordLineContainer.appendChild(newWordLine);
-
-        activeWord = playerWords.length;
         
     }
 })

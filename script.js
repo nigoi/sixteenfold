@@ -58,7 +58,7 @@ function chooseRandomTiles () {
     return chosenTiles
 }
 
-function tileClicked(i) {
+function tileClicked (i) {
     if (chosenTiles[i].selected === false) {
         console.log("clicked tile ", i);
 
@@ -95,15 +95,20 @@ function tileClicked(i) {
     }
 }
 
+function updateActiveButton (buttonNumber) {
+    console.log(buttonNumber)
+    const buttonList = document.querySelectorAll(".activeWord")
+    if (activeWord != buttonNumber) {
+        buttonList[activeWord].style.opacity = 0.25;
+        activeWord = buttonNumber;
+        buttonList[activeWord].style.opacity = 1;
+    }
+}
+
 const chosenTiles = chooseRandomTiles();
 
 activeWordButton.addEventListener("click", function () {
-    const buttonList = document.querySelectorAll(".activeWord");
-    if (activeWord != 0) {
-        buttonList[activeWord].style.opacity = 0.25;
-        activeWord = 0;
-        buttonList[0].style.opacity = 1;
-    }
+    updateActiveButton(0);
 })
 
 addWord.addEventListener("click", function () {
@@ -120,14 +125,10 @@ addWord.addEventListener("click", function () {
         const buttonList = document.querySelectorAll(".activeWord");
         buttonList[activeWord].style.opacity = 0.25;
         activeWord = playerWords.length;
+        const buttonNumber = activeWord; 
         
-        const buttonNumber = playerWords.length;
         newActiveWordButton.addEventListener("click", function () {
-            if (activeWord != buttonNumber) {
-                buttonList[activeWord].style.opacity = 0.25;
-                activeWord = buttonNumber;
-                buttonList[buttonNumber].style.opacity = 1;
-            }
+            updateActiveButton(buttonNumber);
         })
 
         const newWordLine = document.createElement("div");

@@ -56,7 +56,7 @@ function addLetter (ref) {
 
 function removeLetter (elemtentref, tileref) {
     removeTileFromPlayerWords(tileref);
-    removeTileFromWordLine(elemtentref);
+    removeTileFromWordLine(elemtentref, tileref);
     restoreTileToActiveTiles(tileref);
 }
 
@@ -66,12 +66,13 @@ function addWord () {
     updateActiveWord(playerWords.length - 1);
 }
 
-function removeWord () {
-
-}
-
-function updateActiveWord () {
-
+function removeWord (indexes) {
+    if (document.querySelectorAll(".wordLineContainer").length > 1) {
+        removeWordFromPlayerWords(indexes);
+        updateActiveWord(0);
+        removeWordFromWordBox(indexes);
+    }
+    
 }
 
 // Functions 
@@ -128,7 +129,7 @@ function removeTileFromActiveTiles(tile) {
     displayedTiles[tile].style.opacity = 0.25;
 }
 
-function removeTileFromWordLine (tile) {
+function removeTileFromWordLine (tile, tileref) {
     tile.remove();
 }
 
@@ -138,9 +139,10 @@ function restoreTileToActiveTiles (tile) {
 
 function removeTileFromPlayerWords (tileref) {
     const tileIndexes = getWordIndexes(tileref);
-    console.log(tileIndexes);
     playerWords[tileIndexes["wordIndex"]].splice(tileIndexes["tileIndex"], 1);
-    console.log(playerWords);
+    if (playerWords[tileIndexes["wordIndex"]].length === 0) {
+        removeWord(tileIndexes);
+    }
 }
 
 function getWordIndexes (tileref) {
@@ -181,6 +183,15 @@ function updateActiveWord (newActiveWordRef) {
     activeWordList[activeWord].style.opacity = 0.5;
     activeWord = newActiveWordRef; 
     activeWordList[activeWord].style.opacity = 1;
+}
+
+function removeWordFromPlayerWords (indexes) {
+    playerWords.splice(indexes["wordIndex"], 1);
+}
+
+function removeWordFromWordBox (indexes) {
+    const wordContainers = document.querySelectorAll(".wordLineContainer");
+    wordContainers[indexes["wordIndex"]].remove();
 }
 
 // Event listener registration

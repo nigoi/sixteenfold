@@ -61,7 +61,9 @@ function removeLetter (elemtentref, tileref) {
 }
 
 function addWord () {
-
+    addWordToPlayerWords();
+    addWordToWordsBox();
+    updateActiveWord(playerWords.length - 1);
 }
 
 function removeWord () {
@@ -110,7 +112,6 @@ function addTileToPlayerWords (tileref) {
         playerWords.push([activeWord]);
         playerWords[activeWord].push(tileref);
     }
-
 }
 
 function addTileCopyToActiveWord(tileref) {
@@ -149,11 +150,38 @@ function getWordIndexes (tileref) {
         if (playerWords[x].includes(tileref)) {
             tileIndexes["tileIndex"] = playerWords[x].indexOf(tileref);
             tileIndexes["wordIndex"] = x;
-            return tileIndexes
+            return tileIndexes;
         }
         x++;
     }
 }   
+
+function addWordToPlayerWords () {
+    playerWords[playerWords.length] = [];
+}
+
+function addWordToWordsBox () {
+    // Add word container
+    const newWordContainer = document.createElement("div");
+    newWordContainer.className = "wordLineContainer";
+    wordsBox.appendChild(newWordContainer);
+
+    // Add active word button
+    const newActiveWordButton = document.querySelector(".activeWord").cloneNode(true);
+    newWordContainer.appendChild(newActiveWordButton);
+
+    // Add word line
+    const newWordLine = document.createElement("div");
+    newWordLine.className = "wordLine";
+    newWordContainer.appendChild(newWordLine);
+}
+
+function updateActiveWord (newActiveWordRef) {
+    const activeWordList = document.querySelectorAll(".activeWord");
+    activeWordList[activeWord].style.opacity = 0.5;
+    activeWord = newActiveWordRef; 
+    activeWordList[activeWord].style.opacity = 1;
+}
 
 // Event listener registration
 
@@ -162,6 +190,10 @@ for (let i = 0; i < displayedTiles.length; i++) {
         addLetter(i);
     })
 }
+
+addWordButton.addEventListener("click", function () {
+    addWord();
+})
 
 // JAVSCRIPT RUNTIME
 

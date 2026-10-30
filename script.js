@@ -61,18 +61,20 @@ function removeLetter (elemtentref, tileref) {
 }
 
 function addWord () {
-    addWordToPlayerWords();
-    addWordToWordsBox();
-    updateActiveWord(playerWords.length - 1);
+    if (!checkForEmptyWord()) {
+        addWordToPlayerWords();
+        addWordToWordsBox();
+        updateActiveWord(playerWords.length - 1);
+    }
+    
 }
 
 function removeWord (indexes) {
     if (document.querySelectorAll(".wordLineContainer").length > 1) {
-        removeWordFromPlayerWords(indexes);
         updateActiveWord(0);
+        removeWordFromPlayerWords(indexes);
         removeWordFromWordBox(indexes);
     }
-    
 }
 
 // Functions 
@@ -192,6 +194,17 @@ function removeWordFromPlayerWords (indexes) {
 function removeWordFromWordBox (indexes) {
     const wordContainers = document.querySelectorAll(".wordLineContainer");
     wordContainers[indexes["wordIndex"]].remove();
+}
+
+function checkForEmptyWord() {
+    let x = 0;
+    while (x < playerWords.length) {
+        if (playerWords[x].length === 0) {
+            return true; 
+        }
+        x++;
+    }
+    return false;
 }
 
 // Event listener registration

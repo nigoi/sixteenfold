@@ -44,7 +44,7 @@ let activeWord = 0;
 
 const playerWords = [[]]
 
-// Higher Functions
+// Action Functions
 
 function addLetter (ref) {
     if (!playerWords.flat().includes(ref)) {
@@ -55,9 +55,9 @@ function addLetter (ref) {
 }
 
 function removeLetter (elemtentref, tileref) {
-        removeTileFromPlayerWords(elemtentref);
-        removeTileFromWordLine(elemtentref);
-        restoreTileToActiveTiles(tileref);
+    removeTileFromPlayerWords(tileref);
+    removeTileFromWordLine(elemtentref);
+    restoreTileToActiveTiles(tileref);
 }
 
 function addWord () {
@@ -91,7 +91,6 @@ function chooseRandomTiles () {
         })
         x++
     }
-    console.log(randomTiles);
     return randomTiles; 
 }
 
@@ -125,7 +124,7 @@ function addTileCopyToActiveWord(tileref) {
 }
 
 function removeTileFromActiveTiles(tile) {
-    displayedTiles[tile].style.opacity = 0.5;
+    displayedTiles[tile].style.opacity = 0.25;
 }
 
 function removeTileFromWordLine (tile) {
@@ -133,23 +132,27 @@ function removeTileFromWordLine (tile) {
 }
 
 function restoreTileToActiveTiles (tile) {
-    console.log(displayedTiles[tile])
     displayedTiles[tile].style.opacity = 1;
 }
 
-function removeTileFromPlayerWords (tile) {
-    const tileIndexes = getWordIndexes(tile);
+function removeTileFromPlayerWords (tileref) {
+    const tileIndexes = getWordIndexes(tileref);
+    console.log(tileIndexes);
     playerWords[tileIndexes["wordIndex"]].splice(tileIndexes["tileIndex"], 1);
+    console.log(playerWords);
 }
 
-function getWordIndexes (tile) {
-    const parent = tile.parentElement;
-    const wordLines = document.querySelectorAll(".wordLine");
-    const indexes = {
-        wordIndex:  Array.from(wordLines).indexOf(parent),
-        tileIndex: Array.from(parent.children).indexOf(tile)
+function getWordIndexes (tileref) {
+    let x = 0;
+    const tileIndexes = {}
+    while (x < playerWords.length) {
+        if (playerWords[x].includes(tileref)) {
+            tileIndexes["tileIndex"] = playerWords[x].indexOf(tileref);
+            tileIndexes["wordIndex"] = x;
+            return tileIndexes
+        }
+        x++;
     }
-    return indexes;
 }   
 
 // Event listener registration

@@ -29,6 +29,10 @@ const letterDictionary = {
     Z: 10
 }
 
+const testdictionary = await getDictionary();
+
+console.log(testdictionary.has("ruby"))
+
 const puzzleLength = 15;
 
 const displayedLetters = document.querySelectorAll(".letter");
@@ -105,6 +109,14 @@ function removeWord (playerWordsLetterIndexes) {
 }
 
 // Functions 
+
+async function getDictionary () {
+    const response = await fetch("20k.txt");
+    const dictionary = await response.text();
+
+    const splitDictionary = dictionary.split('\n');
+    return new Set(splitDictionary);
+}
 
 function chooseRandomTiles () {
     // Create an array of 26 letters 

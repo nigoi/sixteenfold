@@ -6,3 +6,6 @@
 - [x] Prevent empty words from being added.
 
 **Done when:** two words can coexist and share no tile identities.
+
+
+Fix active word selection when deleting words.

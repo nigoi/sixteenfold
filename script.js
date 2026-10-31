@@ -60,20 +60,20 @@ function removeLetter (elemtentref, tileref) {
     restoreTileToActiveTiles(tileref);
 }
 
-function addWord () {
+function addWord (newWordIndex) {
     if (!checkForEmptyWord()) {
-        addWordToPlayerWords();
-        addWordToWordsBox();
-        updateActiveWord(playerWords.length - 1);
+        addWordToPlayerWords(newWordIndex);
+        addWordToWordsBox(newWordIndex);
+        updateActiveWord(playerWords[newWordIndex]);
     }
     
 }
 
 function removeWord (indexes) {
-    if (document.querySelectorAll(".wordLineContainer").length > 1) {
-        updateActiveWord(0);
+    if (playerWords.length > 1) {
         removeWordFromPlayerWords(indexes);
         removeWordFromWordBox(indexes);
+        updateActiveWord(playerWords[indexes["wordIndex"]]);
     }
 }
 
@@ -160,11 +160,11 @@ function getWordIndexes (tileref) {
     }
 }   
 
-function addWordToPlayerWords () {
-    playerWords[playerWords.length] = [];
+function addWordToPlayerWords (newWordIndex) {
+    playerWords[newWordIndex] = [];
 }
 
-function addWordToWordsBox () {
+function addWordToWordsBox (newWordIndex) {
     // Add word container
     const newWordContainer = document.createElement("div");
     newWordContainer.className = "wordLineContainer";
@@ -173,6 +173,10 @@ function addWordToWordsBox () {
     // Add active word button
     const newActiveWordButton = document.querySelector(".activeWord").cloneNode(true);
     newWordContainer.appendChild(newActiveWordButton);
+    const currentWordRef = playerWords[newWordIndex];
+    newActiveWordButton.addEventListener("click", function () {
+        updateActiveWord(currentWordRef);
+    })
 
     // Add word line
     const newWordLine = document.createElement("div");
@@ -180,11 +184,24 @@ function addWordToWordsBox () {
     newWordContainer.appendChild(newWordLine);
 }
 
-function updateActiveWord (newActiveWordRef) {
-    const activeWordList = document.querySelectorAll(".activeWord");
-    activeWordList[activeWord].style.opacity = 0.5;
-    activeWord = newActiveWordRef; 
-    activeWordList[activeWord].style.opacity = 1;
+function updateActiveWord (activeWordPlayerWordRef) {
+    let activeWordCurrentIndex = 0;
+    if (activeWordPlayerWordRef) {
+        activeWordCurrentIndex = playerWords.indexOf(activeWordPlayerWordRef);
+    }
+    activeWord = activeWordCurrentIndex; 
+    console.log("new", activeWord)
+    updateActiveWordVisuals();
+}
+
+function updateActiveWordVisuals () {
+    const activeWordDOM = document.querySelectorAll(".activeWord");
+    let x = 0;
+    while (x < activeWordDOM.length) {
+        activeWordDOM[x].style.opacity = 0.5;
+        x++;
+    }
+    activeWordDOM[activeWord].style.opacity = 1;
 }
 
 function removeWordFromPlayerWords (indexes) {
@@ -216,8 +233,13 @@ for (let i = 0; i < displayedTiles.length; i++) {
 }
 
 addWordButton.addEventListener("click", function () {
-    addWord();
+    console.log("current", activeWord);
+    addWord(playerWords.length);
 })
+
+activeWordButton.addEventListener("click", function () {
+    updateActiveWord(playerWords[0]);
+}) 
 
 // JAVSCRIPT RUNTIME
 

@@ -59,17 +59,25 @@ function addLetter (chosenTilesRefInt) {
     }
 }
 
-function removeLetter (playerWordsLetterIndexes) {
-    removeTileFromPlayerWords(playerWordsLetterIndexes);
+function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
+    // Find current index and remove letter
+    const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
+    playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
 
     // DOM
     const wordLines = document.querySelectorAll(".wordLine");
-    wordLines[playerWordsLetterIndexes["wordIndex"]].children[playerWordsLetterIndexes["letterIndex"]].remove();
+    wordLines[indexes["wordIndex"]].children[indexes["letterIndex"]].remove();
     // Make tile opaque to show active
-    displayedTiles[playerWordsLetterIndexes["displayedLettersIndex"]].style.opacity = 1;
+    displayedTiles[indexes["displayedLettersIndex"]].style.opacity = 1;
+    
+    // If word is empty remove word
+    if (playerWords[indexes["wordIndex"]].length === 0) {
+        removeWord(indexes);
+    }
 }
 
 function addWord () {
+    // Only adds word if all words full
     if (!checkForEmptyWord()) {
         playerWords[playerWords.length] = [];
         const newWordArrayRef = playerWords[playerWords.length - 1];
@@ -77,18 +85,22 @@ function addWord () {
         // DOM
         addWordToWordsBox(newWordArrayRef);
 
+        // Update active word
         updateActiveWord(newWordArrayRef);
         updateActiveWordVisuals();
-        debugList(newWordArrayRef);
     }
 }
 
-function removeWord (indexes) {
+function removeWord (playerWordsLetterIndexes) {
     if (playerWords.length > 1) {
-        const currentActiveWord = playerWords[activeWord];
-        removeWordFromPlayerWords(indexes);
-        removeWordFromWordBox(indexes);
-        updateActiveWord(playerWords[playerWords.indexOf(currentActiveWord)]);
+        playerWords.splice(playerWordsLetterIndexes["wordIndex"], 1);
+        
+        // DOM
+        removeWordFromWordBox(playerWordsLetterIndexes);
+
+        // Update active word
+        updateActiveWord(activeWord);
+        updateActiveWordVisuals();
     }
 }
 
@@ -128,20 +140,14 @@ function addTileCopyToActiveWord(chosenTilesRefInt) {
     const wordLines = document.querySelectorAll(".wordLine");
 
     const indexes = getWordIndexes(activeWord, chosenTilesRefInt);
+    const currentActiveWord = activeWord;
 
     wordLines[indexes["wordIndex"]].appendChild(tileClone);
     tileClone.style.marginRight = "3px";
     tileClone.addEventListener("click", function () {
         // Give func direct reference to current array
-        removeLetter(indexes);
+        removeLetter(currentActiveWord, chosenTilesRefInt);
     })
-}
-
-function removeTileFromPlayerWords (playerWordsLetterIndexes) {
-    playerWords[playerWordsLetterIndexes["wordIndex"]].splice(playerWordsLetterIndexes["letterIndex"], 1);
-    if (playerWords[playerWordsLetterIndexes["wordIndex"]].length === 0) {
-        removeWord(playerWordsLetterIndexes);
-    }
 }
 
 function addWordToWordsBox (newWordArrayRef) {
@@ -167,7 +173,7 @@ function addWordToWordsBox (newWordArrayRef) {
 
 function updateActiveWord (newWordArrayRef) {
     let activeWordCurrent = playerWords[0];
-    if (newWordArrayRef) {
+    if (playerWords.includes(newWordArrayRef)) {
         activeWordCurrent = newWordArrayRef;
     }
     activeWord = activeWordCurrent; 
@@ -183,17 +189,12 @@ function updateActiveWordVisuals () {
     activeWordDOM[playerWords.indexOf(activeWord)].style.opacity = 1;
 }
 
-function removeWordFromPlayerWords (indexes) {
-    playerWords.splice(indexes["wordIndex"], 1);
-}
-
-function removeWordFromWordBox (indexes) {
+function removeWordFromWordBox (playerWordsLetterIndexes) {
     const wordContainers = document.querySelectorAll(".wordLineContainer");
-    wordContainers[indexes["wordIndex"]].remove();
+    wordContainers[playerWordsLetterIndexes["wordIndex"]].remove();
 }
 
 // Helper functions
-
 
 function getWordIndexes (playerWordsArrayRef, chosenTilesRefInt) {
     // uses fixed array id to get current array indexes
@@ -205,13 +206,6 @@ function getWordIndexes (playerWordsArrayRef, chosenTilesRefInt) {
     }
     return currentIndex;
 }  
-
-function getDOMRef (playerWordsArrayRef) {
-    const indexes = getWordIndexes(playerWordsArrayRef);
-    const wordLines = document.querySelectorAll(".wordLine");
-    const elementRef = wordLines[indexes["wordIndex"]].children[indexes["letterIndex"]]; 
-    return elementRef;
-}
 
 function checkForEmptyWord() {
     let x = 0;

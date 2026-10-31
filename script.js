@@ -71,9 +71,10 @@ function addWord (newWordIndex) {
 
 function removeWord (indexes) {
     if (playerWords.length > 1) {
+        const currentActiveWord = playerWords[activeWord];
         removeWordFromPlayerWords(indexes);
         removeWordFromWordBox(indexes);
-        updateActiveWord(playerWords[indexes["wordIndex"]]);
+        updateActiveWord(playerWords[playerWords.indexOf(currentActiveWord)]);
     }
 }
 

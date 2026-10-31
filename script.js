@@ -56,22 +56,26 @@ function addLetter (ref) {
 
 function removeLetter (elemtentref, tileref) {
     removeTileFromPlayerWords(tileref);
-    removeTileFromWordLine(elemtentref);
+    removeTileFromWordLine(elemtentref, tileref);
     restoreTileToActiveTiles(tileref);
 }
 
-function addWord () {
-    addWordToPlayerWords();
-    addWordToWordsBox();
-    updateActiveWord(playerWords.length - 1);
+function addWord (newWordIndex) {
+    if (!checkForEmptyWord()) {
+        addWordToPlayerWords(newWordIndex);
+        addWordToWordsBox(newWordIndex);
+        updateActiveWord(playerWords[newWordIndex]);
+    }
+    
 }
 
-function removeWord () {
-
-}
-
-function updateActiveWord () {
-
+function removeWord (indexes) {
+    if (playerWords.length > 1) {
+        const currentActiveWord = playerWords[activeWord];
+        removeWordFromPlayerWords(indexes);
+        removeWordFromWordBox(indexes);
+        updateActiveWord(playerWords[playerWords.indexOf(currentActiveWord)]);
+    }
 }
 
 // Functions 
@@ -128,7 +132,7 @@ function removeTileFromActiveTiles(tile) {
     displayedTiles[tile].style.opacity = 0.25;
 }
 
-function removeTileFromWordLine (tile) {
+function removeTileFromWordLine (tile, tileref) {
     tile.remove();
 }
 
@@ -138,9 +142,10 @@ function restoreTileToActiveTiles (tile) {
 
 function removeTileFromPlayerWords (tileref) {
     const tileIndexes = getWordIndexes(tileref);
-    console.log(tileIndexes);
     playerWords[tileIndexes["wordIndex"]].splice(tileIndexes["tileIndex"], 1);
-    console.log(playerWords);
+    if (playerWords[tileIndexes["wordIndex"]].length === 0) {
+        removeWord(tileIndexes);
+    }
 }
 
 function getWordIndexes (tileref) {
@@ -156,11 +161,11 @@ function getWordIndexes (tileref) {
     }
 }   
 
-function addWordToPlayerWords () {
-    playerWords[playerWords.length] = [];
+function addWordToPlayerWords (newWordIndex) {
+    playerWords[newWordIndex] = [];
 }
 
-function addWordToWordsBox () {
+function addWordToWordsBox (newWordIndex) {
     // Add word container
     const newWordContainer = document.createElement("div");
     newWordContainer.className = "wordLineContainer";
@@ -169,6 +174,10 @@ function addWordToWordsBox () {
     // Add active word button
     const newActiveWordButton = document.querySelector(".activeWord").cloneNode(true);
     newWordContainer.appendChild(newActiveWordButton);
+    const currentWordRef = playerWords[newWordIndex];
+    newActiveWordButton.addEventListener("click", function () {
+        updateActiveWord(currentWordRef);
+    })
 
     // Add word line
     const newWordLine = document.createElement("div");
@@ -176,11 +185,44 @@ function addWordToWordsBox () {
     newWordContainer.appendChild(newWordLine);
 }
 
-function updateActiveWord (newActiveWordRef) {
-    const activeWordList = document.querySelectorAll(".activeWord");
-    activeWordList[activeWord].style.opacity = 0.5;
-    activeWord = newActiveWordRef; 
-    activeWordList[activeWord].style.opacity = 1;
+function updateActiveWord (activeWordPlayerWordRef) {
+    let activeWordCurrentIndex = 0;
+    if (activeWordPlayerWordRef) {
+        activeWordCurrentIndex = playerWords.indexOf(activeWordPlayerWordRef);
+    }
+    activeWord = activeWordCurrentIndex; 
+    console.log("new", activeWord)
+    updateActiveWordVisuals();
+}
+
+function updateActiveWordVisuals () {
+    const activeWordDOM = document.querySelectorAll(".activeWord");
+    let x = 0;
+    while (x < activeWordDOM.length) {
+        activeWordDOM[x].style.opacity = 0.5;
+        x++;
+    }
+    activeWordDOM[activeWord].style.opacity = 1;
+}
+
+function removeWordFromPlayerWords (indexes) {
+    playerWords.splice(indexes["wordIndex"], 1);
+}
+
+function removeWordFromWordBox (indexes) {
+    const wordContainers = document.querySelectorAll(".wordLineContainer");
+    wordContainers[indexes["wordIndex"]].remove();
+}
+
+function checkForEmptyWord() {
+    let x = 0;
+    while (x < playerWords.length) {
+        if (playerWords[x].length === 0) {
+            return true; 
+        }
+        x++;
+    }
+    return false;
 }
 
 // Event listener registration
@@ -192,8 +234,13 @@ for (let i = 0; i < displayedTiles.length; i++) {
 }
 
 addWordButton.addEventListener("click", function () {
-    addWord();
+    console.log("current", activeWord);
+    addWord(playerWords.length);
 })
+
+activeWordButton.addEventListener("click", function () {
+    updateActiveWord(playerWords[0]);
+}) 
 
 // JAVSCRIPT RUNTIME
 

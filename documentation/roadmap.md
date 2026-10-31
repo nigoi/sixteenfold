@@ -1,6 +1,6 @@
 # Fifteenfold — Feature Roadmap
 
-**Progress:** Features 1–5 implemented. Features 6–8 partly implemented. Random development tiles are already working (part of Feature 14).
+**Progress:** Stages 1 and 2 complete (Features 1–8). Stage 3 is next. Random development tiles are already working (part of Feature 14).
 
 **Working method:** Build one feature at a time, test it, then commit. `[x]` means implemented; `[ ]` means outstanding. Keep the interface minimal: removing a word's last letter deletes the word, so no separate clear or delete button is planned.
 
@@ -32,18 +32,18 @@
 ### 6. Remove an empty word automatically
 - [x] Remove a word's container and data when its last letter is removed (except the initial word).
 - [x] Return its letters to the pool as they are removed.
-- [ ] Do not change which *other* word is active when deleting an inactive word.
+- [x] Do not change which *other* word is active when deleting an inactive word.
 
 ### 7. Edit an existing word
 - [x] Select any word using its asterisk button.
 - [x] Add and remove letters from that word without creating a duplicate.
 - [x] Find button positions dynamically, rather than relying on stored indices.
-- [ ] Keep the active-word index and button opacity correct after deleting an earlier word.
+- [x] Keep the active-word selection and button opacity correct after deleting an earlier word.
 
 ### 8. Rearrange letters
 - [x] Move letters between words by returning them to the pool and selecting them again.
-- [ ] Make reordering letters within a word straightforward without cluttering the interface.
-- [ ] Test that every tile stays unique through repeated edits and deletions.
+- [x] Reorder letters within a word by removing and reselecting tiles, without additional controls.
+- [x] Keep every tile unique through repeated edits and deletions.
 
 **Milestone:** Build, change and remove several words, then recover all 15 distinct tiles.
 
@@ -128,4 +128,4 @@
 
 Drag and drop, keyboard shortcuts, shareable results, statistics and streaks, a puzzle solver, leaderboards, accounts, timed play and a tactical board mode.
 
-**Next task:** Fix active-word selection when deleting an inactive word, then finish Feature 8.
+**Next task:** Feature 9 — load a small development dictionary, then check and mark words as valid or invalid after each edit.

@@ -31,7 +31,9 @@ const letterDictionary = {
 
 const testdictionary = await getDictionary();
 
-console.log(testdictionary.has("ruby"))
+console.log(testdictionary.size);
+console.log([...testdictionary].slice(0, 20));
+console.log([...testdictionary].filter(word => word.length === 1));
 
 const puzzleLength = 15;
 
@@ -54,7 +56,9 @@ function addLetter (chosenTilesRefInt) {
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
         // Add to playerWords
         activeWord.push(chosenTilesRefInt);
-        
+        console.log(validateWord(activeWord));
+
+
         // DOM
         addTileCopyToActiveWord(chosenTilesRefInt);
         // Make tile transp to show inactive
@@ -66,6 +70,7 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     // Find current index and remove letter
     const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
     playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
+    console.log(validateWord(playerWordArrayRef));
 
     // DOM
     const wordLines = document.querySelectorAll(".wordLine");
@@ -108,10 +113,26 @@ function removeWord (playerWordsLetterIndexes) {
     }
 }
 
+function validateWord (playerWordArrayRef) {
+    const letterArray = []
+    let x = 0;
+    while (x < playerWordArrayRef.length) {
+        letterArray.push(chosenTiles[playerWordArrayRef[x]]["letter"]);
+        x++;
+    }
+    const fullWord = letterArray.join("").toLowerCase();
+    console.log(fullWord);
+    let isValid = testdictionary.has(fullWord);
+    if (!fullWord) {
+        isValid = false;
+    }
+    return isValid;
+}
+
 // Functions 
 
 async function getDictionary () {
-    const response = await fetch("20k.txt");
+    const response = await fetch("40k.txt");
     const dictionary = await response.text();
 
     const splitDictionary = dictionary.split('\n');

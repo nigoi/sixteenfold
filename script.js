@@ -37,7 +37,6 @@ const displayedTiles = document.querySelectorAll(".tile");
 const wordsBox = document.querySelector("#wordsBox");
 const activeWordButton = document.querySelector(".activeWord");
 
-const deleteWordButton = document.querySelector(".deleteWord");
 const addWordButton = document.querySelector(".addWord");
 
 const playerWords = [[]]
@@ -101,6 +100,7 @@ function removeWord (playerWordsLetterIndexes) {
         // Update active word
         updateActiveWord(activeWord);
         updateActiveWordVisuals();
+        debugList();
     }
 }
 

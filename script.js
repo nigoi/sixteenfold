@@ -31,7 +31,7 @@ const letterDictionary = {
 
 const testdictionary = await getDictionary();
 
-const puzzleLength = 15;
+const puzzleLength = 16;
 
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");

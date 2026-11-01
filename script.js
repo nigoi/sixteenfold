@@ -1,38 +1,52 @@
 // Set data
 
 const letterDictionary = {
-    A: 1,
-    B: 3,
-    C: 3,
-    D: 2,
-    E: 1,
-    F: 4,
-    G: 2,
-    H: 4,
-    I: 1,
-    J: 8,
-    K: 5,
-    L: 1,
-    M: 3,
-    N: 1,
-    O: 1,
-    P: 3,
-    Q: 10,
-    R: 1,
-    S: 1,
-    T: 1,
-    U: 1,
-    V: 4,
-    W: 4,
-    X: 8,
-    Y: 4,
-    Z: 10
+    //  > 0 <= 0.38
+    rangeOne: {
+        A: 1,
+        E: 1,
+        I: 1,
+        O: 1
+    },
+    // > 0.38 <= 0.56
+    rangeTwo: {
+        N: 1,
+        T: 1,
+        R: 1
+    },
+    // > 0.56 <= 0.75
+    rangeThree: {
+        L: 1,
+        S: 1,
+        U: 1,
+        D: 2,
+        G: 2
+    },
+    // > 0.75 <= 0.93
+    rangeFour: {
+        B: 3,
+        C: 3,
+        M: 3,
+        P: 3,
+        F: 4,
+        H: 4,
+        V: 4,
+        W: 4,
+        Y: 4
+    },
+    // > 0.93
+    rangeFive: {
+        J: 8,
+        K: 5,
+        Q: 10,
+        X: 8,
+        Z: 10
+    }
 }
 
 const testdictionary = await getDictionary();
 
 const puzzleLength = 16;
-const penalty = 2;
 let score = 0;
 
 const displayedLetters = document.querySelectorAll(".letter");
@@ -148,21 +162,59 @@ async function getDictionary() {
 
 function chooseRandomTiles () {
     // Create an array of 26 letters 
-    const letters = Object.keys(letterDictionary);
-
     const randomTiles = [];
 
-    // Fills array with letter data
-    let x = 0;
-    while (x < puzzleLength) {
-        let letter = letters[(Math.floor(Math.random() * letters.length))];
+    let i = 0;
+    while (i < puzzleLength) {
+        let randomNumber = Math.random();
+        if (randomNumber <= 0.38) {
+            const letters = Object.keys(letterDictionary["rangeOne"]);
+            let letter = letters[(Math.floor(Math.random() * letters.length))];
 
-        randomTiles.push({
-            "letter": letter,
-            "score": letterDictionary[letter],
-        })
-        x++
+            randomTiles.push({
+                "letter": letter,
+                "score": letterDictionary["rangeOne"][letter],
+            });
+        }
+        if (randomNumber > 0.38 && randomNumber <= 0.56) {
+            const letters = Object.keys(letterDictionary["rangeTwo"]);
+            let letter = letters[(Math.floor(Math.random() * letters.length))];
+
+            randomTiles.push({
+                "letter": letter,
+                "score": letterDictionary["rangeTwo"][letter],
+            });
+        }
+        if (randomNumber > 0.56 && randomNumber <= 0.75) {
+            const letters = Object.keys(letterDictionary["rangeThree"]);
+            let letter = letters[(Math.floor(Math.random() * letters.length))];
+
+            randomTiles.push({
+                "letter": letter,
+                "score": letterDictionary["rangeThree"][letter],
+            });
+        }        
+        if (randomNumber > 0.75 && randomNumber <= 0.93) {
+            const letters = Object.keys(letterDictionary["rangeFour"]);
+            let letter = letters[(Math.floor(Math.random() * letters.length))];
+
+            randomTiles.push({
+                "letter": letter,
+                "score": letterDictionary["rangeFour"][letter],
+            });
+        }
+        if (randomNumber > 0.93) {
+            const letters = Object.keys(letterDictionary["rangeFive"]);
+            let letter = letters[(Math.floor(Math.random() * letters.length))];
+
+            randomTiles.push({
+                "letter": letter,
+                "score": letterDictionary["rangeFive"][letter],
+            });            
+        }
+        i++;
     }
+
     return randomTiles; 
 }
 
@@ -312,4 +364,5 @@ activeWordButton.addEventListener("click", function () {
 // JAVSCRIPT RUNTIME
 
 const chosenTiles = chooseRandomTiles();
+console.log(chosenTiles);
 populateGridTiles(chosenTiles);

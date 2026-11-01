@@ -67,9 +67,7 @@
 ### 10. Score individual words — in progress
 - [x] Sum the point values of tiles belonging to each valid word.
 - [x] Exclude invalid words from score calculation.
-- [ ] Apply the **multiplier to the entire word's base score**: `wordScore * (1 + 0.1 * (wordLength - 1))`. The reviewed code still adds the 0.1 increment instead of multiplying the word score.
-- [ ] Display an individual score next to each word, formatted to one decimal place.
-
+- [x] Apply the multiplier to the entire word's base score
 ### 11. Calculate the total — nearly complete
 - [x] Add valid-word contributions together (with no unused-letter deduction).
 - [x] Recalculate and display the total after both letter additions and removals.

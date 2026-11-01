@@ -32,6 +32,7 @@ const letterDictionary = {
 const testdictionary = await getDictionary();
 
 const puzzleLength = 16;
+const penalty = 2;
 
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
@@ -52,6 +53,7 @@ function addLetter (chosenTilesRefInt) {
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
         // Add to playerWords
         activeWord.push(chosenTilesRefInt);
+        calculateScore();
 
         // DOM
         addTileCopyToActiveWord(chosenTilesRefInt);
@@ -65,6 +67,7 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     // Find current index and remove letter
     const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
     playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
+    calculateScore();
 
     // DOM
     const wordLines = document.querySelectorAll(".wordLine");
@@ -109,33 +112,26 @@ function removeWord (playerWordsLetterIndexes) {
     }
 }
 
-function validateWord (playerWordArrayRef) {
-    const letterArray = []
+function calculateScore () {
+    let totalScore = 0;
     let x = 0;
-    while (x < playerWordArrayRef.length) {
-        letterArray.push(chosenTiles[playerWordArrayRef[x]]["letter"]);
-        x++;
-    }
-    const fullWord = letterArray.join("").toLowerCase();
-    let isValid = testdictionary.has(fullWord);
-    if (!fullWord) {
-        isValid = false;
-    }
-    console.log(
-    "Word:", fullWord,
-    "In dictionary:", testdictionary.has(fullWord),
-    );
-    return isValid;
-}
-
-function updateValidationDisplay (playerWordArrayRef) {
-        const validationDisplays = document.querySelectorAll(".activeWord");
-        if (!validateWord(playerWordArrayRef)) {
-            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#ff161a";
+    while (x < playerWords.length) {
+        let wordScore = 0;
+        if (validateWord(playerWords[x])) {
+            let y = 0;
+            while (y < playerWords[x].length) {
+                wordScore += chosenTiles[playerWords[x][y]]["score"];
+                y++;
+            }
         }
         else {
-            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#161aff";
+            wordScore -= playerWords[x].length * penalty;
         }
+        totalScore += wordScore;
+        x++;
+    }
+    totalScore -= (puzzleLength - playerWords.flat().length) * penalty;
+    console.log(totalScore)
 }
 
 // Functions 
@@ -176,6 +172,26 @@ function populateGridTiles (chosenTiles) {
     displayedScore[i].textContent = chosenTiles[i]["score"];
 }
 }
+
+function validateWord (playerWordArrayRef) {
+    const letterArray = []
+    let x = 0;
+    while (x < playerWordArrayRef.length) {
+        letterArray.push(chosenTiles[playerWordArrayRef[x]]["letter"]);
+        x++;
+    }
+    const fullWord = letterArray.join("").toLowerCase();
+    let isValid = testdictionary.has(fullWord);
+    if (!fullWord) {
+        isValid = false;
+    }
+    console.log(
+    "Word:", fullWord,
+    "In dictionary:", testdictionary.has(fullWord),
+    );
+    return isValid;
+}
+
 
 function addTileCopyToActiveWord(chosenTilesRefInt) {
     // Uses reference to update DOM wih cloned tile
@@ -235,6 +251,16 @@ function updateActiveWordVisuals () {
 function removeWordFromWordBox (playerWordsLetterIndexes) {
     const wordContainers = document.querySelectorAll(".wordLineContainer");
     wordContainers[playerWordsLetterIndexes["wordIndex"]].remove();
+}
+
+function updateValidationDisplay (playerWordArrayRef) {
+        const validationDisplays = document.querySelectorAll(".activeWord");
+        if (!validateWord(playerWordArrayRef)) {
+            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#ff161a";
+        }
+        else {
+            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#161aff";
+        }
 }
 
 // Helper functions

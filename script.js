@@ -167,51 +167,30 @@ function chooseRandomTiles () {
     let i = 0;
     while (i < puzzleLength) {
         let randomNumber = Math.random();
+        let randomRange;
         if (randomNumber <= 0.38) {
-            const letters = Object.keys(letterDictionary["rangeOne"]);
-            let letter = letters[(Math.floor(Math.random() * letters.length))];
-
-            randomTiles.push({
-                "letter": letter,
-                "score": letterDictionary["rangeOne"][letter],
-            });
+            randomRange = "rangeOne";
         }
         if (randomNumber > 0.38 && randomNumber <= 0.56) {
-            const letters = Object.keys(letterDictionary["rangeTwo"]);
-            let letter = letters[(Math.floor(Math.random() * letters.length))];
-
-            randomTiles.push({
-                "letter": letter,
-                "score": letterDictionary["rangeTwo"][letter],
-            });
+            randomRange = "rangeTwo";
         }
         if (randomNumber > 0.56 && randomNumber <= 0.75) {
-            const letters = Object.keys(letterDictionary["rangeThree"]);
-            let letter = letters[(Math.floor(Math.random() * letters.length))];
-
-            randomTiles.push({
-                "letter": letter,
-                "score": letterDictionary["rangeThree"][letter],
-            });
-        }        
+           randomRange = "rangeThree";
+        }
         if (randomNumber > 0.75 && randomNumber <= 0.93) {
-            const letters = Object.keys(letterDictionary["rangeFour"]);
-            let letter = letters[(Math.floor(Math.random() * letters.length))];
-
-            randomTiles.push({
-                "letter": letter,
-                "score": letterDictionary["rangeFour"][letter],
-            });
+            randomRange = "rangeFour";
         }
         if (randomNumber > 0.93) {
-            const letters = Object.keys(letterDictionary["rangeFive"]);
-            let letter = letters[(Math.floor(Math.random() * letters.length))];
-
-            randomTiles.push({
-                "letter": letter,
-                "score": letterDictionary["rangeFive"][letter],
-            });            
+            randomRange = "rangeFive";    
         }
+        const letters = Object.keys(letterDictionary[randomRange]);
+        const letter = letters[(Math.floor(Math.random() * letters.length))];
+
+        randomTiles.push({
+            "letter": letter,
+            "score": letterDictionary[randomRange][letter]
+        }); 
+         
         i++;
     }
 

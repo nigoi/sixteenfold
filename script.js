@@ -31,10 +31,6 @@ const letterDictionary = {
 
 const testdictionary = await getDictionary();
 
-console.log(testdictionary.size);
-console.log([...testdictionary].slice(0, 20));
-console.log([...testdictionary].filter(word => word.length === 1));
-
 const puzzleLength = 15;
 
 const displayedLetters = document.querySelectorAll(".letter");

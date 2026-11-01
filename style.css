@@ -96,13 +96,17 @@ h1{
     align-items: center;
 }
 
-.deleteWord{
+.addWord{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 5px;
+    height: 60px;
+    width: 60px;
     border: none;
-    margin-left: 20px;
-    font-size: 30px;
     background: none;
-    appearance: none;
-    
+    font-size: 50px;
+    color: #161aff;
 }
 
 h2{

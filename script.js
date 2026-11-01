@@ -65,7 +65,6 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     // Find current index and remove letter
     const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
     playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
-    console.log(validateWord(playerWordArrayRef));
 
     // DOM
     const wordLines = document.querySelectorAll(".wordLine");
@@ -118,11 +117,14 @@ function validateWord (playerWordArrayRef) {
         x++;
     }
     const fullWord = letterArray.join("").toLowerCase();
-    console.log(fullWord);
     let isValid = testdictionary.has(fullWord);
     if (!fullWord) {
         isValid = false;
     }
+    console.log(
+    "Word:", fullWord,
+    "In dictionary:", testdictionary.has(fullWord),
+    );
     return isValid;
 }
 
@@ -130,7 +132,6 @@ function updateValidationDisplay (playerWordArrayRef) {
         const validationDisplays = document.querySelectorAll(".activeWord");
         if (!validateWord(playerWordArrayRef)) {
             validationDisplays[playerWords.indexOf(activeWord)].style.color = "#ff161a";
-            console.log("false")
         }
         else {
             validationDisplays[playerWords.indexOf(activeWord)].style.color = "#161aff";
@@ -139,11 +140,12 @@ function updateValidationDisplay (playerWordArrayRef) {
 
 // Functions 
 
-async function getDictionary () {
+async function getDictionary() {
     const response = await fetch("40k.txt");
     const dictionary = await response.text();
 
-    const splitDictionary = dictionary.split('\n');
+    const splitDictionary = dictionary.split("\n").map(word => word.trim().toLowerCase());
+
     return new Set(splitDictionary);
 }
 

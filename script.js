@@ -55,7 +55,6 @@ function addLetter (chosenTilesRefInt) {
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
         // Add to playerWords
         activeWord.push(chosenTilesRefInt);
-        score = 0;
         score = calculateScore();
 
         // DOM
@@ -71,8 +70,7 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     // Find current index and remove letter
     const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
     playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
-    score = 0;
-    calculateScore();
+    score = calculateScore();
 
     // DOM
     playerScoreBox.textContent = score;
@@ -129,8 +127,9 @@ function calculateScore () {
                 wordScore += chosenTiles[playerWords[x][y]]["score"];
                 y++;
             }
+            const multiplier = 1 + (0.1 * (playerWords[x].length - 1));
+            totalScore += wordScore * multiplier;
         }
-        totalScore += wordScore * 1 + (0.1 * (playerWords[x].length - 1));
         x++;
     }
     return Math.round(totalScore * 10) / 10;
@@ -258,10 +257,10 @@ function removeWordFromWordBox (playerWordsLetterIndexes) {
 function updateValidationDisplay (playerWordArrayRef) {
         const validationDisplays = document.querySelectorAll(".activeWord");
         if (!validateWord(playerWordArrayRef)) {
-            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#ff161a";
+            validationDisplays[playerWords.indexOf(playerWordArrayRef)].style.color = "#ff161a";
         }
         else {
-            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#161aff";
+            validationDisplays[playerWords.indexOf(playerWordArrayRef)].style.color = "#161aff";
         }
 }
 

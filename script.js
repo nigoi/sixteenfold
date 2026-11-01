@@ -52,13 +52,12 @@ function addLetter (chosenTilesRefInt) {
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
         // Add to playerWords
         activeWord.push(chosenTilesRefInt);
-        console.log(validateWord(activeWord));
-
 
         // DOM
         addTileCopyToActiveWord(chosenTilesRefInt);
         // Make tile transp to show inactive
         displayedTiles[chosenTilesRefInt].style.opacity = 0.25;
+        updateValidationDisplay(activeWord);
     }
 }
 
@@ -73,6 +72,8 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     wordLines[indexes["wordIndex"]].children[indexes["letterIndex"]].remove();
     // Make tile opaque to show active
     displayedTiles[indexes["displayedLettersIndex"]].style.opacity = 1;
+
+    updateValidationDisplay(playerWordArrayRef);
     
     // If word is empty remove word
     if (playerWords[indexes["wordIndex"]].length === 0) {
@@ -123,6 +124,17 @@ function validateWord (playerWordArrayRef) {
         isValid = false;
     }
     return isValid;
+}
+
+function updateValidationDisplay (playerWordArrayRef) {
+        const validationDisplays = document.querySelectorAll(".activeWord");
+        if (!validateWord(playerWordArrayRef)) {
+            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#ff161a";
+            console.log("false")
+        }
+        else {
+            validationDisplays[playerWords.indexOf(activeWord)].style.color = "#161aff";
+        }
 }
 
 // Functions 

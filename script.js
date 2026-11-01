@@ -33,10 +33,12 @@ const testdictionary = await getDictionary();
 
 const puzzleLength = 16;
 const penalty = 2;
+let score = 0;
 
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
+const playerScoreBox = document.querySelector(".playerScore");
 const wordsBox = document.querySelector("#wordsBox");
 const activeWordButton = document.querySelector(".activeWord");
 
@@ -53,9 +55,11 @@ function addLetter (chosenTilesRefInt) {
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
         // Add to playerWords
         activeWord.push(chosenTilesRefInt);
-        calculateScore();
+        score = 0;
+        score = calculateScore();
 
         // DOM
+        playerScoreBox.textContent = score;
         addTileCopyToActiveWord(chosenTilesRefInt);
         // Make tile transp to show inactive
         displayedTiles[chosenTilesRefInt].style.opacity = 0.25;
@@ -67,9 +71,11 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     // Find current index and remove letter
     const indexes = getWordIndexes(playerWordArrayRef, chosenTilesRefInt);
     playerWords[indexes["wordIndex"]].splice(indexes["letterIndex"], 1);
+    score = 0;
     calculateScore();
 
     // DOM
+    playerScoreBox.textContent = score;
     const wordLines = document.querySelectorAll(".wordLine");
     wordLines[indexes["wordIndex"]].children[indexes["letterIndex"]].remove();
     // Make tile opaque to show active
@@ -124,14 +130,10 @@ function calculateScore () {
                 y++;
             }
         }
-        else {
-            wordScore -= playerWords[x].length * penalty;
-        }
-        totalScore += wordScore;
+        totalScore += wordScore * 1 + (0.1 * (playerWords[x].length - 1));
         x++;
     }
-    totalScore -= (puzzleLength - playerWords.flat().length) * penalty;
-    console.log(totalScore)
+    return Math.round(totalScore * 10) / 10;
 }
 
 // Functions 

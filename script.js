@@ -64,16 +64,27 @@ let activeWord = playerWords[0];
 function addLetter (chosenTilesRefInt) {
     // Checks if tile is already in playerWords. Prevents duplication.
     if (!playerWords.flat().includes(chosenTilesRefInt)) {
-        // Add to playerWords
+        // Update letters
         activeWord.push(chosenTilesRefInt);
-        score = calculateScore();
-
-        // DOM
-        playerScoreBox.textContent = score;
+        // Update letters DOM
         addTileCopyToActiveWord(chosenTilesRefInt);
-        // Make tile transp to show inactive
         displayedTiles[chosenTilesRefInt].style.opacity = 0.25;
-        updateValidationDisplay(activeWord);
+
+        
+        if (!checkForEmptyWord()) {
+            // Update empty word
+            playerWords[playerWords.length] = [];
+            // Update empty word DOM
+            addWordToWordsBox();
+        }
+
+        // Update score
+        score = calculateScore();
+        // Update score DOM
+        playerScoreBox.textContent = score;
+
+        // Update validation visual
+        updateValidationDisplay();
     }
 }
 
@@ -99,21 +110,6 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
             console.log("should remove");
             removeWord(indexes);
         }
-    }
-}
-
-function addWord () {
-    // Only adds word if all words full
-    if (checkForEmptyWord() <= 0) {
-        playerWords[playerWords.length] = [];
-        const newWordArrayRef = playerWords[playerWords.length - 1];
-
-        // DOM
-        addWordToWordsBox(newWordArrayRef);
-
-        // Update active word
-        updateActiveWord(newWordArrayRef);
-        updateActiveWordVisuals();
     }
 }
 
@@ -173,6 +169,28 @@ function populateGridTiles (chosenTiles) {
 }
 }
 
+function addWordToWordsBox (arrayRef = playerWords[playerWords.length - 1]) {
+    // Add word container
+    const newWordContainer = document.createElement("div");
+    newWordContainer.className = "wordLineContainer";
+    wordsBox.appendChild(newWordContainer);
+
+    // Add active word button
+    const newActiveWordButton = document.querySelector(".activeWord").cloneNode(true);
+    newWordContainer.appendChild(newActiveWordButton);
+    newActiveWordButton.style.opacity = 0.5;
+
+    newActiveWordButton.addEventListener("click", function () {
+        updateActiveWord(arrayRef);
+        updateActiveWordVisuals();
+    })
+
+    // Add word line
+    const newWordLine = document.createElement("div");
+    newWordLine.className = "wordLine";
+    newWordContainer.appendChild(newWordLine);
+}
+
 function removeWord (playerWordsLetterIndexes) {
     if (playerWords.length > 1) {
         playerWords.splice(playerWordsLetterIndexes["wordIndex"], 1);
@@ -206,11 +224,11 @@ function calculateScore () {
     return Math.round(totalScore * 10) / 10;
 }
 
-function validateWord (playerWordArrayRef) {
+function validateWord (arrayRef = activeWord) {
     const letterArray = []
     let x = 0;
-    while (x < playerWordArrayRef.length) {
-        letterArray.push(chosenTiles[playerWordArrayRef[x]]["letter"]);
+    while (x < arrayRef.length) {
+        letterArray.push(chosenTiles[arrayRef[x]]["letter"]);
         x++;
     }
     const fullWord = letterArray.join("").toLowerCase();
@@ -218,6 +236,7 @@ function validateWord (playerWordArrayRef) {
     if (!fullWord) {
         isValid = false;
     }
+    console.log(x, isValid);
     return isValid;
 }
 
@@ -235,27 +254,6 @@ function addTileCopyToActiveWord(chosenTilesRefInt) {
         // Give func direct reference to current array
         removeLetter(currentActiveWord, chosenTilesRefInt);
     })
-}
-
-function addWordToWordsBox (newWordArrayRef) {
-    // Add word container
-    const newWordContainer = document.createElement("div");
-    newWordContainer.className = "wordLineContainer";
-    wordsBox.appendChild(newWordContainer);
-
-    // Add active word button
-    const newActiveWordButton = document.querySelector(".activeWord").cloneNode(true);
-    newWordContainer.appendChild(newActiveWordButton);
-    const currentWordRef = newWordArrayRef;
-    newActiveWordButton.addEventListener("click", function () {
-        updateActiveWord(currentWordRef);
-        updateActiveWordVisuals();
-    })
-
-    // Add word line
-    const newWordLine = document.createElement("div");
-    newWordLine.className = "wordLine";
-    newWordContainer.appendChild(newWordLine);
 }
 
 function updateActiveWord (newWordArrayRef) {
@@ -281,13 +279,13 @@ function removeWordFromWordBox (playerWordsLetterIndexes) {
     wordContainers[playerWordsLetterIndexes["wordIndex"]].remove();
 }
 
-function updateValidationDisplay (playerWordArrayRef) {
+function updateValidationDisplay (arrayRef = activeWord) {
         const validationDisplays = document.querySelectorAll(".activeWord");
-        if (!validateWord(playerWordArrayRef)) {
-            validationDisplays[playerWords.indexOf(playerWordArrayRef)].style.color = "#ff161a";
+        if (!validateWord(arrayRef)) {
+            validationDisplays[playerWords.indexOf(arrayRef)].style.color = "#ff161a";
         }
         else {
-            validationDisplays[playerWords.indexOf(playerWordArrayRef)].style.color = "#161aff";
+            validationDisplays[playerWords.indexOf(arrayRef)].style.color = "#161aff";
         }
 }
 
@@ -317,7 +315,11 @@ function checkForEmptyWord() {
 }
 
 function debugList (extraInfo) {
-    console.log("playerWords: ", playerWords, "activeWord: ", activeWord, extraInfo)
+    console.log(
+        "playerWords: ", playerWords, 
+        "activeWord: ", activeWord,
+        extraInfo
+    )
 }
 
 // Event listener registration
@@ -327,10 +329,6 @@ for (let i = 0; i < displayedTiles.length; i++) {
         addLetter(i);
     })
 }
-
-addWordButton.addEventListener("click", function () {
-    addWord();
-})
 
 activeWordButton.addEventListener("click", function () {
     updateActiveWord(playerWords[0]);

@@ -1,7 +1,7 @@
 ## Refactor 2
 
-[] - remove addWord button 
-[] - make addWord automatic
+[x] - remove addWord button 
+[x] - make addWord automatic
 
 [] - seperate data and DOM updates
 

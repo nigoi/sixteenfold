@@ -112,7 +112,9 @@ h1{
 
 .playerScore{
     display: flex;
+    flex-direction: column;
     align-content: center;
+    align-items: center;
     justify-content: center;
     min-height: 60px;
     min-width: 120px;
@@ -120,6 +122,14 @@ h1{
     border: 1px solid #161aff;
     border-bottom: 2px solid #161aff;
     font-size: 40px;
+}
+
+#submit{
+    background-color: #161aff;
+    color: #e7e5e1;
+    border: none;
+    min-width: 120px;
+    font-size: 30px;
 }
 
 h2{

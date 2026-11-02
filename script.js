@@ -46,20 +46,17 @@ const letterDictionary = {
 
 const testdictionary = await getDictionary();
 
-const puzzleLength = 16;
-let score = 0;
-
 const displayedLetters = document.querySelectorAll(".letter");
 const displayedScore = document.querySelectorAll(".score");
 const displayedTiles = document.querySelectorAll(".tile");
 const playerScoreBox = document.querySelector(".playerScore");
 const wordsBox = document.querySelector("#wordsBox");
 const activeWordButton = document.querySelector(".activeWord");
-
 const addWordButton = document.querySelector(".addWord");
 
+const puzzleLength = 16;
+let score = 0;
 const playerWords = [[]]
-
 let activeWord = playerWords[0];
 
 // Action Functions
@@ -97,13 +94,17 @@ function removeLetter (playerWordArrayRef, chosenTilesRefInt) {
     
     // If word is empty remove word
     if (playerWords[indexes["wordIndex"]].length === 0) {
-        removeWord(indexes);
+        console.log("checking", indexes, "empty word", checkForEmptyWord());
+        if (checkForEmptyWord() > 1) {
+            console.log("should remove");
+            removeWord(indexes);
+        }
     }
 }
 
 function addWord () {
     // Only adds word if all words full
-    if (!checkForEmptyWord()) {
+    if (checkForEmptyWord() <= 0) {
         playerWords[playerWords.length] = [];
         const newWordArrayRef = playerWords[playerWords.length - 1];
 
@@ -114,6 +115,62 @@ function addWord () {
         updateActiveWord(newWordArrayRef);
         updateActiveWordVisuals();
     }
+}
+
+// Functions 
+
+async function getDictionary() {
+    const response = await fetch("40k.txt");
+    const dictionary = await response.text();
+
+    const splitDictionary = dictionary.split("\n").map(word => word.trim().toLowerCase());
+
+    return new Set(splitDictionary);
+}
+
+function chooseRandomTiles () {
+    // Create an array of 16 letters using weight probability
+    const randomTiles = [];
+
+    let i = 0;
+    while (i < puzzleLength) {
+        let randomNumber = Math.random();
+        let randomRange;
+        if (randomNumber <= 0.38) {
+            randomRange = "rangeOne";
+        }
+        if (randomNumber > 0.38 && randomNumber <= 0.56) {
+            randomRange = "rangeTwo";
+        }
+        if (randomNumber > 0.56 && randomNumber <= 0.75) {
+           randomRange = "rangeThree";
+        }
+        if (randomNumber > 0.75 && randomNumber <= 0.93) {
+            randomRange = "rangeFour";
+        }
+        if (randomNumber > 0.93) {
+            randomRange = "rangeFive";    
+        }
+        const letters = Object.keys(letterDictionary[randomRange]);
+        const letter = letters[(Math.floor(Math.random() * letters.length))];
+
+        randomTiles.push({
+            "letter": letter,
+            "score": letterDictionary[randomRange][letter]
+        }); 
+
+        i++;
+    }
+    // Add check function that calls this function again if it fails
+    return randomTiles; 
+}
+
+function populateGridTiles (chosenTiles) {
+    // Takes data from chosenTiles and fills DOM tiles
+    for (let i = 0; i < displayedLetters.length; i++) {
+    displayedLetters[i].textContent = chosenTiles[i]["letter"];
+    displayedScore[i].textContent = chosenTiles[i]["score"];
+}
 }
 
 function removeWord (playerWordsLetterIndexes) {
@@ -149,62 +206,6 @@ function calculateScore () {
     return Math.round(totalScore * 10) / 10;
 }
 
-// Functions 
-
-async function getDictionary() {
-    const response = await fetch("40k.txt");
-    const dictionary = await response.text();
-
-    const splitDictionary = dictionary.split("\n").map(word => word.trim().toLowerCase());
-
-    return new Set(splitDictionary);
-}
-
-function chooseRandomTiles () {
-    // Create an array of 26 letters 
-    const randomTiles = [];
-
-    let i = 0;
-    while (i < puzzleLength) {
-        let randomNumber = Math.random();
-        let randomRange;
-        if (randomNumber <= 0.38) {
-            randomRange = "rangeOne";
-        }
-        if (randomNumber > 0.38 && randomNumber <= 0.56) {
-            randomRange = "rangeTwo";
-        }
-        if (randomNumber > 0.56 && randomNumber <= 0.75) {
-           randomRange = "rangeThree";
-        }
-        if (randomNumber > 0.75 && randomNumber <= 0.93) {
-            randomRange = "rangeFour";
-        }
-        if (randomNumber > 0.93) {
-            randomRange = "rangeFive";    
-        }
-        const letters = Object.keys(letterDictionary[randomRange]);
-        const letter = letters[(Math.floor(Math.random() * letters.length))];
-
-        randomTiles.push({
-            "letter": letter,
-            "score": letterDictionary[randomRange][letter]
-        }); 
-         
-        i++;
-    }
-
-    return randomTiles; 
-}
-
-function populateGridTiles (chosenTiles) {
-    // Takes data from chosenTiles and fills DOM tiles
-    for (let i = 0; i < displayedLetters.length; i++) {
-    displayedLetters[i].textContent = chosenTiles[i]["letter"];
-    displayedScore[i].textContent = chosenTiles[i]["score"];
-}
-}
-
 function validateWord (playerWordArrayRef) {
     const letterArray = []
     let x = 0;
@@ -217,13 +218,8 @@ function validateWord (playerWordArrayRef) {
     if (!fullWord) {
         isValid = false;
     }
-    console.log(
-    "Word:", fullWord,
-    "In dictionary:", testdictionary.has(fullWord),
-    );
     return isValid;
 }
-
 
 function addTileCopyToActiveWord(chosenTilesRefInt) {
     // Uses reference to update DOM wih cloned tile
@@ -310,13 +306,14 @@ function getWordIndexes (playerWordsArrayRef, chosenTilesRefInt) {
 
 function checkForEmptyWord() {
     let x = 0;
+    let emptyWords = 0;
     while (x < playerWords.length) {
         if (playerWords[x].length === 0) {
-            return true; 
+            emptyWords += 1; 
         }
         x++;
     }
-    return false;
+    return emptyWords;
 }
 
 function debugList (extraInfo) {
@@ -343,5 +340,4 @@ activeWordButton.addEventListener("click", function () {
 // JAVSCRIPT RUNTIME
 
 const chosenTiles = chooseRandomTiles();
-console.log(chosenTiles);
 populateGridTiles(chosenTiles);

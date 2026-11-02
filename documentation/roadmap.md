@@ -11,7 +11,6 @@
 - Valid words score their **base letter-point sum multiplied by their length multiplier**.
 - **Multiplier = 1 + 0.1 × (number of letters − 1)**. Examples: 1 letter ×1.0; 2 ×1.1; 4 ×1.3; 16 ×2.5.
 - Invalid words score **zero**.
-- **No penalty** for unused tiles.
 - Total score is the **sum of all valid word scores**, shown to one decimal place.
 
 ## Stage 1 — Build and edit a word
@@ -68,11 +67,12 @@
 - [x] Sum the point values of tiles belonging to each valid word.
 - [x] Exclude invalid words from score calculation.
 - [x] Apply the multiplier to the entire word's base score
+
 ### 11. Calculate the total — nearly complete
 - [x] Add valid-word contributions together (with no unused-letter deduction).
 - [x] Recalculate and display the total after both letter additions and removals.
 - [x] Round the total to one decimal place.
-- [ ] Verify totals after the length-multiplier correction, including invalid words and repeated edits.
+- [x] Verify totals after the length-multiplier correction, including invalid words and repeated edits.
 
 ### 12. Submit a game — not started
 - [ ] Add a final submit action and show a breakdown of words, individual scores and total score (no penalties).
@@ -89,7 +89,7 @@
 
 ### 14. Generate playable letter sets
 - [x] Generate 16 random letters, with repeats and point values, for development.
-- [ ] Weight letters by frequency.
+- [x] Weight letters by frequency.
 - [ ] Enforce a playable vowel/consonant range.
 
 ### 15. Tune gameplay

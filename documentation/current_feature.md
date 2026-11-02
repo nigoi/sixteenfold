@@ -1,11 +1,8 @@
-### 5. Keep a word and start another
+## Refactor 2
 
-- [x] Add a control to keep the current word in the arrangement.
-- [x] Display kept words separately from the current word.
-- [x] Start a new empty word without releasing tiles in kept words.
-- [x] Prevent empty words from being added.
+[] - remove addWord button 
+[] - make addWord automatic
 
-**Done when:** two words can coexist and share no tile identities.
+[] - seperate data and DOM updates
 
-
-Fix active word selection when deleting words.
+[] - rewrite loops and function conditions

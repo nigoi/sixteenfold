@@ -29,7 +29,7 @@ h1{
     font-size: 40px;
 }
 
-#letter-pool{
+#letterPool{
     display: grid;
     grid-template-columns: repeat(4, 60px);
     gap: 5px;

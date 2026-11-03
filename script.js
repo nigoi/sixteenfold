@@ -130,6 +130,19 @@ function handleRemoveLetter (tileRef) {
     renderLetterPool();
 
     const emptyWords = checkForEmptyWord();
+    if (emptyWords.length > 1) {
+        for (let empty of emptyWords) {
+            if (empty != activeWord) {
+                const emptyIndex = playerWords.indexOf(empty);
+                // Update game state
+                playerWords.splice(emptyIndex, 1);
+                // Update DOM
+                const wordLines = document.querySelectorAll(".wordLineContainer");
+                wordLines[emptyIndex].remove();
+                break
+            }
+        }
+    }
 
     // Update DOM
     renderValidation();
@@ -330,9 +343,6 @@ function getIndexes (refIndex, wordsArray = playerWords) {
 }
 
 // Helper functions
-
-
-
 
 function debugList (extraInfo) {
     console.log(

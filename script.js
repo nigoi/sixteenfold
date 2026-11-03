@@ -77,16 +77,16 @@ letterPool.addEventListener("click", function (event) {
 
 wordsBox.addEventListener("click", function (event) {
     // Check what clicked 
-    const objectClicked = event.target;
-    const objectArray = Array.from(wordsBox.children);
-    const index = objectArray.indexOf(objectClicked.closest(".wordLineContainer"));
+    const tile = event.target.closest(".tile");
+    const activeWord = event.target.closest(".activeWord");
 
-    if (objectClicked.matches(".tile")) {
-        removeLetter(index);
+    if (tile) {
+        const tileIndex = Number(tile.dataset.tileIndex);
+        handleRemoveLetter(tileIndex);
     }
 
-    if (objectClicked.matches(".activeWord")) {
-        updateActiveWord(index);
+    if (activeWord) {
+        handleActiveWord();
     }
 })
 
@@ -110,16 +110,23 @@ function handleAddLetter (tileIndex, playerWord = activeWord) {
         
         // Update DOM
         renderValidation();
+
         // Update game state
-        
         score = calculateScore();
+        // Update DOM
         playerScoreBox.textContent = score;
     }
 }
 
-function removeLetter (tileIndex) {
+function handleRemoveLetter (tileRef) {
+    const indexes = getIndexes(tileRef);
+    // Update game state 
+    playerWords[indexes["word"]].splice([indexes["letter"]], 1);
+    // Update DOM
+    renderPlayerLetters();
+    renderLetterPool();
+}   
 
-}
 
 // Functions 
 
@@ -200,10 +207,10 @@ function renderPlayerLetters (words = playerWords) {
 
         for (let x = 0; x < words[i].length; x++) {
             const tileClone = displayedTiles[words[i][x]].cloneNode(true);
+            wordsDisplay[i].appendChild(tileClone);
             tileClone.style.opacity = 1;
             tileClone.style.marginRight = "3px";
-
-            wordsDisplay[i].appendChild(tileClone);
+            tileClone.dataset.tileIndex = words[i][x];
         } 
     }
 }
@@ -282,7 +289,18 @@ function calculateScore () {
     return Math.round(totalScore * 10) / 10;
 }
 
+function getIndexes (refIndex, wordsArray = playerWords) {
+    const indexes = {};
 
+    for (let x = 0; x < wordsArray.length; x++) {
+        if (wordsArray[x].includes(refIndex)) {
+            indexes["word"] = x;
+            indexes["letter"] = wordsArray[x].indexOf(refIndex);
+            break
+        }
+    }
+    return indexes;
+}
 
 
 
@@ -309,16 +327,6 @@ function updateActiveWordVisuals () {
 
 // Helper functions
 
-function getWordIndexes (playerWordsArrayRef, chosenTilesRefInt) {
-    // uses fixed array id to get current array indexes
-    const derivedWordIndex = playerWords.indexOf(playerWordsArrayRef);
-    const currentIndex = {
-        wordIndex: derivedWordIndex,
-        letterIndex: playerWords[derivedWordIndex].indexOf(chosenTilesRefInt),
-        displayedLettersIndex: chosenTilesRefInt
-    }
-    return currentIndex;
-}  
 
 
 

@@ -85,8 +85,11 @@ wordsBox.addEventListener("click", function (event) {
         handleRemoveLetter(tileIndex);
     }
 
-    if (activeWord) {
-        handleActiveWord();
+    else if (activeWord) {
+        const container = activeWord.closest(".wordLineContainer");
+        const index = Array.from(wordsBox.children).indexOf(container);
+
+        handleActiveWord(index);
     }
 })
 
@@ -101,9 +104,9 @@ function handleAddLetter (tileIndex, playerWord = activeWord) {
         renderPlayerLetters();
         renderLetterPool();
 
-        if (checkForEmptyWord() <=0) {
+        if (checkForEmptyWord().length <= 0) {
             // Update game state
-            playerWords[playerWord.length] = [];
+            playerWords.push([]);
             // Update Dom
             renderNewWord();
         }     
@@ -125,8 +128,22 @@ function handleRemoveLetter (tileRef) {
     // Update DOM
     renderPlayerLetters();
     renderLetterPool();
+
+    const emptyWords = checkForEmptyWord();
+
+    // Update DOM
+    renderValidation();
+
+    // Update game state
+    score = calculateScore();
+    // Update DOM
+    playerScoreBox.textContent = score;
 }   
 
+function handleActiveWord (buttonIndex) {
+    activeWord = playerWords[buttonIndex];
+    renderActiveWord();
+}
 
 // Functions 
 
@@ -242,19 +259,29 @@ function renderValidation (arrayRef = activeWord) {
         }
 }
 
+function renderActiveWord (ref = activeWord, wordsArray = playerWords) {
+    const buttons = document.querySelectorAll(".activeWord");
+    let x = 0;
+    while (x < buttons.length) {
+        buttons[x].style.opacity = 0.5;
+        x++;
+    }
+    buttons[wordsArray.indexOf(ref)].style.opacity = 1;
+}
+
 
 // Pure functions
 
 function checkForEmptyWord(wordList = playerWords) {
     let emptyWords = [];
 
-    for (let i = 0; i < playerWords.length; i++) {
-        if (playerWords[i].length === 0) {
-            emptyWords.push(i);
+    for (let i = 0; i < wordList.length; i++) {
+        if (wordList[i].length === 0) {
+            emptyWords.push(wordList[i]);
             
         }
     }
-    return emptyWords.length;
+    return emptyWords;
 }
 
 function validateWord (arrayRef = activeWord) {
@@ -301,29 +328,6 @@ function getIndexes (refIndex, wordsArray = playerWords) {
     }
     return indexes;
 }
-
-
-
-
-
-
-
-function removeWordDOM (word) {
-    const wordContainers = document.querySelectorAll(".wordLineContainer");
-    wordContainers[word].remove();
-}
-
-function updateActiveWordVisuals () {
-    const activeWordDOM = document.querySelectorAll(".activeWord");
-    let x = 0;
-    while (x < activeWordDOM.length) {
-        activeWordDOM[x].style.opacity = 0.5;
-        x++;
-    }
-    activeWordDOM[playerWords.indexOf(activeWord)].style.opacity = 1;
-}
-
-
 
 // Helper functions
 

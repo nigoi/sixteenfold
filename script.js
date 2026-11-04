@@ -72,7 +72,9 @@ letterPool.addEventListener("click", function (event) {
     const tile = Array.from(letterPool.children);
     const tileIndex = tile.indexOf(event.target.closest(".tile"));
 
-    handleAddLetter(tileIndex);
+    if (tile) {
+        handleAddLetter(tileIndex);
+    }
 })
 
 wordsBox.addEventListener("click", function (event) {
@@ -173,8 +175,7 @@ function chooseRandomTiles (tileArray = letterDictionary) {
     // Create an array of 16 letters using weight probability
     const randomTiles = [];
 
-    let i = 0;
-    while (i < puzzleLength) {
+    for (let x = 0; x < puzzleLength; x++) {
         let randomNumber = Math.random();
         let randomRange;
         if (randomNumber <= 0.38) {
@@ -192,15 +193,13 @@ function chooseRandomTiles (tileArray = letterDictionary) {
         if (randomNumber > 0.93) {
             randomRange = "rangeFive";    
         }
-        const letters = Object.keys(letterDictionary[randomRange]);
+        const letters = Object.keys(tileArray[randomRange]);
         const letter = letters[(Math.floor(Math.random() * letters.length))];
 
         randomTiles.push({
             "letter": letter,
-            "score": letterDictionary[randomRange][letter]
+            "score": tileArray[randomRange][letter]
         }); 
-
-        i++;
     }
     // Add check function that calls this function again if it fails
     return randomTiles; 
@@ -262,14 +261,18 @@ function renderNewWord () {
     newWordContainer.appendChild(newWordLine);
 }
 
-function renderValidation (arrayRef = activeWord) {
-        const validationDisplays = document.querySelectorAll(".activeWord");
-        if (!validateWord(arrayRef)) {
-            validationDisplays[playerWords.indexOf(arrayRef)].style.color = "#ff161a";
+function renderValidation (arrayRef = playerWords) {
+    const validationDisplays = document.querySelectorAll(".activeWord");
+
+    for (let word of arrayRef) {
+        if (!validateWord(word)) {
+        validationDisplays[arrayRef.indexOf(word)].style.color = "#ff161a";
         }
         else {
-            validationDisplays[playerWords.indexOf(arrayRef)].style.color = "#161aff";
+            validationDisplays[arrayRef.indexOf(word)].style.color = "#161aff";
         }
+    }
+        
 }
 
 function renderActiveWord (ref = activeWord, wordsArray = playerWords) {
@@ -297,11 +300,11 @@ function checkForEmptyWord(wordList = playerWords) {
     return emptyWords;
 }
 
-function validateWord (arrayRef = activeWord) {
+function validateWord (arrayRef, tilset = chosenTiles) {
     const letterArray = []
 
     for (let x = 0; x < arrayRef.length; x++) {
-        letterArray.push(chosenTiles[arrayRef[x]]["letter"]);
+        letterArray.push(tilset[arrayRef[x]]["letter"]);
     }
 
     const fullWord = letterArray.join("").toLowerCase();
@@ -310,18 +313,18 @@ function validateWord (arrayRef = activeWord) {
     return isValid;
 }
 
-function calculateScore () {
+function calculateScore (refArray = playerWords, tilset = chosenTiles) {
     let totalScore = 0;
     let x = 0;
-    while (x < playerWords.length) {
+    while (x < refArray.length) {
         let wordScore = 0;
-        if (validateWord(playerWords[x])) {
+        if (validateWord(refArray[x])) {
             let y = 0;
-            while (y < playerWords[x].length) {
-                wordScore += chosenTiles[playerWords[x][y]]["score"];
+            while (y < refArray[x].length) {
+                wordScore += tilset[refArray[x][y]]["score"];
                 y++;
             }
-            const multiplier = 1 + (0.1 * (playerWords[x].length - 1));
+            const multiplier = 1 + (0.1 * (refArray[x].length - 1));
             totalScore += wordScore * multiplier;
         }
         x++;

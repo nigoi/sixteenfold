@@ -11,201 +11,197 @@ let gameState = {
 */
 
 const letterDictionary = {
-    //  > 0 <= 0.38
-    rangeOne: {
-        A: 1,
-        E: 1,
-        I: 1,
-        O: 1
-    },
-    // > 0.38 <= 0.56
-    rangeTwo: {
-        N: 1,
-        T: 1,
-        R: 1
-    },
-    // > 0.56 <= 0.75
-    rangeThree: {
-        L: 1,
-        S: 1,
-        U: 1,
-        D: 2,
-        G: 2
-    },
-    // > 0.75 <= 0.93
-    rangeFour: {
-        B: 3,
-        C: 3,
-        M: 3,
-        P: 3,
-        F: 4,
-        H: 4,
-        V: 4,
-        W: 4,
-        Y: 4
-    },
-    // > 0.93
-    rangeFive: {
-        J: 8,
-        K: 5,
-        Q: 10,
-        X: 8,
-        Z: 10
-    }
-}
+  //  > 0 <= 0.38
+  rangeOne: {
+    A: 1,
+    E: 1,
+    I: 1,
+    O: 1,
+  },
+  // > 0.38 <= 0.56
+  rangeTwo: {
+    N: 1,
+    T: 1,
+    R: 1,
+  },
+  // > 0.56 <= 0.75
+  rangeThree: {
+    L: 1,
+    S: 1,
+    U: 1,
+    D: 2,
+    G: 2,
+  },
+  // > 0.75 <= 0.93
+  rangeFour: {
+    B: 3,
+    C: 3,
+    M: 3,
+    P: 3,
+    F: 4,
+    H: 4,
+    V: 4,
+    W: 4,
+    Y: 4,
+  },
+  // > 0.93
+  rangeFive: {
+    J: 8,
+    K: 5,
+    Q: 10,
+    X: 8,
+    Z: 10,
+  },
+};
 
 // Main functions
 
-export function addLetter (gameState, tileIndex, dictionary) {
-    const state = structuredClone(gameState);
-    
-    state["playerWords"][state["activeWord"]].push(tileIndex);
+export function addLetter(gameState, tileIndex, dictionary) {
+  const state = structuredClone(gameState);
 
-    state["playerWords"] = manageEmptyWords(state);
-    
-    state["score"] = calculateScore(state, dictionary);
+  state["playerWords"][state["activeWord"]].push(tileIndex);
 
-    return state;
+  state["playerWords"] = manageEmptyWords(state);
+
+  state["score"] = calculateScore(state, dictionary);
+
+  return state;
 }
 
-export function removeLetter (gameState, index, dictionary) {
-    const state = structuredClone(gameState);
+export function removeLetter(gameState, index, dictionary) {
+  const state = structuredClone(gameState);
 
-    const indexes = getIndexes(index, state["playerWords"]);
+  const indexes = getIndexes(index, state["playerWords"]);
 
-    state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
+  state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
 
-    state["playerWords"] = manageEmptyWords(state);
+  state["playerWords"] = manageEmptyWords(state);
 
-    state["score"] = calculateScore(state, dictionary);
-    
-    return state;
+  state["score"] = calculateScore(state, dictionary);
+
+  return state;
 }
 
 // Functions
 
-export function chooseRandomTiles (state) {
-    // Create an array of 16 letters using weight probability
-    const randomTiles = [];
+export function chooseRandomTiles(state) {
+  // Create an array of 16 letters using weight probability
+  const randomTiles = [];
 
-    for (let x = 0; x < state["puzzleLength"] ; x++) {
-
-        let randomNumber = Math.random();
-        let randomRange;
-        if (randomNumber <= 0.38) {
-            randomRange = "rangeOne";
-        }
-        if (randomNumber > 0.38 && randomNumber <= 0.56) {
-            randomRange = "rangeTwo";
-        }
-        if (randomNumber > 0.56 && randomNumber <= 0.75) {
-           randomRange = "rangeThree";
-        }
-        if (randomNumber > 0.75 && randomNumber <= 0.93) {
-            randomRange = "rangeFour";
-        }
-        if (randomNumber > 0.93) {
-            randomRange = "rangeFive";    
-        }
-        const letters = Object.keys(letterDictionary[randomRange]);
-        const letter = letters[(Math.floor(Math.random() * letters.length))];
-
-        randomTiles.push({
-            "letter": letter,
-            "score": letterDictionary[randomRange][letter]
-        }); 
+  for (let x = 0; x < state["puzzleLength"]; x++) {
+    let randomNumber = Math.random();
+    let randomRange;
+    if (randomNumber <= 0.38) {
+      randomRange = "rangeOne";
     }
-    // Add check function that calls this function again if it fails
+    if (randomNumber > 0.38 && randomNumber <= 0.56) {
+      randomRange = "rangeTwo";
+    }
+    if (randomNumber > 0.56 && randomNumber <= 0.75) {
+      randomRange = "rangeThree";
+    }
+    if (randomNumber > 0.75 && randomNumber <= 0.93) {
+      randomRange = "rangeFour";
+    }
+    if (randomNumber > 0.93) {
+      randomRange = "rangeFive";
+    }
+    const letters = Object.keys(letterDictionary[randomRange]);
+    const letter = letters[Math.floor(Math.random() * letters.length)];
 
-    return randomTiles; 
+    randomTiles.push({
+      letter: letter,
+      score: letterDictionary[randomRange][letter],
+    });
+  }
+  // Add check function that calls this function again if it fails
+
+  return randomTiles;
 }
 
-export function updateActiveWord (newWordArrayRef) {
-    let activeWordCurrent = playerWords[0];
-    if (playerWords.includes(newWordArrayRef)) {
-        activeWordCurrent = newWordArrayRef;
-    }
-    activeWord = activeWordCurrent; 
+export function updateActiveWord(newWordArrayRef) {
+  let activeWordCurrent = playerWords[0];
+  if (playerWords.includes(newWordArrayRef)) {
+    activeWordCurrent = newWordArrayRef;
+  }
+  activeWord = activeWordCurrent;
 }
 
 function manageEmptyWords(state) {
-    const words = state["playerWords"];
-    const activeWord = words["activeWord"];
-    const emptyWords = checkForEmptyWord(words);
+  const words = state["playerWords"];
+  const activeWord = words["activeWord"];
+  const emptyWords = checkForEmptyWord(words);
 
-    if (emptyWords.length <= 0) {
-        words.push([]);
+  if (emptyWords.length <= 0) {
+    words.push([]);
+  } else if (emptyWords.length > 1) {
+    for (let empty of emptyWords) {
+      if (empty != activeWord) {
+        const emptyIndex = words.indexOf(empty);
+        words.splice(emptyIndex, 1);
+        break;
+      }
     }
+  }
 
-    else if (emptyWords.length > 1) {
-        for (let empty of emptyWords) {
-            if (empty != activeWord) {
-                const emptyIndex = words.indexOf(empty);
-                words.splice(emptyIndex, 1);
-                break
-            }
-        }
-    }
-
-    return words;
+  return words;
 }
 
 // Helper functions
 
 function checkForEmptyWord(words) {
-    let emptyWords = [];
+  let emptyWords = [];
 
-    for (let i = 0; i < words.length; i++) {
-        if (words[i].length === 0) {
-            emptyWords.push(words[i]);
-            
-        }
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].length === 0) {
+      emptyWords.push(words[i]);
     }
-    return emptyWords;
+  }
+  return emptyWords;
 }
 
-export function validateWord (state, word, dictionary) {
-    const chosenTiles = state["chosenTiles"];
-    const letterArray = []
+export function validateWord(state, word, dictionary) {
+  const chosenTiles = state["chosenTiles"];
+  const letterArray = [];
 
-    for (let x = 0; x < word.length; x++) {
-        letterArray.push(chosenTiles[word[x]]["letter"]);
-    }
+  for (let x = 0; x < word.length; x++) {
+    letterArray.push(chosenTiles[word[x]]["letter"]);
+  }
 
-    const fullWord = letterArray.join("").toLowerCase();
-    const isValid = dictionary.has(fullWord);
+  const fullWord = letterArray.join("").toLowerCase();
+  const isValid = dictionary.has(fullWord);
 
-    return isValid;
+  return isValid;
 }
 
-function calculateScore (state, dictionary) {
-    let totalScore = 0;
-    let x = 0;
-    while (x < state["playerWords"].length) {
-        let wordScore = 0;
-        if (validateWord(state, state["playerWords"][x], dictionary)) {
-            let y = 0;
-            while (y < state["playerWords"][x].length) {
-                wordScore += state["chosenTiles"][state["playerWords"][x][y]]["score"];
-                y++;
-            }
-            const multiplier = 1 + (0.1 * (state["playerWords"][x].length - 1));
-            totalScore += wordScore * multiplier;
-        }
-        x++;
+function calculateScore(state, dictionary) {
+  let totalScore = 0;
+  let x = 0;
+  while (x < state["playerWords"].length) {
+    let wordScore = 0;
+    if (validateWord(state, state["playerWords"][x], dictionary)) {
+      let y = 0;
+      while (y < state["playerWords"][x].length) {
+        wordScore += state["chosenTiles"][state["playerWords"][x][y]]["score"];
+        y++;
+      }
+      const multiplier = 1 + 0.1 * (state["playerWords"][x].length - 1);
+      totalScore += wordScore * multiplier;
     }
-    return Math.round(totalScore * 10) / 10;
+    x++;
+  }
+  return Math.round(totalScore * 10) / 10;
 }
 
-function getIndexes (refIndex, wordsArray) {
-    const indexes = {};
+function getIndexes(refIndex, wordsArray) {
+  const indexes = {};
 
-    for (let x = 0; x < wordsArray.length; x++) {
-        if (wordsArray[x].includes(refIndex)) {
-            indexes["word"] = x;
-            indexes["letter"] = wordsArray[x].indexOf(refIndex);
-            break
-        }
+  for (let x = 0; x < wordsArray.length; x++) {
+    if (wordsArray[x].includes(refIndex)) {
+      indexes["word"] = x;
+      indexes["letter"] = wordsArray[x].indexOf(refIndex);
+      break;
     }
-    return indexes;
+  }
+  return indexes;
 }

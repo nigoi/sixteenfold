@@ -1,149 +1,149 @@
-body{
-    display: flex;
-    font-family: "Poppins", sans-serif;
-    font-weight: 450;
-    font-style: normal;
-    background-color: #e7e5e1;
-    color: #161aff;
+body {
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  font-weight: 450;
+  font-style: normal;
+  background-color: #e7e5e1;
+  color: #161aff;
 }
 
-#mainContainer{
-    width: 255px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#mainContainer {
+  width: 255px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-#gridContainer{
-    width: 255px;
+#gridContainer {
+  width: 255px;
 }
 
-h1{
-    font-family: "Poppins", sans-serif;
-    margin: 0px;
-    font-weight: 600;
-    font-style: normal;
-    text-align: left;
-    font-size: 40px;
+h1 {
+  font-family: "Poppins", sans-serif;
+  margin: 0px;
+  font-weight: 600;
+  font-style: normal;
+  text-align: left;
+  font-size: 40px;
 }
 
-#letterPool{
-    display: grid;
-    grid-template-columns: repeat(4, 60px);
-    gap: 5px;
-    justify-content: center;
-    margin-bottom: 20px;
+#letterPool {
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  gap: 5px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.tile{
-    position: relative;
-    box-sizing: border-box;
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    border: 1px solid #161aff;
-    border-bottom: 2px solid #161aff;
+.tile {
+  position: relative;
+  box-sizing: border-box;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  border: 1px solid #161aff;
+  border-bottom: 2px solid #161aff;
 }
 
-.letter{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
+.letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
 }
 
-.score{
-    position: absolute;
-    right: 3px;
-    bottom: 3px;
-    font-size: 15px;
+.score {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  font-size: 15px;
 }
 
-#wordsBox{
-    display: flex;
-    flex-direction: column;
-    width: 450px;
+#wordsBox {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
 }
 
-.wordLineContainer{
-    width: 460px;
-    height: 60px;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    align-content: center;
+.wordLineContainer {
+  width: 460px;
+  height: 60px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  align-content: center;
 }
 
 .activeWord {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60px;
-    width: 60px;
-    font-size: 60px;
-    padding: 0;
-    border: none;
-    background: none;
-    color: #161aff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+  font-size: 60px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #161aff;
 }
 
-.wordLine{
-    height: 60px;
-    display: flex;
-    align-content: center;
-    justify-content: flex-start;
-    align-items: center;
+.wordLine {
+  height: 60px;
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.addWord{
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    margin: 5px;
-    height: 60px;
-    width: 60px;
-    border: none;
-    background: none;
-    font-size: 50px;
-    color: #161aff;
+.addWord {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin: 5px;
+  height: 60px;
+  width: 60px;
+  border: none;
+  background: none;
+  font-size: 50px;
+  color: #161aff;
 }
 
-.playerScore{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    min-height: 60px;
-    min-width: 120px;
-    border-radius: 8px;
-    border: 1px solid #161aff;
-    border-bottom: 2px solid #161aff;
-    font-size: 40px;
+.playerScore {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  min-width: 120px;
+  border-radius: 8px;
+  border: 1px solid #161aff;
+  border-bottom: 2px solid #161aff;
+  font-size: 40px;
 }
 
-#submit{
-    background-color: #161aff;
-    color: #e7e5e1;
-    border: none;
-    min-width: 120px;
-    font-size: 30px;
+#submit {
+  background-color: #161aff;
+  color: #e7e5e1;
+  border: none;
+  min-width: 120px;
+  font-size: 30px;
 }
 
-h2{
-    text-align: center;
+h2 {
+  text-align: center;
 }
 
-p{
-    text-align: center;
+p {
+  text-align: center;
 }
 
 .material-symbols-outlined {
   font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }

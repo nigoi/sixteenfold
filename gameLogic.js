@@ -141,7 +141,7 @@ export function chooseRandomTiles(state) {
 
 function manageEmptyWords(state) {
   const words = state["playerWords"];
-  const activeWord = words["activeWord"];
+  const activeWord = words[state["activeWord"]];
   const emptyWords = checkForEmptyWord(words);
 
   if (emptyWords.length <= 0) {
@@ -151,6 +151,9 @@ function manageEmptyWords(state) {
       if (empty != activeWord) {
         const emptyIndex = words.indexOf(empty);
         words.splice(emptyIndex, 1);
+        if (emptyIndex < state.activeWord) {
+          state["activeWord"]--;
+        }
         break;
       }
     }

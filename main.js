@@ -1,8 +1,14 @@
-import { addLetter, removeLetter, chooseRandomTiles } from "./gameLogic.js";
-import { renderGame, renderLetterPool, renderActiveWord } from "./render.js";
+import {
+  addLetter,
+  removeLetter,
+  changeActiveWord,
+  chooseRandomTiles,
+} from "./gameLogic.js";
+
+import { renderGame, renderActiveWord, renderLetterPool } from "./render.js";
 
 // Set data
-export async function getDictionary() {
+async function getDictionary() {
   const response = await fetch("40k.txt");
   const dictionary = await response.text();
 
@@ -16,7 +22,6 @@ export async function getDictionary() {
 const dictionary = await getDictionary();
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
-const letterTiles = document.querySelectorAll(".tile");
 
 // On start up
 
@@ -62,36 +67,25 @@ wordsBox.addEventListener("click", function (event) {
 // Functions
 
 function handleAddLetter(index) {
-  // Checks if tile is already in playerWords. Prevents duplication.
-  if (!gameState["playerWords"].flat().includes(index)) {
-    const newGameState = addLetter(gameState, index, dictionary);
-    gameState = newGameState;
+  const oldGameState = structuredClone(gameState);
+  const newGameState = addLetter(gameState, index, dictionary);
 
-    renderGame(gameState, dictionary);
-    console.log("add", gameState);
-  }
+  gameState = newGameState;
+
+  renderGame(oldGameState, gameState, dictionary);
+
+  console.log("add", gameState);
 }
 
 function handleRemoveLetter(index) {
+  const oldGameState = structuredClone(gameState);
   const newGameState = removeLetter(gameState, index, dictionary);
   gameState = newGameState;
-  renderGame(gameState, dictionary);
+  renderGame(oldGameState, gameState, dictionary);
   console.log("remove", gameState);
 }
 
 function handleActiveWord(buttonIndex) {
-  gameState["activeWord"] = buttonIndex;
+  gameState = changeActiveWord(gameState, buttonIndex);
   renderActiveWord(gameState);
-}
-
-// Helper functions
-
-function debugList(extraInfo) {
-  console.log(
-    "playerWords: ",
-    playerWords,
-    "activeWord: ",
-    activeWord,
-    extraInfo,
-  );
 }

@@ -14,13 +14,23 @@ import { validateWord } from "./gameLogic.js";
 
 // DOM update functions
 
-export function renderGame(state, dictionary) {
-  renderWordLine(state);
-  renderActiveWord(state);
-  renderPlayerLetters(state);
-  renderValidation(state, dictionary);
-  document.querySelector(".playerScore").textContent = state["score"];
-  renderLetterPool(state);
+export function renderGame(oldState, state, dictionary) {
+  if (state != oldState) {
+    renderWordLine(state);
+    renderActiveWord(state);
+    renderPlayerLetters(state);
+    renderValidation(state, dictionary);
+    document.querySelector("#score").textContent = state["score"];
+    renderLetterPool(state);
+  }
+}
+
+export function renderActiveWord(state) {
+  const buttons = document.querySelectorAll(".activeWord");
+  for (let x = 0; x < buttons.length; x++) {
+    buttons[x].style.opacity = 0.5;
+  }
+  buttons[state["activeWord"]].style.opacity = 1;
 }
 
 export function renderLetterPool(state) {
@@ -92,13 +102,4 @@ function renderValidation(state, dictionary) {
       validationDisplays[words.indexOf(word)].style.color = "#161aff";
     }
   }
-}
-
-export function renderActiveWord(state) {
-  const buttons = document.querySelectorAll(".activeWord");
-  let x = 0;
-  for (let x = 0; x < buttons.length; x++) {
-    buttons[x].style.opacity = 0.5;
-  }
-  buttons[state["activeWord"]].style.opacity = 1;
 }

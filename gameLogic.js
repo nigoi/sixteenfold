@@ -57,28 +57,48 @@ const letterDictionary = {
 // Main functions
 
 export function addLetter(gameState, tileIndex, dictionary) {
-  const state = structuredClone(gameState);
+  // Confirm that tile is not already in use
+  if (!gameState["playerWords"].flat().includes(tileIndex)) {
+    const state = structuredClone(gameState);
 
-  state["playerWords"][state["activeWord"]].push(tileIndex);
+    state["playerWords"][state["activeWord"]].push(tileIndex);
 
-  state["playerWords"] = manageEmptyWords(state);
+    state["playerWords"] = manageEmptyWords(state);
 
-  state["score"] = calculateScore(state, dictionary);
+    state["score"] = calculateScore(state, dictionary);
 
-  return state;
+    return state;
+  } else {
+    return gameState;
+  }
 }
 
-export function removeLetter(gameState, index, dictionary) {
+export function removeLetter(gameState, tileIndex, dictionary) {
+  if (gameState["playerWords"].flat().includes(tileIndex)) {
+    const state = structuredClone(gameState);
+
+    const indexes = getIndexes(tileIndex, state["playerWords"]);
+
+    state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
+
+    state["playerWords"] = manageEmptyWords(state);
+
+    state["score"] = calculateScore(state, dictionary);
+
+    return state;
+  } else {
+    return gameState;
+  }
+}
+
+export function changeActiveWord(gameState, buttonIndex) {
   const state = structuredClone(gameState);
 
-  const indexes = getIndexes(index, state["playerWords"]);
+  state["activeWord"] = 0;
 
-  state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
-
-  state["playerWords"] = manageEmptyWords(state);
-
-  state["score"] = calculateScore(state, dictionary);
-
+  if (state["playerWords"][buttonIndex]) {
+    state["activeWord"] = buttonIndex;
+  }
   return state;
 }
 
@@ -117,14 +137,6 @@ export function chooseRandomTiles(state) {
   // Add check function that calls this function again if it fails
 
   return randomTiles;
-}
-
-export function updateActiveWord(newWordArrayRef) {
-  let activeWordCurrent = playerWords[0];
-  if (playerWords.includes(newWordArrayRef)) {
-    activeWordCurrent = newWordArrayRef;
-  }
-  activeWord = activeWordCurrent;
 }
 
 function manageEmptyWords(state) {

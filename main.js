@@ -43,7 +43,7 @@ letterPool.addEventListener("click", function (event) {
   const tile = Array.from(letterPool.children);
   const tileIndex = tile.indexOf(event.target.closest(".tile"));
 
-  if (tile) {
+  if (tile !== -1) {
     handleAddLetter(tileIndex);
   }
 });

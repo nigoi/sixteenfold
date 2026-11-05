@@ -19,7 +19,7 @@ export function renderGame(state, dictionary) {
     renderActiveWord(state);
     renderPlayerLetters(state);
     renderValidation(state, dictionary);
-    document.querySelector(".score").textContent = state["score"];
+    document.querySelector(".playerScore").textContent = state["score"];
     renderLetterPool(state);
 }
 

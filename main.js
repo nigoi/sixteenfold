@@ -68,6 +68,7 @@ function handleAddLetter (index) {
         gameState = newGameState;
 
         renderGame(gameState, dictionary);
+        console.log("add", gameState)
     }
 }
 
@@ -75,6 +76,7 @@ function handleRemoveLetter (index) {
     const newGameState = removeLetter(gameState, index, dictionary);
     gameState = newGameState;
     renderGame(gameState, dictionary);
+    console.log("remove", gameState);
 }   
 
 function handleActiveWord (buttonIndex) {

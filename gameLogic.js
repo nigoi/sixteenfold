@@ -56,8 +56,9 @@ const letterDictionary = {
 
 // Main functions
 
-export function addLetter (gameState, tileIndex = letterDictionary, dictionary) {
+export function addLetter (gameState, tileIndex, dictionary) {
     const state = structuredClone(gameState);
+    
     state["playerWords"][state["activeWord"]].push(tileIndex);
 
     state["playerWords"] = manageEmptyWords(state);
@@ -71,17 +72,13 @@ export function removeLetter (gameState, index, dictionary) {
     const state = structuredClone(gameState);
 
     const indexes = getIndexes(index, state["playerWords"]);
-    console.log("Index received:", index);
-    console.log("Indexes found:", indexes);
-    console.log("Word before:", state.playerWords[indexes.word]);
 
     state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
 
     state["playerWords"] = manageEmptyWords(state);
 
     state["score"] = calculateScore(state, dictionary);
-
-    console.log(state)
+    
     return state;
 }
 

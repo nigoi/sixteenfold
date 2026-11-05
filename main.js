@@ -1,5 +1,5 @@
-import { addLetter, removeLetter, chooseRandomTiles, updateActiveWord} from "./gameLogic.js";
-import { renderGame } from "./render.js";
+import { addLetter, removeLetter, chooseRandomTiles} from "./gameLogic.js";
+import { renderGame, renderLetterPool, renderActiveWord} from "./render.js";
 
 // Set data
 export async function getDictionary() {
@@ -27,7 +27,7 @@ let gameState = {
 
 gameState["chosenTiles"] = chooseRandomTiles(gameState);
 
-renderGame(gameState, dictionary);
+renderLetterPool(gameState);
 
 // Register event listeners
 
@@ -37,7 +37,7 @@ letterPool.addEventListener("click", function (event) {
     const tileIndex = tile.indexOf(event.target.closest(".tile"));
 
     if (tile) {
-        handleAddLetter(gameState, tileIndex);
+        handleAddLetter(tileIndex);
     }
 })
 
@@ -48,36 +48,38 @@ wordsBox.addEventListener("click", function (event) {
 
     if (tile) {
         const tileIndex = Number(tile.dataset.tileIndex);
-        handleRemoveLetter(gameState, tileIndex);
+        handleRemoveLetter(tileIndex);
     }
 
     else if (activeWord) {
         const container = activeWord.closest(".wordLineContainer");
         const index = Array.from(wordsBox.children).indexOf(container);
 
-        handleActiveWord(gameState, tileIndex);
+        handleActiveWord(index);
     }
 })
 
 // Functions
 
-function handleAddLetter (state, index) {
+function handleAddLetter (index) {
     // Checks if tile is already in playerWords. Prevents duplication.
     if (!gameState["playerWords"].flat().includes(index)) {
-        gameState = addLetter(state, index, dictionary);
+        const newGameState = addLetter(gameState, index, dictionary);
+        gameState = newGameState;
+
         renderGame(gameState, dictionary);
-        console.log("gamestate", gameState);
     }
 }
 
-function handleRemoveLetter (state, index) {
-    gameState = removeLetter(state, index);
-    renderGame(state, letterTiles);
+function handleRemoveLetter (index) {
+    const newGameState = removeLetter(gameState, index, dictionary);
+    gameState = newGameState;
+    renderGame(gameState, dictionary);
 }   
 
-function handleActiveWord (state, buttonIndex) {
-    gameState["activeWord"] = playerWords[buttonIndex];
-    renderActiveWord(state);
+function handleActiveWord (buttonIndex) {
+    gameState["activeWord"] = buttonIndex;
+    renderActiveWord(gameState);
 }
 
 // Helper functions

@@ -67,8 +67,22 @@ export function addLetter (gameState, tileIndex = letterDictionary, dictionary) 
     return state;
 }
 
-export function removeLetter () {
-    playerWords[indexes["word"]].splice([indexes["letter"]], 1);
+export function removeLetter (gameState, index, dictionary) {
+    const state = structuredClone(gameState);
+
+    const indexes = getIndexes(index, state["playerWords"]);
+    console.log("Index received:", index);
+    console.log("Indexes found:", indexes);
+    console.log("Word before:", state.playerWords[indexes.word]);
+
+    state["playerWords"][indexes["word"]].splice(indexes["letter"], 1);
+
+    state["playerWords"] = manageEmptyWords(state);
+
+    state["score"] = calculateScore(state, dictionary);
+
+    console.log(state)
+    return state;
 }
 
 // Functions
@@ -119,6 +133,7 @@ export function updateActiveWord (newWordArrayRef) {
 
 function manageEmptyWords(state) {
     const words = state["playerWords"];
+    const activeWord = words["activeWord"];
     const emptyWords = checkForEmptyWord(words);
 
     if (emptyWords.length <= 0) {
@@ -128,7 +143,7 @@ function manageEmptyWords(state) {
     else if (emptyWords.length > 1) {
         for (let empty of emptyWords) {
             if (empty != activeWord) {
-                const emptyIndex = playerWords.indexOf(empty);
+                const emptyIndex = words.indexOf(empty);
                 words.splice(emptyIndex, 1);
                 break
             }
@@ -185,7 +200,7 @@ function calculateScore (state, dictionary) {
     return Math.round(totalScore * 10) / 10;
 }
 
-function getIndexes (refIndex, wordsArray = playerWords) {
+function getIndexes (refIndex, wordsArray) {
     const indexes = {};
 
     for (let x = 0; x < wordsArray.length; x++) {

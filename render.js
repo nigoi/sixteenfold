@@ -9,6 +9,7 @@ let gameState = {
 } 
 
 */
+
 import { validateWord } from "./gameLogic.js";
 
 // DOM update functions
@@ -22,9 +23,8 @@ export function renderGame(state, dictionary) {
     renderLetterPool(state);
 }
 
-function renderLetterPool (state) {
+export function renderLetterPool (state) {
     const letterTiles = document.querySelectorAll("#letterPool .tile");
-    console.log(letterTiles);
 
     // Takes data from chosenTiles and fills DOM tile
     for (let i = 0; i < letterTiles.length; i++) {
@@ -33,7 +33,6 @@ function renderLetterPool (state) {
     letterTiles[i].style.opacity = 1;
     if (state["playerWords"].flat().includes(i)) {
         letterTiles[i].style.opacity = 0.25;
-        console.log("yes");
     }
     }
 }
@@ -95,7 +94,7 @@ function renderValidation (state, dictionary) {
         
 }
 
-function renderActiveWord (state) {
+export function renderActiveWord (state) {
     const buttons = document.querySelectorAll(".activeWord");
     let x = 0;
     for (let x = 0; x < buttons.length; x++) {

@@ -10,7 +10,7 @@ let gameState = {
 
 */
 
-const letterDictionary = {
+export const letterDictionary = {
   //  > 0 <= 0.38
   rangeOne: {
     A: 1,
@@ -189,7 +189,7 @@ export function validateWord(state, word, dictionary) {
   return isValid;
 }
 
-function calculateScore(state, dictionary) {
+export function calculateScore(state, dictionary) {
   let totalScore = 0;
   let x = 0;
   while (x < state["playerWords"].length) {
@@ -209,7 +209,14 @@ function calculateScore(state, dictionary) {
 }
 
 export function getIndexes(refIndex, wordsArray) {
-  const indexes = {};
+  let indexes = {
+    word: -1,
+    letter: -1,
+  };
+
+  if (!wordsArray) {
+    return indexes;
+  }
 
   for (let x = 0; x < wordsArray.length; x++) {
     if (wordsArray[x].includes(refIndex)) {

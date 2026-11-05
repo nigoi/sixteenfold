@@ -208,7 +208,7 @@ function calculateScore(state, dictionary) {
   return Math.round(totalScore * 10) / 10;
 }
 
-function getIndexes(refIndex, wordsArray) {
+export function getIndexes(refIndex, wordsArray) {
   const indexes = {};
 
   for (let x = 0; x < wordsArray.length; x++) {

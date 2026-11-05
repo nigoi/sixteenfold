@@ -92,14 +92,18 @@ export function removeLetter(gameState, tileIndex, dictionary) {
 }
 
 export function changeActiveWord(gameState, buttonIndex) {
-  const state = structuredClone(gameState);
+  if (buttonIndex > gameState["playerWords"].length) {
+    return gameState;
+  } else {
+    const state = structuredClone(gameState);
 
-  state["activeWord"] = 0;
+    state["activeWord"] = 0;
 
-  if (state["playerWords"][buttonIndex]) {
-    state["activeWord"] = buttonIndex;
+    if (state["playerWords"][buttonIndex]) {
+      state["activeWord"] = buttonIndex;
+    }
+    return state;
   }
-  return state;
 }
 
 // Functions

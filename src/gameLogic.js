@@ -191,7 +191,7 @@ export function generateValidTiles(state) {
   return tiles;
 }
 
-function validateTileSet(tileSet) {
+export function validateTileSet(tileSet) {
   let vowelCount = 0;
   let letters = [];
   let letterCount = [];

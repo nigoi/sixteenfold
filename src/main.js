@@ -77,6 +77,7 @@ async function startGame() {
     renderGame(null, gameState, dictionary);
 
     mainContainer.hidden = false;
+    errorBox.hidden = true;
 
     console.log(gameState);
   } catch (error) {
@@ -107,20 +108,14 @@ async function getDictionary() {
 }
 
 function handleAddLetter(index) {
-  oldGameState = structuredClone(gameState);
-  const newGameState = addLetter(gameState, index, dictionary);
-
-  gameState = newGameState;
-
+  oldGameState = gameState;
+  gameState = addLetter(gameState, index, dictionary);
   renderGame(oldGameState, gameState, dictionary);
 }
 
 function handleRemoveLetter(index) {
-  oldGameState = structuredClone(gameState);
-  const newGameState = removeLetter(gameState, index, dictionary);
-
-  gameState = newGameState;
-
+  oldGameState = gameState;
+  gameState = removeLetter(gameState, index, dictionary);
   renderGame(oldGameState, gameState, dictionary);
 }
 

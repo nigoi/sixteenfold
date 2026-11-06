@@ -42,7 +42,7 @@ export function renderResults(state, dictionary) {
 
     const resultsBox = document.querySelector("#resultsBox");
 
-    for (let i = 0; i < state["playerWords"].length - 1; i++) {
+    for (let i = 0; i < state["playerWords"].length; i++) {
       if (scores[i] > 0) {
         const wordLine = document.createElement("div");
         wordLine.className = "wordLine";

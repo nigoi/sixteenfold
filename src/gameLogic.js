@@ -152,9 +152,13 @@ export function chooseRandomTiles(state) {
       score: letterDictionary[randomRange][letter],
     });
   }
-  // Add check function that calls this function again if it fails
 
-  return randomTiles;
+  if (validateTileSet(randomTiles)) {
+    return randomTiles;
+  } else {
+    chooseRandomTiles(state);
+    return;
+  }
 }
 
 function manageEmptyWords(state) {

@@ -57,10 +57,10 @@
 
 ### Submission and final result
 
-- [ ] Attach functionality to the existing Submit button.
-- [ ] Define a submitted/completed state and prevent further editing or repeated submissions if submission is final.
-- [ ] Display a clear final score and the word breakdown (with invalid words distinguished).
-- [ ] Test empty submissions, mixed valid/invalid words, unused tiles and repeat submission.
+- [x] Attach functionality to the existing Submit button.
+- [x] Define a submitted/completed state and prevent further editing or repeated submissions if submission is final.
+- [x] Display a clear final score and the word breakdown (with invalid words distinguished).
+- [x] Test empty submissions, mixed valid/invalid words, unused tiles and repeat submission.
 
 **Done when:** A player can construct words, see a correct running score, submit and view a stable result.
 

@@ -7,34 +7,15 @@ import {
 
 import { renderGame, renderActiveWord, renderLetterPool } from "./render.js";
 
-// Set data
-async function getDictionary() {
-  const response = await fetch("./assets/40k.txt");
-  const dictionary = await response.text();
+// Start
 
-  const splitDictionary = dictionary
-    .split("\n")
-    .map((word) => word.trim().toLowerCase());
-
-  return new Set(splitDictionary);
-}
-
-const dictionary = await getDictionary();
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
 
-// On start up
+let gameState;
+let dictionary;
 
-let gameState = {
-  puzzleLength: 16,
-  score: 0,
-  playerWords: [[]],
-  activeWord: 0,
-};
-
-gameState["chosenTiles"] = chooseRandomTiles(gameState);
-
-renderLetterPool(gameState);
+startGame();
 
 // Register event listeners
 
@@ -65,6 +46,48 @@ wordsBox.addEventListener("click", function (event) {
 });
 
 // Functions
+
+async function startGame() {
+  try {
+    dictionary = await getDictionary();
+
+    gameState = {
+      puzzleLength: 16,
+      score: 0,
+      playerWords: [[]],
+      activeWord: 0,
+    };
+
+    gameState["chosenTiles"] = chooseRandomTiles(gameState);
+
+    renderLetterPool(gameState);
+
+    console.log(gameState);
+  } catch (error) {
+    console.error("failed", error);
+  }
+}
+
+async function getDictionary() {
+  const response = await fetch("./assets/40k.txt");
+
+  if (!response.ok) {
+    throw new Error(`Dictionary request failure: ${response.status}`);
+  }
+
+  const dictionary = await response.text();
+
+  const splitDictionary = dictionary
+    .split("\n")
+    .map((word) => word.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (splitDictionary.length === 0) {
+    throw new Error("Dictionary empty");
+  }
+
+  return new Set(splitDictionary);
+}
 
 function handleAddLetter(index) {
   const oldGameState = structuredClone(gameState);

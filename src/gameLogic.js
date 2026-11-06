@@ -57,8 +57,14 @@ export const letterDictionary = {
 // Main functions
 
 export function addLetter(gameState, tileIndex, dictionary) {
-  // Confirm that tile is not already in use
-  if (!gameState["playerWords"].flat().includes(tileIndex)) {
+  if (
+    !Number.isInteger(tileIndex) ||
+    tileIndex >= gameState["puzzleLength"] ||
+    tileIndex < 0 ||
+    gameState["playerWords"].flat().includes(tileIndex)
+  ) {
+    return gameState;
+  } else {
     const state = structuredClone(gameState);
 
     state["playerWords"][state["activeWord"]].push(tileIndex);
@@ -68,13 +74,18 @@ export function addLetter(gameState, tileIndex, dictionary) {
     state["score"] = calculateScore(state, dictionary);
 
     return state;
-  } else {
-    return gameState;
   }
 }
 
 export function removeLetter(gameState, tileIndex, dictionary) {
-  if (gameState["playerWords"].flat().includes(tileIndex)) {
+  if (
+    !Number.isInteger(tileIndex) ||
+    tileIndex >= gameState["puzzleLength"] ||
+    tileIndex < 0 ||
+    !gameState["playerWords"].flat().includes(tileIndex)
+  ) {
+    return gameState;
+  } else {
     const state = structuredClone(gameState);
 
     const indexes = getIndexes(tileIndex, state["playerWords"]);
@@ -86,22 +97,19 @@ export function removeLetter(gameState, tileIndex, dictionary) {
     state["score"] = calculateScore(state, dictionary);
 
     return state;
-  } else {
-    return gameState;
   }
 }
 
 export function changeActiveWord(gameState, buttonIndex) {
-  if (buttonIndex > gameState["playerWords"].length) {
+  if (
+    !Number.isInteger(buttonIndex) ||
+    buttonIndex >= gameState["playerWords"].length ||
+    buttonIndex < 0
+  ) {
     return gameState;
   } else {
     const state = structuredClone(gameState);
-
-    state["activeWord"] = 0;
-
-    if (state["playerWords"][buttonIndex]) {
-      state["activeWord"] = buttonIndex;
-    }
+    state["activeWord"] = buttonIndex;
     return state;
   }
 }

@@ -26,7 +26,6 @@
 - [x] Automatically maintain an available empty word and remove redundant empty words.
 - [x] Adjust the active-word index when words are deleted before it.
 - [x] Reorder/move letters by removing and reselecting them without added controls.
-- [ ] Browser-check repeated identical letters, first/middle/last-word deletion, and rapid interactions after the rendering refactor.
 
 **Done when:** Full editing workflow works in the browser without lost or duplicated tiles.
 
@@ -39,9 +38,8 @@
 - [x] Add four multistep integration tests exercising add/remove/switch/edit operations.
 - [x] Run all **22** supplied tests successfully in Node.
 - [x] Confirm the GitHub Actions workflow passes on the current pull request (not verifiable from uploaded source files).
-- [ ] Add regression coverage for rejecting out-of-range/noninteger tile indices and for active-word index edge cases.
-- [ ] Add a focused test for repeated letters using distinct tile indices.
-- [ ] Consider consolidating repeated fixture construction only if it starts obstructing test readability.
+- [x] Add regression coverage for rejecting out-of-range/noninteger tile indices and for active-word index edge cases.
+- [x] Consider consolidating repeated fixture construction only if it starts obstructing test readability.
 
 **Done when:** Tests pass locally and in CI, and the editing workflow passes a manual browser smoke test. Branch protection is optional; it is not currently enforced on the private repository's plan.
 

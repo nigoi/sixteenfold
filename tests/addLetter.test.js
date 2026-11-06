@@ -96,3 +96,25 @@ test("addLetter: does not add a tile already in use", () => {
   });
   assert.deepEqual(gameState, originalState);
 });
+
+test("addLetter: rejects invalid tile indexes", () => {
+  const gameState = {
+    puzzleLength: 16,
+    score: 7.2,
+    playerWords: [[0, 1, 2], []],
+    activeWord: 0,
+    chosenTiles: testTiles,
+  };
+
+  const originalState = structuredClone(gameState);
+
+  const invalidIndexes = [99, -1, 1.5, "2", NaN];
+
+  for (const index of invalidIndexes) {
+    const result = addLetter(gameState, index, testDictionary);
+
+    assert.deepEqual(result, originalState);
+  }
+
+  assert.deepEqual(gameState, originalState);
+});

@@ -55,7 +55,7 @@ wordsBox.addEventListener("click", function (event) {
 });
 
 submit.addEventListener("click", function () {
-  renderResults(gameState);
+  renderResults(gameState, dictionary);
 });
 
 // Functions

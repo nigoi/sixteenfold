@@ -10,7 +10,7 @@ let gameState = {
 
 */
 
-import { validateWord } from "./gameLogic.js";
+import { calculateScore, validateWord } from "./gameLogic.js";
 
 // DOM update functions
 
@@ -33,7 +33,7 @@ export function renderActiveWord(state) {
   buttons[state["activeWord"]].style.opacity = 1;
 }
 
-export function renderResults(state) {
+export function renderResults(state, dictionary) {
   if (state["score"] > 0) {
     document.querySelector("#mainContainer").hidden = true;
     document.querySelector("#results").hidden = false;
@@ -52,12 +52,15 @@ export function renderResults(state) {
           displayedTiles[state["playerWords"][i][x]].cloneNode(true);
         wordLine.appendChild(tileClone);
         tileClone.style.opacity = 1;
-        tileClone.style.marginRight = "3px";
+        tileClone.style.margin = "3px";
         tileClone.dataset.tileIndex = state["playerWords"][i][x];
       }
+      const scores = calculateScore(state, dictionary);
       const wordScore = document.createElement("span");
-      wordScore.textContent = "score: ";
+      wordScore.textContent = ("score: ", scores[i]);
       wordLine.appendChild(wordScore);
+
+      document.querySelector("#totalScore").textContent = state["score"];
     }
   }
 }

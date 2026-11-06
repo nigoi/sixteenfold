@@ -106,6 +106,7 @@ h1 {
 .wordLine {
   height: 60px;
   display: flex;
+  margin: 3px;
   align-content: center;
   justify-content: flex-start;
   align-items: center;
@@ -152,8 +153,22 @@ h1 {
   margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+
+#scoreBox {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  min-width: 120px;
+  border-radius: 8px;
+  border: 1px solid #161aff;
+  border-bottom: 2px solid #161aff;
+  font-size: 40px;
 }
 
 h2 {

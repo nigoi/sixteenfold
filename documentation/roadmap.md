@@ -1,149 +1,138 @@
-# Sixteenfold — Feature Roadmap
+# Sixteenfold — Development Roadmap
 
-**Progress (1 November 2026):** Stages 1 and 2 complete (Features 1–8, based on the latest code review). Stage 3 in progress: live validation, score calculation and updates are implemented, but dictionary-error handling, the correct multiplier, individual score displays and submission remain. Random 16-tile development puzzles are working (part of Feature 14).
+**Updated:** 6 November 2026  
+**Stack:** HTML, CSS, vanilla JavaScript (ES modules), Node.js built-in test runner, GitHub Actions  
+**Goal:** Release a small, polished, playable daily word-tile puzzle without a backend.
 
-**Working method:** Build one feature at a time, test it, then commit. `[x]` means implemented in the latest reviewed files; `[ ]` means outstanding. Preserve the minimalist interface; no separate clear-word or delete-word button.
+**Verification:** Reviewed the supplied `gameLogic.js`, `main.js`, `render.js`, four test files and shared fixtures. Ran the 22 supplied tests against `gameLogic.js` in Node 22: **22 passed, 0 failed**. Browser rendering and GitHub Actions execution were not independently tested here. `[x]` means supported by source/tests; `[ ]` means outstanding or not verified.
 
-## Rules confirmed
+## Confirmed game rules
 
-- **16 tiles** per puzzle. Each physical tile can be used only once across all words.
-- Standard Scrabble-style letter point values.
-- Valid words score their **base letter-point sum multiplied by their length multiplier**.
-- **Multiplier = 1 + 0.1 × (number of letters − 1)**. Examples: 1 letter ×1.0; 2 ×1.1; 4 ×1.3; 16 ×2.5.
-- Invalid words score **zero**.
-- Total score is the **sum of all valid word scores**, shown to one decimal place.
+- 16 individually identifiable tiles; each physical tile can only be in one position.
+- Standard Scrabble-style letter values.
+- Valid word score = letter-value sum × `[1 + 0.1 × (word length − 1)]`.
+- Invalid words score zero; no penalty for unused tiles.
+- Total = sum of valid word scores, rounded to one decimal place.
+- Minimal interface: no separate clear-word or delete-word control.
 
-## Stage 1 — Build and edit a word
+## Stage 1 — Core tile and word interactions — implemented
 
-### 1. Display 16 tiles
-- [x] Store each tile's identity, letter and point value.
-- [x] Display 16 tiles, including distinct copies of repeated letters.
+- [x] Generate and display 16 individually addressable tiles with letters and points.
+- [x] Add a chosen tile to the active word in selection order.
+- [x] Prevent reuse of an already-selected tile.
+- [x] Click a letter in a word to return its exact tile to the pool.
+- [x] Show used tiles differently from available tiles.
+- [x] Support multiple words and changing the active word.
+- [x] Automatically maintain an available empty word and remove redundant empty words.
+- [x] Adjust the active-word index when words are deleted before it.
+- [x] Reorder/move letters by removing and reselecting them without added controls.
+- [ ] Browser-check repeated identical letters, first/middle/last-word deletion, and rapid interactions after the rendering refactor.
 
-### 2. Build a word
-- [x] Add selected tiles in order.
-- [x] Prevent a tile being used twice and visually distinguish used tiles.
+**Done when:** Full editing workflow works in the browser without lost or duplicated tiles.
 
-### 3. Remove letters
-- [x] Click any letter in a word to return that exact tile to the pool.
-- [x] Preserve the order of the remaining letters.
+## Stage 2 — Separation of concerns and automated tests — substantially complete
 
-### 4. Clear a word without an extra button
-- [x] Allow all letters to be removed individually.
-- [x] Restore each tile to the pool without duplication.
-- [x] Keep the initial empty word available for play.
+- [x] Separate `src/gameLogic.js`, `src/main.js`, and `src/render.js`.
+- [x] Make core state changes return updated game-state snapshots, without directly manipulating DOM.
+- [x] Extract shared test dictionary, tiles and blank game state into `tests/testDataSets.js`.
+- [x] Split unit tests into `addLetter`, `removeLetter`, and helper-function suites.
+- [x] Add four multistep integration tests exercising add/remove/switch/edit operations.
+- [x] Run all **22** supplied tests successfully in Node.
+- [ ] Confirm the GitHub Actions workflow passes on the current pull request (not verifiable from uploaded source files).
+- [ ] Add regression coverage for rejecting out-of-range/noninteger tile indices and for active-word index edge cases.
+- [ ] Add a focused test for repeated letters using distinct tile indices.
+- [ ] Consider consolidating repeated fixture construction only if it starts obstructing test readability.
 
-## Stage 2 — Arrange multiple words
+**Done when:** Tests pass locally and in CI, and the editing workflow passes a manual browser smoke test. Branch protection is optional; it is not currently enforced on the private repository's plan.
 
-### 5. Create multiple words
-- [x] Use `+` to start another word without releasing existing tiles.
-- [x] Store each word separately and prevent adding consecutive empty words.
+## Stage 3 — Word validation, scoring and submitting — next milestone
 
-### 6. Remove an empty word automatically
-- [x] Remove a word's container and data when its last letter is removed (except the initial word).
-- [x] Return its letters to the pool as they are removed.
-- [x] Do not change which *other* word is active when deleting an inactive word.
+### Validation and scoring
 
-### 7. Edit an existing word
-- [x] Select any word using its asterisk button.
-- [x] Add and remove letters from that word without creating a duplicate.
-- [x] Find button positions dynamically, rather than relying on stored indices.
-- [x] Keep the active-word selection and button opacity correct after deleting an earlier word.
+- [x] Load `assets/40k.txt` into a lowercase `Set` on startup.
+- [x] Validate constructed words using the dictionary.
+- [x] Visually distinguish valid and invalid constructed words after game-state updates.
+- [x] Score each valid word with the confirmed length multiplier.
+- [x] Ignore invalid words and round the total to one decimal place.
+- [x] Verify representative scores and multiword action sequences in automated tests.
+- [ ] Handle failed dictionary fetch/HTTP responses explicitly; do not interpret an error page as dictionary data.
+- [ ] Decide whether to display individual word scores; implement if retained in the minimal UI.
+- [ ] Establish rounding convention for per-word breakdown versus final total.
+- [ ] Decide whether duplicate spellings are allowed to score more than once.
 
-### 8. Rearrange letters
-- [x] Move letters between words by returning them to the pool and selecting them again.
-- [x] Reorder letters within a word by removing and reselecting tiles, without additional controls.
-- [x] Keep every tile unique through repeated edits and deletions.
+### Submission and final result
 
-**Milestone achieved:** Build, change and remove multiple words, then recover all 16 distinct tiles.
+- [ ] Attach functionality to the existing Submit button.
+- [ ] Define a submitted/completed state and prevent further editing or repeated submissions if submission is final.
+- [ ] Display a clear final score and the word breakdown (with invalid words distinguished).
+- [ ] Test empty submissions, mixed valid/invalid words, unused tiles and repeat submission.
 
-## Stage 3 — Validate, score and submit
+**Done when:** A player can construct words, see a correct running score, submit and view a stable result.
 
-### 9. Check words — nearly complete
-- [x] Load a development dictionary from `40k.txt` into a JavaScript `Set` (the supplied file contains approximately 79,340 lines).
-- [x] Indicate valid and invalid words visually and update after edits, including edits to inactive words.
-- [ ] Handle dictionary network/HTTP/loading failures separately from words that aren't in the dictionary.
+## Stage 4 — Playable and repeatable puzzles
 
-### 10. Score individual words — in progress
-- [x] Sum the point values of tiles belonging to each valid word.
-- [x] Exclude invalid words from score calculation.
-- [x] Apply the multiplier to the entire word's base score
+### Generation and dictionary
 
-### 11. Calculate the total — nearly complete
-- [x] Add valid-word contributions together (with no unused-letter deduction).
-- [x] Recalculate and display the total after both letter additions and removals.
-- [x] Round the total to one decimal place.
-- [x] Verify totals after the length-multiplier correction, including invalid words and repeated edits.
+- [x] Generate 16 tiles with weighted letter-frequency groups for development.
+- [ ] Enforce and test a suitable vowel/consonant distribution and other playability constraints.
+- [ ] Add controlled randomness/seed input so a given puzzle ID always produces the same tiles.
+- [ ] Playtest sample seeds for usefulness and score balance.
+- [ ] Choose and license an openly reusable release word list, including UK/US policy, short words, inflections and attribution.
+- [ ] Version the dictionary, generation settings and scoring rules for stable daily puzzles.
 
-### 12. Submit a game — not started
-- [ ] Add a final submit action and show a breakdown of words, individual scores and total score (no penalties).
-- [ ] Decide and implement whether submission locks the game against edits and repeated submission.
+### Shared daily puzzle
 
-**Milestone:** Complete a local game with dictionary validation, accurate scores and a final result.
+- [ ] Assign a puzzle ID to each date and choose a daily rollover timezone.
+- [ ] Derive the same tile set from the same ID for all users, across refreshes/devices.
+- [ ] Test that tomorrow gets a new puzzle and yesterday's result is unchanged.
 
-## Stage 4 — Prepare real puzzles
+**Done when:** Different browsers receive the same puzzle for the same date and that puzzle is repeatable.
 
-### 13. Prepare the release dictionary
-- [ ] Build and document an openly reusable British/American word list (target: 150,000+ entries).
-- [ ] Remove duplicates, proper nouns and abbreviations; retain valid short words and inflections.
-- [ ] Version the dictionary and test representative words.
+## Stage 5 — Local saving and repeat visits
 
-### 14. Generate playable letter sets
-- [x] Generate 16 random letters, with repeats and point values, for development.
-- [x] Weight letters by frequency.
-- [ ] Enforce a playable vowel/consonant range.
+- [ ] Persist the current puzzle ID, word arrangement, active word and completion status using `localStorage`.
+- [ ] Restore an unfinished game after refresh without regenerating tiles or corrupting indexes.
+- [ ] Save completed results by puzzle ID; show a completed result instead of an editable game.
+- [ ] Handle missing, malformed or obsolete saved data safely.
+- [ ] Establish rollover behaviour for unfinished puzzles.
+- [ ] Consider simple personal score history/statistics only after basic saving works.
 
-### 15. Tune gameplay
-- [ ] Playtest letter sets and adjust generation rules and scoring if necessary.
-- [ ] Record the chosen settings as a version.
+**Done when:** A player can refresh or return tomorrow without losing or mixing game progress.
 
-## Stage 5 — Daily play and saving
+## Stage 6 — Finish and release
 
-### 16. Shared daily puzzle
-- [ ] Give each date one puzzle ID, letter set, dictionary version and scoring version.
-- [ ] Set a daily rollover time and make the puzzle identical for all players.
+- [ ] Make the layout responsive on mobile and desktop, including long words and all 16 tiles.
+- [ ] Check mouse/touch interactions; add usable keyboard focus/activation to interactive controls.
+- [ ] Ensure first render immediately shows all game UI and handles dictionary failures clearly.
+- [ ] Add concise rules and scoring explanation without cluttering the interface.
+- [ ] Fix spelling and naming consistency (`Sixteenfold`); remove development logs.
+- [ ] Add a README with local setup (`npm test`), gameplay rules and credits/attribution.
+- [ ] Run complete browser playthroughs and test deployed assets/paths.
+- [ ] Deploy to a public static host, smoke-test on desktop and mobile, and provide an issue-reporting route.
 
-### 17. Save progress
-- [ ] Store the current arrangement locally in the browser.
-- [ ] Restore it safely after refresh or return visits.
+**Done when:** Someone unfamiliar with the game can open the published site and complete a daily puzzle without guidance.
 
-### 18. Save completed results
-- [ ] Save the final result and completion state by puzzle ID.
-- [ ] Show the saved result instead of reopening a completed game for editing.
+## Specific code-review notes (6 November)
 
-### 19. New-day rollover
-- [ ] Load the new puzzle without mixing it with previous progress.
-- [ ] Decide how unfinished puzzles are handled.
+1. `changeActiveWord()` tests only `buttonIndex > playerWords.length`; negative, fractional and nonnumeric indices are not explicitly rejected. Its fallback to zero is implicit rather than a defined invalid-input policy.
+2. `addLetter()` prevents duplicate usage but does not check tile index bounds/type; an invalid index could enter state and cause validation or rendering errors.
+3. `renderGame()` compares objects with `state != oldState`, but `main.js` passes a `structuredClone` as `oldState`; therefore this check will always signal a change, even if the contents are identical. This is not currently fatal but makes the guard ineffective.
+4. Startup calls `renderLetterPool()` but not full `renderGame()`. Verify initial active-word styling and validation are correctly shown, and decide whether empty words should display an invalid indicator.
+5. `getDictionary()` currently awaits `response.text()` without checking `response.ok`; a 404 could be parsed as the dictionary.
+6. `renderPlayerLetters()` selects `.tile` globally when cloning source tiles. Scope to `#letterPool .tile` to avoid accidentally cloning a word tile in future rendering/layout changes.
+7. `renderValidation()` uses `words.indexOf(word)` to obtain the display index. Indexed iteration is clearer and avoids relying on unique array references.
+8. Submit is not wired in the supplied `main.js`; persistence, seed/date IDs and per-word display are also not yet implemented.
 
-## Stage 6 — Release
+## Recommended next tasks (in order)
 
-### 20. Make the interface usable
-- [ ] Fit the layout on mobile and desktop, including 16-letter words.
-- [ ] Support touch, mouse and keyboard with clear selection and focus feedback.
+1. **Small robustness pass:** dictionary HTTP failure handling, tile index guard, active-word index guard and initial render correctness.
+2. **Submission flow:** completed state, final-score display, no editing after submission, and focused tests.
+3. **Daily puzzle generation:** deterministic seeded generation, playability checks and daily ID.
+4. **Browser persistence:** refresh/restore and completed-result history.
+5. **Release polish:** mobile layout, instructions, attribution, deployment and end-to-end smoke testing.
 
-### 21. Explain the rules
-- [ ] Write short instructions for tiles, words, multiplier scoring and submission.
-- [ ] Include dictionary rules and required attribution.
+## Later, outside MVP
 
-### 22. Test and publish
-- [ ] Test full games, repeated letters, editing, validation, scoring, saving and rollover.
-- [ ] Publish the site and check that a new player can complete a game.
-- [ ] Provide a simple way to report issues.
+Drag-and-drop, keyboard shortcuts beyond accessibility basics, shareable results, streaks and statistics, accounts, leaderboards, a solver, timed play and a board mode.
 
-## Decisions
-
-- [x] Sixteen tiles per puzzle; name now shown as **Sixteenfold** in the latest HTML.
-- [x] No unused-letter penalties.
-- [x] Length multiplier begins at ×1.0 for one letter and increases by ×0.1 per additional letter.
-- [x] Invalid words contribute zero points.
-- [x] No separate clear-word or delete-word buttons.
-- [x] Switching words keeps the others intact and selects the clicked word for editing.
-- [ ] Decide whether duplicate words can score more than once.
-- [ ] Decide when to round each word score versus the total; specify the display rule consistently.
-- [ ] Decide whether submission is final.
-- [ ] Choose the daily puzzle timezone and rollover behaviour.
-
-## Later ideas (not required for release)
-
-Drag and drop, keyboard shortcuts, shareable results, statistics and streaks, a puzzle solver, leaderboards, accounts, timed play and a tactical board mode.
-
-**Next task:** Correct the multiplier expression in `calculateScore()`, then add per-word scoring display. Finish Feature 9 error handling before marking it complete; proceed to Feature 12 submission once Features 9–11 pass tests.
+**Working method:** One focused feature per branch/pull request; write tests for significant rules or previously discovered bugs; run `npm test` and a short browser smoke test before merging. Keep the interface minimalist and avoid adding infrastructure before a clear need exists.

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 import { testDictionary, testTiles } from "./testDataSets.js";
 
-import { removeLetter } from "../gameLogic.js";
+import { removeLetter } from "../src/gameLogic.js";
 
 test("removeLetter: removes a tile and recalculates the score", () => {
   const gameState = {

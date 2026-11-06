@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 import { testDictionary, testTiles, blankGameState } from "./testDataSets.js";
 
-import { addLetter, removeLetter, changeActiveWord } from "../gameLogic.js";
+import { addLetter, removeLetter, changeActiveWord } from "../src/gameLogic.js";
 
 test("Add multiple words: add two words", () => {
   const originalState = structuredClone(blankGameState);

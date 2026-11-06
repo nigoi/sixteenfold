@@ -5,7 +5,7 @@ import { testDictionary, testTiles } from "./testDataSets.js";
 
 // Update active word
 
-import { changeActiveWord } from "../gameLogic.js";
+import { changeActiveWord } from "../src/gameLogic.js";
 
 test("changeActiveWord: selects a different active word", () => {
   const gameState = {
@@ -51,7 +51,7 @@ test("changeActiveWord: rejects an out-of-bounds index", () => {
 
 // Get indexes
 
-import { getIndexes } from "../gameLogic.js";
+import { getIndexes } from "../src/gameLogic.js";
 
 test("getIndexes: finds a tile at the first position", () => {
   // Arrange
@@ -111,7 +111,7 @@ test("getIndexes: returns sentinel indexes for an empty words array", () => {
 
 // Calculate score
 
-import { calculateScore } from "../gameLogic.js";
+import { calculateScore } from "../src/gameLogic.js";
 
 test("calculateScore: scores one valid word", () => {
   // Arrange

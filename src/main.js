@@ -2,7 +2,7 @@ import {
   addLetter,
   removeLetter,
   changeActiveWord,
-  chooseRandomTiles,
+  generateValidTiles,
 } from "./gameLogic.js";
 
 import { renderGame, renderActiveWord, renderResults } from "./render.js";
@@ -65,14 +65,13 @@ async function startGame() {
     dictionary = await getDictionary();
 
     gameState = {
-      active: true,
       puzzleLength: 16,
       score: 0,
       playerWords: [[]],
       activeWord: 0,
     };
 
-    gameState["chosenTiles"] = chooseRandomTiles(gameState);
+    gameState["chosenTiles"] = generateValidTiles(gameState);
 
     renderGame(null, gameState, dictionary);
 
@@ -87,7 +86,7 @@ async function startGame() {
 }
 
 async function getDictionary() {
-  const response = await fetch("./assets/40k.txt");
+  const response = await fetch("./assets/dictionary.txt");
 
   if (!response.ok) {
     throw new Error(`Dictionary request failure: ${response.status}`);

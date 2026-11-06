@@ -5,7 +5,7 @@ import {
   chooseRandomTiles,
 } from "./gameLogic.js";
 
-import { renderGame, renderActiveWord } from "./render.js";
+import { renderGame, renderActiveWord, renderResults } from "./render.js";
 
 // Start
 
@@ -14,6 +14,7 @@ const errorRetry = document.querySelector("#retry");
 const mainContainer = document.querySelector("#mainContainer");
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
+const submit = document.querySelector("#submit");
 
 let oldGameState;
 let gameState;
@@ -53,6 +54,10 @@ wordsBox.addEventListener("click", function (event) {
   }
 });
 
+submit.addEventListener("click", function () {
+  renderResults(gameState);
+});
+
 // Functions
 
 async function startGame() {
@@ -60,6 +65,7 @@ async function startGame() {
     dictionary = await getDictionary();
 
     gameState = {
+      active: true,
       puzzleLength: 16,
       score: 0,
       playerWords: [[]],
@@ -70,12 +76,12 @@ async function startGame() {
 
     renderGame(null, gameState, dictionary);
 
-    mainContainer.style.display = "flex";
+    mainContainer.hidden = false;
 
     console.log(gameState);
   } catch (error) {
     console.error("failed", error);
-    errorBox.style.display = "flex";
+    errorBox.hidden = false;
   }
 }
 

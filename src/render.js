@@ -33,6 +33,32 @@ export function renderActiveWord(state) {
   buttons[state["activeWord"]].style.opacity = 1;
 }
 
+export function renderResults(state) {
+  if (state["score"] > 0) {
+    document.querySelector("#mainContainer").hidden = true;
+    document.querySelector("#results").hidden = false;
+
+    const resultsBox = document.querySelector("#resultsBox");
+
+    for (let i = 0; i < state["playerWords"].length; i++) {
+      const wordLine = document.createElement("div");
+      wordLine.className = "wordLine";
+      resultsBox.appendChild(wordLine);
+
+      const displayedTiles = document.querySelectorAll(".tile");
+
+      for (let x = 0; x < state["playerWords"][i].length; x++) {
+        const tileClone =
+          displayedTiles[state["playerWords"][i][x]].cloneNode(true);
+        wordLine.appendChild(tileClone);
+        tileClone.style.opacity = 1;
+        tileClone.style.marginRight = "3px";
+        tileClone.dataset.tileIndex = state["playerWords"][i][x];
+      }
+    }
+  }
+}
+
 export function renderLetterPool(state) {
   const letterTiles = document.querySelectorAll("#letterPool .tile");
 

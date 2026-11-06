@@ -1,3 +1,7 @@
+[hidden] {
+  display: none !important;
+}
+
 body {
   display: flex;
   font-family: "Poppins", sans-serif;
@@ -11,7 +15,7 @@ body {
   width: 255px;
   min-height: 100vh;
   margin: auto;
-  display: hide;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -20,7 +24,7 @@ body {
 #mainContainer {
   width: 255px;
   margin: auto;
-  display: hide;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -140,6 +144,17 @@ h1 {
   border: none;
   min-width: 120px;
   font-size: 30px;
+}
+
+#results {
+  background-color: red;
+  width: 255px;
+  min-height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h2 {

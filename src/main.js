@@ -80,7 +80,7 @@ async function startGame() {
 }
 
 async function getDictionary() {
-  const response = await fetch("./assets/4k.txt");
+  const response = await fetch("./assets/40k.txt");
 
   if (!response.ok) {
     throw new Error(`Dictionary request failure: ${response.status}`);

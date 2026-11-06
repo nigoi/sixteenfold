@@ -55,10 +55,7 @@
 - [x] Score each valid word with the confirmed length multiplier.
 - [x] Ignore invalid words and round the total to one decimal place.
 - [x] Verify representative scores and multiword action sequences in automated tests.
-- [ ] Handle failed dictionary fetch/HTTP responses explicitly; do not interpret an error page as dictionary data.
-- [ ] Decide whether to display individual word scores; implement if retained in the minimal UI.
-- [ ] Establish rounding convention for per-word breakdown versus final total.
-- [ ] Decide whether duplicate spellings are allowed to score more than once.
+- [x] Handle failed dictionary fetch/HTTP responses explicitly; do not interpret an error page as dictionary data.
 
 ### Submission and final result
 

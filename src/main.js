@@ -5,38 +5,27 @@ import {
   chooseRandomTiles,
 } from "./gameLogic.js";
 
-import { renderGame, renderActiveWord, renderLetterPool } from "./render.js";
+import { renderGame, renderActiveWord } from "./render.js";
 
-// Set data
-async function getDictionary() {
-  const response = await fetch("./assets/40k.txt");
-  const dictionary = await response.text();
+// Start
 
-  const splitDictionary = dictionary
-    .split("\n")
-    .map((word) => word.trim().toLowerCase());
-
-  return new Set(splitDictionary);
-}
-
-const dictionary = await getDictionary();
+const errorBox = document.querySelector("#error");
+const errorRetry = document.querySelector("#retry");
+const mainContainer = document.querySelector("#mainContainer");
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
 
-// On start up
+let oldGameState;
+let gameState;
+let dictionary;
 
-let gameState = {
-  puzzleLength: 16,
-  score: 0,
-  playerWords: [[]],
-  activeWord: 0,
-};
-
-gameState["chosenTiles"] = chooseRandomTiles(gameState);
-
-renderLetterPool(gameState);
+startGame();
 
 // Register event listeners
+
+errorRetry.addEventListener("click", function () {
+  startGame();
+});
 
 letterPool.addEventListener("click", function (event) {
   // Get tile reference number
@@ -66,8 +55,53 @@ wordsBox.addEventListener("click", function (event) {
 
 // Functions
 
+async function startGame() {
+  try {
+    dictionary = await getDictionary();
+
+    gameState = {
+      puzzleLength: 16,
+      score: 0,
+      playerWords: [[]],
+      activeWord: 0,
+    };
+
+    gameState["chosenTiles"] = chooseRandomTiles(gameState);
+
+    renderGame(null, gameState, dictionary);
+
+    mainContainer.style.display = "flex";
+
+    console.log(gameState);
+  } catch (error) {
+    console.error("failed", error);
+    errorBox.style.display = "flex";
+  }
+}
+
+async function getDictionary() {
+  const response = await fetch("./assets/40k.txt");
+
+  if (!response.ok) {
+    throw new Error(`Dictionary request failure: ${response.status}`);
+  }
+
+  const dictionary = await response.text();
+
+  const splitDictionary = dictionary
+    .split("\n")
+    .map((word) => word.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (splitDictionary.length === 0) {
+    throw new Error("Dictionary empty");
+  }
+
+  return new Set(splitDictionary);
+}
+
 function handleAddLetter(index) {
-  const oldGameState = structuredClone(gameState);
+  oldGameState = structuredClone(gameState);
   const newGameState = addLetter(gameState, index, dictionary);
 
   gameState = newGameState;
@@ -78,14 +112,18 @@ function handleAddLetter(index) {
 }
 
 function handleRemoveLetter(index) {
-  const oldGameState = structuredClone(gameState);
+  oldGameState = structuredClone(gameState);
   const newGameState = removeLetter(gameState, index, dictionary);
+
   gameState = newGameState;
+
   renderGame(oldGameState, gameState, dictionary);
+
   console.log("remove", gameState);
 }
 
 function handleActiveWord(buttonIndex) {
   gameState = changeActiveWord(gameState, buttonIndex);
+
   renderActiveWord(gameState);
 }

@@ -38,7 +38,7 @@
 - [x] Split unit tests into `addLetter`, `removeLetter`, and helper-function suites.
 - [x] Add four multistep integration tests exercising add/remove/switch/edit operations.
 - [x] Run all **22** supplied tests successfully in Node.
-- [ ] Confirm the GitHub Actions workflow passes on the current pull request (not verifiable from uploaded source files).
+- [x] Confirm the GitHub Actions workflow passes on the current pull request (not verifiable from uploaded source files).
 - [ ] Add regression coverage for rejecting out-of-range/noninteger tile indices and for active-word index edge cases.
 - [ ] Add a focused test for repeated letters using distinct tile indices.
 - [ ] Consider consolidating repeated fixture construction only if it starts obstructing test readability.

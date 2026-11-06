@@ -5,19 +5,27 @@ import {
   chooseRandomTiles,
 } from "./gameLogic.js";
 
-import { renderGame, renderActiveWord, renderLetterPool } from "./render.js";
+import { renderGame, renderActiveWord } from "./render.js";
 
 // Start
 
+const errorBox = document.querySelector("#error");
+const errorRetry = document.querySelector("#retry");
+const mainContainer = document.querySelector("#mainContainer");
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
 
+let oldGameState;
 let gameState;
 let dictionary;
 
 startGame();
 
 // Register event listeners
+
+errorRetry.addEventListener("click", function () {
+  startGame();
+});
 
 letterPool.addEventListener("click", function (event) {
   // Get tile reference number
@@ -60,16 +68,19 @@ async function startGame() {
 
     gameState["chosenTiles"] = chooseRandomTiles(gameState);
 
-    renderLetterPool(gameState);
+    renderGame(null, gameState, dictionary);
+
+    mainContainer.style.display = "flex";
 
     console.log(gameState);
   } catch (error) {
     console.error("failed", error);
+    errorBox.style.display = "flex";
   }
 }
 
 async function getDictionary() {
-  const response = await fetch("./assets/40k.txt");
+  const response = await fetch("./assets/4k.txt");
 
   if (!response.ok) {
     throw new Error(`Dictionary request failure: ${response.status}`);
@@ -90,7 +101,7 @@ async function getDictionary() {
 }
 
 function handleAddLetter(index) {
-  const oldGameState = structuredClone(gameState);
+  oldGameState = structuredClone(gameState);
   const newGameState = addLetter(gameState, index, dictionary);
 
   gameState = newGameState;
@@ -101,14 +112,18 @@ function handleAddLetter(index) {
 }
 
 function handleRemoveLetter(index) {
-  const oldGameState = structuredClone(gameState);
+  oldGameState = structuredClone(gameState);
   const newGameState = removeLetter(gameState, index, dictionary);
+
   gameState = newGameState;
+
   renderGame(oldGameState, gameState, dictionary);
+
   console.log("remove", gameState);
 }
 
 function handleActiveWord(buttonIndex) {
   gameState = changeActiveWord(gameState, buttonIndex);
+
   renderActiveWord(gameState);
 }

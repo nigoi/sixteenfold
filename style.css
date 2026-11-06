@@ -7,10 +7,20 @@ body {
   color: #161aff;
 }
 
+#error {
+  width: 255px;
+  min-height: 100vh;
+  margin: auto;
+  display: hide;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 #mainContainer {
   width: 255px;
   margin: auto;
-  display: flex;
+  display: hide;
   flex-direction: column;
   justify-content: center;
   align-items: center;

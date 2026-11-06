@@ -35,34 +35,36 @@ export function renderActiveWord(state) {
 
 export function renderResults(state, dictionary) {
   if (state["score"] > 0) {
+    const scores = calculateScore(state, dictionary);
+
     document.querySelector("#mainContainer").hidden = true;
     document.querySelector("#results").hidden = false;
 
     const resultsBox = document.querySelector("#resultsBox");
 
     for (let i = 0; i < state["playerWords"].length - 1; i++) {
-      const wordLine = document.createElement("div");
-      wordLine.className = "wordLine";
-      resultsBox.appendChild(wordLine);
+      if (scores[i] > 0) {
+        const wordLine = document.createElement("div");
+        wordLine.className = "wordLine";
+        resultsBox.appendChild(wordLine);
 
-      const displayedTiles = document.querySelectorAll(".tile");
+        const displayedTiles = document.querySelectorAll(".tile");
 
-      for (let x = 0; x < state["playerWords"][i].length; x++) {
-        const tileClone =
-          displayedTiles[state["playerWords"][i][x]].cloneNode(true);
-        wordLine.appendChild(tileClone);
-        tileClone.style.opacity = 1;
-        tileClone.style.margin = "3px";
-        tileClone.dataset.tileIndex = state["playerWords"][i][x];
+        for (let x = 0; x < state["playerWords"][i].length; x++) {
+          const tileClone =
+            displayedTiles[state["playerWords"][i][x]].cloneNode(true);
+          wordLine.appendChild(tileClone);
+          tileClone.style.opacity = 1;
+          tileClone.style.margin = "3px";
+          tileClone.dataset.tileIndex = state["playerWords"][i][x];
+        }
+        const wordScore = document.createElement("span");
+        wordScore.textContent = ("score: ", scores[i]);
+        wordLine.appendChild(wordScore);
       }
-      const scores = calculateScore(state, dictionary);
-      const wordScore = document.createElement("span");
-      wordScore.textContent = ("score: ", scores[i]);
-      wordLine.appendChild(wordScore);
-
-      document.querySelector("#totalScore").textContent = state["score"];
     }
   }
+  document.querySelector("#totalScore").textContent = state["score"];
 }
 
 export function renderLetterPool(state) {

@@ -2,7 +2,6 @@ import {
   addLetter,
   removeLetter,
   changeActiveWord,
-  chooseRandomTiles,
   generateValidTiles,
 } from "./gameLogic.js";
 
@@ -87,7 +86,7 @@ async function startGame() {
 }
 
 async function getDictionary() {
-  const response = await fetch("./assets/words.txt");
+  const response = await fetch("./assets/dictionary.txt");
 
   if (!response.ok) {
     throw new Error(`Dictionary request failure: ${response.status}`);

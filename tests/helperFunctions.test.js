@@ -28,7 +28,7 @@ test("changeActiveWord: selects a different active word", () => {
   });
 });
 
-test("changeActiveWord: rejects an out-of-bounds index", () => {
+test("changeActiveWord: rejects invalid tile indexes", () => {
   const gameState = {
     puzzleLength: 16,
     score: 0,
@@ -36,17 +36,17 @@ test("changeActiveWord: rejects an out-of-bounds index", () => {
     activeWord: 0,
     chosenTiles: testTiles,
   };
-  const buttonIndex = 3;
+  const originalState = structuredClone(gameState);
 
-  const result = changeActiveWord(gameState, buttonIndex);
+  const invalidIndexes = [99, -1, 1.5, "2", NaN];
 
-  assert.deepEqual(result, {
-    puzzleLength: 16,
-    score: 0,
-    playerWords: [[0, 1, 2], []],
-    activeWord: 0,
-    chosenTiles: testTiles,
-  });
+  for (const index of invalidIndexes) {
+    const result = changeActiveWord(gameState, index);
+
+    assert.deepEqual(result, originalState);
+  }
+
+  assert.deepEqual(gameState, originalState);
 });
 
 // Get indexes

@@ -69,7 +69,7 @@
 ### Generation and dictionary
 
 - [x] Generate 16 tiles with weighted letter-frequency groups for development.
-- [ ] Enforce and test a suitable vowel/consonant distribution and other playability constraints.
+- [x] Enforce and test a suitable vowel/consonant distribution and other playability constraints.
 - [ ] Add controlled randomness/seed input so a given puzzle ID always produces the same tiles.
 - [ ] Playtest sample seeds for usefulness and score balance.
 - [ ] Choose and license an openly reusable release word list, including UK/US policy, short words, inflections and attribution.

@@ -153,12 +153,7 @@ export function chooseRandomTiles(state) {
     });
   }
 
-  if (validateTileSet(randomTiles)) {
-    return randomTiles;
-  } else {
-    chooseRandomTiles(state);
-    return;
-  }
+  return randomTiles;
 }
 
 function manageEmptyWords(state) {
@@ -185,6 +180,43 @@ function manageEmptyWords(state) {
 }
 
 // Helper functions
+
+export function generateValidTiles(state) {
+  let tiles;
+
+  do {
+    tiles = chooseRandomTiles(state);
+  } while (!validateTileSet(tiles));
+
+  return tiles;
+}
+
+function validateTileSet(tileSet) {
+  let vowelCount = 0;
+  let letters = [];
+  let letterCount = [];
+
+  for (let x = 0; x < tileSet.length; x++) {
+    if (["A", "E", "I", "O", "U"].includes(tileSet[x]["letter"])) {
+      vowelCount++;
+    }
+    if (!letters.includes(tileSet[x]["letter"])) {
+      letters.push(tileSet[x]["letter"]);
+      letterCount.push(1);
+    } else {
+      letterCount[letters.indexOf(tileSet[x]["letter"])]++;
+      if (letterCount[letters.indexOf(tileSet[x]["letter"])] > 3) {
+        return false;
+      }
+    }
+  }
+
+  if (letters.includes("Q") && !letters.includes("U")) {
+    return false;
+  }
+
+  return vowelCount >= 5 && vowelCount <= 6;
+}
 
 function checkForEmptyWord(words) {
   let emptyWords = [];

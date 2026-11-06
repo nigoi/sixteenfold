@@ -71,7 +71,10 @@ export function addLetter(gameState, tileIndex, dictionary) {
 
     state["playerWords"] = manageEmptyWords(state);
 
-    state["score"] = calculateScore(state, dictionary);
+    const wordScore = calculateScore(state, dictionary);
+
+    state["score"] =
+      Math.round(wordScore.reduce((sum, score) => sum + score, 0) * 10) / 10;
 
     return state;
   }
@@ -94,7 +97,10 @@ export function removeLetter(gameState, tileIndex, dictionary) {
 
     state["playerWords"] = manageEmptyWords(state);
 
-    state["score"] = calculateScore(state, dictionary);
+    const wordScore = calculateScore(state, dictionary);
+
+    state["score"] =
+      Math.round(wordScore.reduce((sum, score) => sum + score, 0) * 10) / 10;
 
     return state;
   }
@@ -146,9 +152,13 @@ export function chooseRandomTiles(state) {
       score: letterDictionary[randomRange][letter],
     });
   }
-  // Add check function that calls this function again if it fails
 
-  return randomTiles;
+  if (validateTileSet(randomTiles)) {
+    return randomTiles;
+  } else {
+    chooseRandomTiles(state);
+    return;
+  }
 }
 
 function manageEmptyWords(state) {
@@ -202,22 +212,21 @@ export function validateWord(state, word, dictionary) {
 }
 
 export function calculateScore(state, dictionary) {
-  let totalScore = 0;
-  let x = 0;
-  while (x < state["playerWords"].length) {
+  let wordScores = [];
+  for (let word of state["playerWords"]) {
     let wordScore = 0;
-    if (validateWord(state, state["playerWords"][x], dictionary)) {
-      let y = 0;
-      while (y < state["playerWords"][x].length) {
-        wordScore += state["chosenTiles"][state["playerWords"][x][y]]["score"];
-        y++;
+    if (validateWord(state, word, dictionary)) {
+      for (let letter of word) {
+        wordScore += state["chosenTiles"][letter]["score"];
       }
-      const multiplier = 1 + 0.1 * (state["playerWords"][x].length - 1);
-      totalScore += wordScore * multiplier;
+      const multiplier = 1 + 0.1 * (word.length - 1);
+      wordScore *= multiplier;
+      wordScores.push(Math.round(wordScore * 10) / 10);
+    } else {
+      wordScores.push(0);
     }
-    x++;
   }
-  return Math.round(totalScore * 10) / 10;
+  return wordScores;
 }
 
 export function getIndexes(refIndex, wordsArray) {

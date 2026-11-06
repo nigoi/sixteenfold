@@ -122,7 +122,7 @@ test("calculateScore: scores one valid word", () => {
   // Act
   const score = calculateScore(gameState, testDictionary);
   // Assert
-  assert.equal(score, 7.2);
+  assert.deepEqual(score, [7.2]);
 });
 
 test("calculateScore: sums scores for multiple valid words", () => {
@@ -137,7 +137,7 @@ test("calculateScore: sums scores for multiple valid words", () => {
   // Act
   const score = calculateScore(gameState, testDictionary);
   // Assert
-  assert.equal(score, 9.4);
+  assert.deepEqual(score, [7.2, 2.2]);
 });
 
 test("calculateScore: scores only valid words in a mixed set", () => {
@@ -152,7 +152,7 @@ test("calculateScore: scores only valid words in a mixed set", () => {
   // Act
   const score = calculateScore(gameState, testDictionary);
   // Assert
-  assert.equal(score, 7.2);
+  assert.deepEqual(score, [7.2, 0]);
 });
 
 test("calculateScore: returns zero for an invalid word", () => {
@@ -164,7 +164,7 @@ test("calculateScore: returns zero for an invalid word", () => {
   // Act
   const score = calculateScore(gameState, testDictionary);
   // Assert
-  assert.equal(score, 0);
+  assert.deepEqual(score, [0]);
 });
 
 test("calculateScore: returns zero for an empty word", () => {
@@ -176,5 +176,5 @@ test("calculateScore: returns zero for an empty word", () => {
   // Act
   const score = calculateScore(gameState, testDictionary);
   // Assert
-  assert.equal(score, 0);
+  assert.deepEqual(score, [0]);
 });

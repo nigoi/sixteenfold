@@ -40,7 +40,7 @@ export function renderResults(state) {
 
     const resultsBox = document.querySelector("#resultsBox");
 
-    for (let i = 0; i < state["playerWords"].length; i++) {
+    for (let i = 0; i < state["playerWords"].length - 1; i++) {
       const wordLine = document.createElement("div");
       wordLine.className = "wordLine";
       resultsBox.appendChild(wordLine);
@@ -55,6 +55,9 @@ export function renderResults(state) {
         tileClone.style.marginRight = "3px";
         tileClone.dataset.tileIndex = state["playerWords"][i][x];
       }
+      const wordScore = document.createElement("span");
+      wordScore.textContent = "score: ";
+      wordLine.appendChild(wordScore);
     }
   }
 }

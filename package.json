@@ -1,0 +1,24 @@
+{
+  "name": "sixteenfold",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nigoi/fifteenfold.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/nigoi/fifteenfold/issues"
+  },
+  "homepage": "https://github.com/nigoi/fifteenfold#readme"
+}

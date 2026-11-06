@@ -10,7 +10,7 @@ let gameState = {
 
 */
 
-const letterDictionary = {
+export const letterDictionary = {
   //  > 0 <= 0.38
   rangeOne: {
     A: 1,
@@ -92,14 +92,18 @@ export function removeLetter(gameState, tileIndex, dictionary) {
 }
 
 export function changeActiveWord(gameState, buttonIndex) {
-  const state = structuredClone(gameState);
+  if (buttonIndex > gameState["playerWords"].length) {
+    return gameState;
+  } else {
+    const state = structuredClone(gameState);
 
-  state["activeWord"] = 0;
+    state["activeWord"] = 0;
 
-  if (state["playerWords"][buttonIndex]) {
-    state["activeWord"] = buttonIndex;
+    if (state["playerWords"][buttonIndex]) {
+      state["activeWord"] = buttonIndex;
+    }
+    return state;
   }
-  return state;
 }
 
 // Functions
@@ -189,7 +193,7 @@ export function validateWord(state, word, dictionary) {
   return isValid;
 }
 
-function calculateScore(state, dictionary) {
+export function calculateScore(state, dictionary) {
   let totalScore = 0;
   let x = 0;
   while (x < state["playerWords"].length) {
@@ -208,8 +212,15 @@ function calculateScore(state, dictionary) {
   return Math.round(totalScore * 10) / 10;
 }
 
-function getIndexes(refIndex, wordsArray) {
-  const indexes = {};
+export function getIndexes(refIndex, wordsArray) {
+  let indexes = {
+    word: -1,
+    letter: -1,
+  };
+
+  if (!wordsArray) {
+    return indexes;
+  }
 
   for (let x = 0; x < wordsArray.length; x++) {
     if (wordsArray[x].includes(refIndex)) {

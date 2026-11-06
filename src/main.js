@@ -9,7 +9,7 @@ import { renderGame, renderActiveWord, renderLetterPool } from "./render.js";
 
 // Set data
 async function getDictionary() {
-  const response = await fetch("40k.txt");
+  const response = await fetch("./assets/40k.txt");
   const dictionary = await response.text();
 
   const splitDictionary = dictionary

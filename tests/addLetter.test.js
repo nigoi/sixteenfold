@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 import { testDictionary, testTiles } from "./testDataSets.js";
 
-import { addLetter } from "../gameLogic.js";
+import { addLetter } from "../src/gameLogic.js";
 
 test("addLetter: completes a word and recalculates the score", () => {
   const gameState = {

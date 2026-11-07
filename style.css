@@ -70,21 +70,35 @@ button {
   display: grid;
   width: 100%;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(2px, 2cqw, 5px);
   justify-content: center;
 }
 
 #letterPool .tile {
   width: 100%;
-  min-width: 45px;
+  min-width: 0;
   aspect-ratio: 1;
 }
 
+.wordLineContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+
+.wordLine {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 3px;
+}
+
 .wordLine .tile {
-  width: 70px;
-  min-width: 45px;
-  flex-shrink: 0;
+  width: clamp(50px, 5vw, 70px);
+  min-width: 0;
+  flex-shrink: 1;
   aspect-ratio: 1;
 }
 
@@ -97,13 +111,11 @@ button {
   width: 100%;
 }
 
-.wordLineContainer {
-  display: flex;
-  margin: 1%;
-}
-
-.wordLine {
-  display: flex;
+.activeWord {
+  width: clamp(20px, 5vw, 40px);
+  min-width: 0;
+  flex-shrink: 1;
+  aspect-ratio: 1;
 }
 
 /* 4. States */

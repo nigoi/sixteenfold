@@ -1,188 +1,111 @@
+/* 1. Global styles */
+
 [hidden] {
   display: none !important;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
   display: flex;
+  justify-content: center;
+
   font-family: "Poppins", sans-serif;
-  font-weight: 450;
-  font-style: normal;
-  background-color: #e7e5e1;
   color: #161aff;
-}
-
-#error {
-  width: 255px;
-  min-height: 100vh;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#mainContainer {
-  width: 255px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#gridContainer {
-  width: 255px;
+  background-color: #e7e5e1;
 }
 
 h1 {
-  font-family: "Poppins", sans-serif;
-  margin: 0px;
-  font-weight: 600;
-  font-style: normal;
+  margin: inherit;
+  background-color: pink;
+  align-self: flex-start;
   text-align: left;
-  font-size: 40px;
+  font-size: clamp(24px, 5vw, 35px);
 }
 
-#letterPool {
-  display: grid;
-  grid-template-columns: repeat(4, 60px);
-  gap: 5px;
-  justify-content: center;
-  margin-bottom: 20px;
+button {
+  margin-right: 5px;
+  border-radius: 8px;
+  border: 1px solid #161aff;
+  border-bottom: 2px solid #161aff;
+
+  font: inherit;
+  color: inherit;
+  background: transparent;
 }
 
 .tile {
-  position: relative;
-  box-sizing: border-box;
-  width: 60px;
-  height: 60px;
   border-radius: 8px;
   border: 1px solid #161aff;
   border-bottom: 2px solid #161aff;
 }
 
-.letter {
+/* 2. Layout */
+
+.container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-size: 40px;
+
+  width: 90%;
+  max-width: 600px;
 }
 
-.score {
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  font-size: 15px;
+/* 3. Components */
+
+#main {
+  background-color: green;
+}
+
+#grid {
+  background-color: orange;
+  width: 65%;
+}
+
+#letterPool {
+  background-color: yellow;
+  display: grid;
+  width: 100%;
+
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(2px, 2cqw, 5px);
+  justify-content: center;
+}
+
+#letterPool .tile {
+  width: 100%;
+  min-width: 45px;
+  aspect-ratio: 1;
+}
+
+.wordLine .tile {
+  width: 70px;
+  min-width: 45px;
+  flex-shrink: 0;
+  aspect-ratio: 1;
 }
 
 #wordsBox {
+  background-color: palegreen;
   display: flex;
+  align-self: flex-start;
   flex-direction: column;
-  width: 450px;
+
+  width: 100%;
 }
 
 .wordLineContainer {
-  width: 460px;
-  height: 60px;
-  margin-top: 10px;
   display: flex;
-  align-items: center;
-  align-content: center;
-}
-
-.activeWord {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  width: 60px;
-  font-size: 60px;
-  padding: 0;
-  border: none;
-  background: none;
-  color: #161aff;
+  margin: 1%;
 }
 
 .wordLine {
-  height: 60px;
   display: flex;
-  margin: 3px;
-  align-content: center;
-  justify-content: flex-start;
-  align-items: center;
 }
 
-.addWord {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  margin: 5px;
-  height: 60px;
-  width: 60px;
-  border: none;
-  background: none;
-  font-size: 50px;
-  color: #161aff;
-}
+/* 4. States */
 
-.playerScore {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
-  min-width: 120px;
-  border-radius: 8px;
-  border: 1px solid #161aff;
-  border-bottom: 2px solid #161aff;
-  font-size: 40px;
-}
-
-#submit {
-  background-color: #161aff;
-  color: #e7e5e1;
-  border: none;
-  min-width: 120px;
-  font-size: 30px;
-}
-
-#results {
-  width: 255px;
-  min-height: 100vh;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#scoreBox {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
-  min-width: 120px;
-  border-radius: 8px;
-  border: 1px solid #161aff;
-  border-bottom: 2px solid #161aff;
-  font-size: 40px;
-}
-
-h2 {
-  text-align: center;
-}
-
-p {
-  text-align: center;
-}
-
-.material-symbols-outlined {
-  font-variation-settings:
-    "FILL" 0,
-    "wght" 400,
-    "GRAD" 0,
-    "opsz" 24;
-}
+/* 5. Responsive adjustments */

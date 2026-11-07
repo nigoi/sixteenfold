@@ -9,9 +9,9 @@ import { renderGame, renderActiveWord, renderResults } from "./render.js";
 
 // Start
 
-const errorBox = document.querySelector("#error");
+const errorContainer = document.querySelector("#error");
 const errorRetry = document.querySelector("#retry");
-const mainContainer = document.querySelector("#mainContainer");
+const mainContainer = document.querySelector("#main");
 const wordsBox = document.querySelector("#wordsBox");
 const letterPool = document.querySelector("#letterPool");
 const submit = document.querySelector("#submit");
@@ -76,12 +76,12 @@ async function startGame() {
     renderGame(null, gameState, dictionary);
 
     mainContainer.hidden = false;
-    errorBox.hidden = true;
+    errorContainer.hidden = true;
 
     console.log(gameState);
   } catch (error) {
     console.error("failed", error);
-    errorBox.hidden = false;
+    errorContainer.hidden = false;
   }
 }
 

@@ -37,7 +37,7 @@ export function renderResults(state, dictionary) {
   if (state["score"] > 0) {
     const scores = calculateScore(state, dictionary);
 
-    document.querySelector("#mainContainer").hidden = true;
+    document.querySelector("#main").hidden = true;
     document.querySelector("#results").hidden = false;
 
     const resultsBox = document.querySelector("#resultsBox");
@@ -55,11 +55,11 @@ export function renderResults(state, dictionary) {
             displayedTiles[state["playerWords"][i][x]].cloneNode(true);
           wordLine.appendChild(tileClone);
           tileClone.style.opacity = 1;
-          tileClone.style.margin = "3px";
           tileClone.dataset.tileIndex = state["playerWords"][i][x];
         }
         const wordScore = document.createElement("span");
         wordScore.textContent = ("score: ", scores[i]);
+        wordScore.style.marginLeft = "50px";
         wordLine.appendChild(wordScore);
       }
     }

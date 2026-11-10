@@ -9,6 +9,8 @@
 }
 
 body {
+  min-height: 100vh;
+  min-height: 100svh;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -18,29 +20,27 @@ body {
   background-color: #e7e5e1;
 }
 
-h1 {
-  margin: inherit;
-  background-color: pink;
-  align-self: flex-start;
-  text-align: left;
-  font-size: clamp(24px, 5vw, 35px);
-}
-
 button {
   margin-right: 5px;
-  border-radius: 8px;
+  padding: 4px 8px;
   border: 1px solid #161aff;
-  border-bottom: 2px solid #161aff;
+  border-bottom-width: 2px;
+  border-radius: 8px;
 
   font: inherit;
   color: inherit;
   background: transparent;
+  cursor: pointer;
 }
 
 .tile {
-  border-radius: 8px;
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
   border: 1px solid #161aff;
-  border-bottom: 2px solid #161aff;
+  border-bottom-width: 2px;
+  border-radius: 8px;
+  container-type: inline-size;
 }
 
 /* 2. Layout */
@@ -49,75 +49,167 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  width: 90%;
-  max-width: 600px;
+  width: min(90%, 500px);
+  margin: 0 auto;
 }
 
-/* 3. Components */
-
-#main {
-  background-color: green;
+#main,
+#error {
+  margin-top: clamp(12px, 3vh, 24px);
 }
+
+h1 {
+  align-self: flex-start;
+  margin: 0 0 12px;
+  font-size: clamp(24px, 7vw, 35px);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* 3. Game board */
 
 #grid {
-  background-color: orange;
-  width: 65%;
+  width: min(100%, 300px);
 }
 
 #letterPool {
-  background-color: yellow;
   display: grid;
   width: 100%;
-
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(2px, 2cqw, 5px);
-  justify-content: center;
+  gap: clamp(3px, 1.5vw, 6px);
 }
 
 #letterPool .tile {
   width: 100%;
-  min-width: 0;
-  aspect-ratio: 1;
+}
+
+.letter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(14px, 64cqi, 48px);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.score {
+  position: absolute;
+  right: 6%;
+  bottom: 4%;
+  font-size: clamp(8px, 18cqi, 14px);
+  line-height: 1;
+}
+
+/* 4. Player words and score */
+
+#wordsBox {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  width: 100%;
+  gap: 5px;
+  margin-top: 12px;
 }
 
 .wordLineContainer {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 5px;
+  min-height: clamp(32px, 12vw, 60px);
+  gap: clamp(2px, 1.5vw, 4px);
+}
+
+.activeWord {
+  flex: 0 0 clamp(28px, 8vw, 40px);
+  width: clamp(28px, 8vw, 40px);
+  aspect-ratio: 1;
+  padding: 0;
+  margin: 0;
+  border: none;
+  max-height: 45px;
+  font-size: clamp(20px, 3vw, 50px);
 }
 
 .wordLine {
   display: flex;
   flex: 1;
+  align-items: center;
   min-width: 0;
-  gap: 3px;
+  gap: clamp(2px, 0.8vw, 4px);
 }
 
 .wordLine .tile {
-  width: clamp(50px, 5vw, 70px);
-  min-width: 0;
-  flex-shrink: 1;
-  aspect-ratio: 1;
+  flex: 0 1 clamp(18px, 9vw, 56px);
+  width: clamp(18px, 9vw, 56px);
+  max-width: 56px;
 }
 
-#wordsBox {
-  background-color: palegreen;
+.playerScore {
   display: flex;
-  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
+  gap: clamp(12px, 3vw, 24px);
+  width: 100%;
+  margin-top: 12px;
+  font-size: clamp(18px, 5vw, 26px);
+}
 
+#submit {
+  margin-right: 0;
+  font-size: clamp(14px, 4vw, 18px);
+}
+
+/* 5. Results */
+
+#results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(90%, 300px);
+  font-size: clamp(10px, 64cqi, 35px);
+}
+
+#results h1 {
+  align-self: center;
+  margin-bottom: 12px;
+}
+
+#resultsBox {
   width: 100%;
 }
 
-.activeWord {
-  width: clamp(20px, 5vw, 40px);
-  min-width: 0;
-  flex-shrink: 1;
-  aspect-ratio: 1;
+#resultsBox .wordLine {
+  width: 100%;
+  flex: none;
 }
 
-/* 4. States */
+#resultsBox .wordLine > span {
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+}
 
-/* 5. Responsive adjustments */
+#scoreBox {
+  display: flex;
+  justify-content: center;
+
+  border: 1px solid #161aff;
+  padding: none;
+  border-radius: 8px;
+  margin-top: 5%;
+  width: 100%;
+  gap: 8px;
+}
+
+@media (max-width: 360px) {
+  .wordLineContainer {
+    gap: 3px;
+  }
+
+  .wordLine {
+    gap: 2px;
+  }
+}
